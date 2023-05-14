@@ -44,12 +44,6 @@ public class Main {
                     Elements img = doc.select("img");
                     int cantImg = img.size();
                     System.out.println("Cantidad de imagenes: " + cantImg);
-
-
-
-
-
-
                 }
 
             } catch (MalformedURLException e) {
