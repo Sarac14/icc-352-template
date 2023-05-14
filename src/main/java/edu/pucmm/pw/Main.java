@@ -1,9 +1,7 @@
 package edu.pucmm.pw;
 
-import com.sun.net.httpserver.Headers;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
@@ -27,7 +25,7 @@ public class Main {
 
                 HttpClient cliente = HttpClient.newHttpClient();
                 HttpRequest solicitud = HttpRequest.newBuilder(URI.create(String.valueOf(url))).build();
-                HttpResponse respuesta = cliente.send(solicitud, HttpResponse.BodyHandlers.discarding());
+                HttpResponse<Void> respuesta = cliente.send(solicitud, HttpResponse.BodyHandlers.discarding());
 
                 String tipoRecurso = respuesta.headers().firstValue("Content-Type").orElse("Tipo del recurso no encontrado");
                 System.out.println("Tipo de recurso: " + tipoRecurso);
