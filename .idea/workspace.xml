@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05a81e7a-d4cf-4f5e-b7bf-d258999c2aa2" name="Changes" comment="Primera parte de la practica, trabajando con HTTPClient">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pucmm/pw/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/pucmm/pw/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="05a81e7a-d4cf-4f5e-b7bf-d258999c2aa2" name="Changes" comment="Continuando trabajando" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +43,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684075964698</updated>
-      <workItem from="1684075965794" duration="9918000" />
+      <workItem from="1684075965794" duration="10137000" />
     </task>
     <task id="LOCAL-00001" summary="Primera parte de la practica, trabajando con HTTPClient">
       <created>1684079281410</created>
@@ -55,7 +52,28 @@
       <option name="project" value="LOCAL" />
       <updated>1684079281410</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Continuando trabajando">
+      <created>1684101444822</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684101444822</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Continuando trabajando">
+      <created>1684101514372</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684101514372</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Continuando trabajando">
+      <created>1684101622992</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684101622992</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -63,6 +81,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Primera parte de la practica, trabajando con HTTPClient" />
-    <option name="LAST_COMMIT_MESSAGE" value="Primera parte de la practica, trabajando con HTTPClient" />
+    <MESSAGE value="Continuando trabajando" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continuando trabajando" />
   </component>
 </project>
