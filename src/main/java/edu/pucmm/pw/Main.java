@@ -2,6 +2,7 @@ package edu.pucmm.pw;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.net.MalformedURLException;
@@ -41,9 +42,50 @@ public class Main {
                     int cantParr = parrafo.size();
                     System.out.println("Cantidad de parrafos: " + cantParr);
                     //3
-                    Elements img = doc.select("img");
-                    int cantImg = img.size();
-                    System.out.println("Cantidad de imagenes: " + cantImg);
+                    int cantImg = 0;
+                    for(Element p : parrafo){
+                        cantImg += parrafo.select("img").size();
+                    }
+                    System.out.println("Cantidad de imagenes dentro de los parrafos: " + cantImg);
+
+                    //4
+                    Elements form = doc.select("form");
+                    System.out.println("Cantidad de formularios: " + form.size());
+
+                    int cantPost = 0, cantGet = 0;
+                    for(Element f : form){
+                        String metodo = f.attr("method");
+                        if(metodo.equalsIgnoreCase("POST")){
+                            cantPost++;
+                        }
+                        if(metodo.equalsIgnoreCase("GET")){
+                            cantGet++;
+                        }
+                    }
+                    System.out.println("Cantidad de formularios por metodo POST: " + cantPost);
+                    System.out.println("Cantidad de formularios por metodo GET: " + cantGet);
+
+                    //5
+                    for(Element f : form){
+                        System.out.println("Campos input");
+                        Elements input = f.select("input");
+                        for(Element i : input){
+                            System.out.println("Tipo: " + i.attr("type"));
+                        }
+                    }
+
+                    //6
+                    for(Element f : form){
+                        String metodo = form.attr("method");
+                        if(metodo.equalsIgnoreCase("POST")){
+                            Document respServer = Jsoup.connect(String.valueOf(url))
+                                    .data("asignatura","practica1")
+                                    .header("matricula-id","10144230")
+                                    .post();
+                            System.out.println("Respuesta de la peticion POST: " + respServer.body().text());
+                        }
+
+                    }
                 }
 
             } catch (MalformedURLException e) {
