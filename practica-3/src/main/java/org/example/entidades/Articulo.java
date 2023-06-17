@@ -3,22 +3,27 @@ package org.example.entidades;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
 public class Articulo implements Serializable {
     @Id
-    @GeneratedValue
-    long id;
-    String titulo;
-    String cuerpo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //crear el ID de forma automatica
+    private long id;
+    private String titulo;
+    private String cuerpo;
     @OneToOne(mappedBy = "articulo")
-    Usuario autor;
+    private Usuario autor;
     Date fecha;
     @OneToMany
-    List<Comentario> ListaComentario;
+    //private List<Comentario> ListaComentario;
+    private Set<Comentario> ListaComentario;
     @OneToMany(mappedBy = "artculo")
-    List<Etiqueta> ListaEtiqueta;
+    //private List<Etiqueta> ListaEtiqueta;
+    private Set<Etiqueta> ListaEtiqueta;
+
 
     public long getId() {
         return id;
@@ -61,19 +66,19 @@ public class Articulo implements Serializable {
         this.fecha = fecha;
     }
 
-    public List<Comentario> getListaComentario() {
+    public Set<Comentario> getListaComentario() {
         return ListaComentario;
     }
 
-    public void setListaComentario(List<Comentario> listaComentario) {
+    public void setListaComentario(Set<Comentario> listaComentario) {
         ListaComentario = listaComentario;
     }
 
-    public List<Etiqueta> getListaEtiqueta() {
+    public Set<Etiqueta> getListaEtiqueta() {
         return ListaEtiqueta;
     }
 
-    public void setListaEtiqueta(List<Etiqueta> listaEtiqueta) {
+    public void setListaEtiqueta(Set<Etiqueta> listaEtiqueta) {
         ListaEtiqueta = listaEtiqueta;
     }
 

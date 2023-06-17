@@ -9,11 +9,11 @@ import java.io.Serializable;
 @Entity
 public class Usuario implements Serializable {
     @Id
-    String username;
-    String Nombre;
-    String password;
-    boolean administrador;
-    boolean autor;
+    private String username;
+    private String Nombre;
+    private String password;
+    private boolean administrador;
+    private boolean autor;
 
     public String getUsername() {
         return username;

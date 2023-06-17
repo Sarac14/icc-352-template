@@ -8,13 +8,13 @@ import java.io.Serializable;
 @Entity
 public class Comentario implements Serializable {
     @Id
-    @GeneratedValue
-    long id;
-    String comentario;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //crear el ID de forma automatica
+    private long id;
+    private String comentario;
     @OneToOne(mappedBy = "comentario")
-    Usuario autor;
+    private Usuario autor;
     @OneToOne(mappedBy = "comentario")
-    Articulo articulo;
+    private Articulo articulo;
 
     public long getId() {
         return id;
