@@ -4,8 +4,10 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
+group 'edu.pucmm.eict'
+version '1.0-SNAPSHOT'
+
+mainClassName='edu.pucmm.eict.ormjpa.Main'
 
 repositories {
     mavenCentral()
@@ -47,6 +49,11 @@ shadowJar{
     archiveVersion.set('')
 }
 
-test {
+/**
+ * tarea necesaria para heroku si optamos por la tarea de Shadowjar
+ * en el archivo Procfile debe estar el siguiente comando:
+ * web: java -jar build/libs/app.jar
+ */
+task stage {
     dependsOn shadowJar
 }
