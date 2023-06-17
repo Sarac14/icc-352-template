@@ -29,12 +29,12 @@ public class ControladorArticulo extends BaseControlador {
 
     public void aplicarRutas() {
 
-        /*app.before("/crearArticulo", ctx -> {
+        app.before("/crearArticulo", ctx -> {
             if(servicio_usuario.getUsuarioLogeado().getUsuario() == null){
                 System.out.println("Necesita iniciar sesion");
                 ctx.redirect("/");
             }
-        });*/
+        });
 
         app.before("/comentario", ctx -> {
             if(servicio_usuario.getUsuarioLogeado().getUsuario() == null){
