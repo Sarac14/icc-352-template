@@ -9,7 +9,7 @@ public class ServicioComentario {
 
     private static ServicioComentario instancia;
     private static ServicioArticulo servicio_articulo = ServicioArticulo.getInstancia();
-    private List<Comentario> listaComentarios = new ArrayList<>();
+    private static List<Comentario> listaComentarios = new ArrayList<>();
 
     private ServicioComentario(){}
 
@@ -45,7 +45,7 @@ public class ServicioComentario {
     }
 
     //listar
-    public Comentario getComentarioPorID(long id) {
+    public static Comentario getComentarioPorID(long id) {
         return listaComentarios.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
     }
 

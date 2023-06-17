@@ -3,22 +3,24 @@ package org.example.Controladores;
 import io.javalin.Javalin;
 import org.example.Colecciones.Articulos;
 import org.example.Colecciones.Comentario;
-import org.example.Colecciones.Usuario;
+import org.example.Colecciones.UsuarioColeccion;
+import org.example.entidades.Articulo;
+import org.example.entidades.Etiqueta;
+import org.example.entidades.Usuario;
 import org.example.servicios.ServicioArticulo;
 import org.example.servicios.ServicioComentario;
+import org.example.servicios.ServicioEtiqueta;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ControladorArticulo extends BaseControlador {
 
     private static ServicioArticulo servicio_art = ServicioArticulo.getInstancia();
     private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
+    private static ServicioEtiqueta servicioEti = ServicioEtiqueta.getInstancia();
     private static ServicioComentario servicioComentario = ServicioComentario.getInstancia();
 
     public ControladorArticulo(Javalin app){super (app);}
@@ -27,12 +29,12 @@ public class ControladorArticulo extends BaseControlador {
 
     public void aplicarRutas() {
 
-        app.before("/crearArticulo", ctx -> {
+        /*app.before("/crearArticulo", ctx -> {
             if(servicio_usuario.getUsuarioLogeado().getUsuario() == null){
                 System.out.println("Necesita iniciar sesion");
                 ctx.redirect("/");
             }
-        });
+        });*/
 
         app.before("/comentario", ctx -> {
             if(servicio_usuario.getUsuarioLogeado().getUsuario() == null){
@@ -46,7 +48,7 @@ public class ControladorArticulo extends BaseControlador {
 
         app.get("/crearArticulo", ctx ->{
             Map<String, Object> modelo = new HashMap<>();
-            modelo.put("titulo", "¡Publica un artículo!");
+            modelo.put("titulo", "¡Publica un articulo!");
             modelo.put("accion", "/publicar");
 
             ctx.render("publico/NuevoArticulo.html", modelo);
@@ -68,7 +70,7 @@ public class ControladorArticulo extends BaseControlador {
             String titulo = ctx.formParam("titulo");
             String cuerpo = ctx.formParam("cuerpo");
             String etiquetas = ctx.formParam("etiquetas");
-            Usuario autor = servicio_usuario.getUsuarioLogeado();
+            UsuarioColeccion autor = servicio_usuario.getUsuarioLogeado();
             LocalDate fecha =  LocalDate.now();
 
             String[] etiquetasArray = etiquetas.split(", ");
@@ -87,21 +89,31 @@ public class ControladorArticulo extends BaseControlador {
         });
 
         app.post("/publicar", ctx -> {
-            long nuevoId = ultimoId + 1;
-            ultimoId = nuevoId;
+            /*long nuevoId = ultimoId + 1;
+            ultimoId = nuevoId;*/
             String titulo = ctx.formParam("titulo");
             String cuerpo = ctx.formParam("cuerpo");
             String etiquetas = ctx.formParam("etiquetas");
-            Usuario autor = servicio_usuario.getUsuarioLogeado();
+
+            String username = ctx.sessionAttribute("username");
+
+            Usuario autor = servicio_usuario.findByUsername(username);
             LocalDate fecha =  LocalDate.now();
 
             String[] etiquetasArray = etiquetas.split(", ");
-            List<String> listaEtiquetas = Arrays.asList(etiquetasArray);
+            //List<Etiqueta> listaEtiquetas = Arrays.asList(etiquetasArray);
+            Set<Etiqueta> listaEtiquetas = new HashSet<>();
+            for (String etiquetaStr : etiquetasArray) {
+                Etiqueta etiqueta = new Etiqueta(etiquetaStr); // Suponiendo que hay un constructor en la clase Etiqueta
+                servicioEti.crear(etiqueta);
+                listaEtiquetas.add(etiqueta);
+            }
 
+            Articulo tmp = new Articulo(titulo,cuerpo,autor,fecha, listaEtiquetas);
 
-            if (servicio_art.getArticuloPorID(nuevoId) == null) {
-                if(servicio_art.autenticarArticulo(nuevoId,titulo,cuerpo)){
-                    servicio_art.crearArticulo(new Articulos(nuevoId, titulo, cuerpo, autor, fecha, listaEtiquetas));
+            if (servicio_art.getArticuloPorID(tmp.getId()) == null) {
+                if(servicio_art.autenticarArticulo(tmp.getId(), titulo,cuerpo)){
+                    servicio_art.crear(tmp);
                 }else {
                     System.out.println("Campos necesarios");
                     ctx.redirect("/publicar");
@@ -129,7 +141,7 @@ public class ControladorArticulo extends BaseControlador {
 
         app.post("/comentario", ctx ->{
             String comentario = ctx.formParam("comentario");
-            Usuario autor = servicio_usuario.getUsuarioLogeado();
+            UsuarioColeccion autor = servicio_usuario.getUsuarioLogeado();
             Articulos articulo = servicio_art.getArtActual();
 
             long comenId = comentarioId + 1;

@@ -1,7 +1,7 @@
 package org.example.Colecciones;
 
 
-public class Usuario {
+public class UsuarioColeccion {
     private String username;
     private String nombre;
     private String password;
@@ -9,10 +9,10 @@ public class Usuario {
     private boolean autor;
 
 
-    public Usuario() {
+    public UsuarioColeccion() {
     }
 
-    public Usuario(String username, String nombre, String password, boolean admin, boolean autor) {
+    public UsuarioColeccion(String username, String nombre, String password, boolean admin, boolean autor) {
         this.username = username;
         this.nombre = nombre;
         this.password = password;
@@ -68,7 +68,7 @@ public class Usuario {
     }
 
 
-    public void actualizar(Usuario tmp) {
+    public void actualizar(UsuarioColeccion tmp) {
         username = tmp.getUsername();
         nombre = tmp.getNombre();
         password = tmp.getPassword();

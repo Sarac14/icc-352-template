@@ -72,8 +72,8 @@
                     <p class="post-meta">Posted by&nbsp;<a href="#" th:text="${articulo.autor.nombre}">Start Bootstrap on September 24, 2018</a></p>
                     <p class="post-meta">On&nbsp;<a href="#" th:text="${articulo.fecha}">September 24, 2018</a></p>
                     <p class="post-etiquetas">
-                    <span th:each="tag, tagStat : ${articulo.listaEtiquetas}">
-                        <span th:text="${tag}"></span>
+                    <span th:each="tag, tagStat : ${articulo.listaEtiqueta}">
+                        <span th:text="${tag.etiqueta}"></span>
                         <span th:if="${!tagStat.last}">, </span>
                     </span>
                     </p>

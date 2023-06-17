@@ -3,13 +3,13 @@ package org.example.Colecciones;
 public class Comentario {
     long id;
     String comentario;
-    Usuario autor;
+    UsuarioColeccion autor;
     Articulos articulo;
 
     public Comentario() {
     }
 
-    public Comentario(long id, String comentario, Usuario autor, Articulos articulo) {
+    public Comentario(long id, String comentario, UsuarioColeccion autor, Articulos articulo) {
         this.id = id;
         this.comentario = comentario;
         this.autor = autor;
@@ -28,11 +28,11 @@ public class Comentario {
         this.articulo = articulo;
     }
 
-    public Usuario getAutor() {
+    public UsuarioColeccion getAutor() {
         return autor;
     }
 
-    public void setAutor(Usuario autor) {
+    public void setAutor(UsuarioColeccion autor) {
         this.autor = autor;
     }
 

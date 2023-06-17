@@ -1,6 +1,7 @@
 package org.example.entidades;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -14,16 +15,27 @@ public class Articulo implements Serializable {
     private long id;
     private String titulo;
     private String cuerpo;
-    @OneToOne(mappedBy = "articulo")
+    @OneToOne//(mappedBy = "articulo")
     private Usuario autor;
-    Date fecha;
-    @OneToMany
+    LocalDate fecha;
+    @OneToMany(mappedBy = "articulo")
     //private List<Comentario> ListaComentario;
     private Set<Comentario> ListaComentario;
-    @OneToMany(mappedBy = "artculo")
+    @OneToMany//(mappedBy = "articulo")
     //private List<Etiqueta> ListaEtiqueta;
     private Set<Etiqueta> ListaEtiqueta;
 
+    public Articulo(String titulo, String cuerpo, Usuario autor, LocalDate fecha, Set<Etiqueta> listaEtiqueta) {
+        this.titulo = titulo;
+        this.cuerpo = cuerpo;
+        this.autor = autor;
+        this.fecha = fecha;
+        ListaEtiqueta = listaEtiqueta;
+    }
+
+    public Articulo() {
+
+    }
 
     public long getId() {
         return id;
@@ -58,11 +70,11 @@ public class Articulo implements Serializable {
         this.autor = autor;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

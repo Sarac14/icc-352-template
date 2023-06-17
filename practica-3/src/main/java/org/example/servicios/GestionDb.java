@@ -162,6 +162,20 @@ public class GestionDb<T> {
             em.close();
         }
     }
+    public T findByUsername(String username) throws PersistenceException {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT e FROM " + claseEntidad.getSimpleName() + " e WHERE e.username = :username");
+            query.setParameter("username", username);
+            return (T) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+
 
     /**
      *

@@ -8,7 +8,7 @@ public class Articulos {
     long id;
     String titulo;
     String cuerpo;
-    Usuario autor;
+    UsuarioColeccion autor;
     LocalDate fecha;
     List<Comentario> listaComentarios;
     List<String> listaEtiquetas;
@@ -16,7 +16,7 @@ public class Articulos {
     public Articulos(){
     }
 
-    public Articulos(long id, String titulo, String cuerpo, Usuario autor, LocalDate fecha, List<Comentario> listaComentarios, List<String> listaEtiquetas ){
+    public Articulos(long id, String titulo, String cuerpo, UsuarioColeccion autor, LocalDate fecha, List<Comentario> listaComentarios, List<String> listaEtiquetas ){
         this.id = id;
         this.autor = autor;
         this.cuerpo = cuerpo;
@@ -26,7 +26,7 @@ public class Articulos {
         this.listaEtiquetas = listaEtiquetas;
     }
 
-    public Articulos(long id, String titulo, String cuerpo, Usuario autor, LocalDate fecha, List<String> listaEtiquetas){
+    public Articulos(long id, String titulo, String cuerpo, UsuarioColeccion autor, LocalDate fecha, List<String> listaEtiquetas){
         this.id = id;
         this.autor = autor;
         this.cuerpo = cuerpo;
@@ -68,11 +68,11 @@ public class Articulos {
         this.fecha = fecha;
     }
 
-    public Usuario getAutor() {
+    public UsuarioColeccion getAutor() {
         return autor;
     }
 
-    public void setAutor(Usuario autor) {
+    public void setAutor(UsuarioColeccion autor) {
         this.autor = autor;
     }
 

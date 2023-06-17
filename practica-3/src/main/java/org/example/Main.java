@@ -3,10 +3,17 @@ package org.example;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.bundled.RouteOverviewPlugin;
+import org.example.Controladores.ControladorArticulo;
+import org.example.Controladores.ControladorLogin;
+import org.example.Controladores.ControladorUsuario;
+import org.example.entidades.Usuario;
 import org.example.servicios.BootStrapServices;
+import org.example.servicios.ServicioUsuario;
 
 public class Main {
     private static String modoConexion = "";
+    private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
+
 
     public static void main(String[] args) {
 
@@ -18,6 +25,9 @@ public class Main {
         if(modoConexion.isEmpty()) {
             BootStrapServices.getInstancia().init();
         }
+
+        ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
+        ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
 
         Javalin app = Javalin.create(config ->{
 
@@ -34,6 +44,11 @@ public class Main {
                 });
             });
         }).start(getHerokuAssignedPort());
+
+        //servicio_usuario.CreacionDeUsuarios();
+        new ControladorLogin(app).aplicarRutas();
+        new ControladorUsuario(app).aplicarRutas();new ControladorArticulo(app).aplicarRutas();
+
 
     }
     static int getHerokuAssignedPort() {

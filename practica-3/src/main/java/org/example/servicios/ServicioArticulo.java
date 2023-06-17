@@ -1,18 +1,46 @@
 package org.example.servicios;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.example.Colecciones.Articulos;
 import org.example.Colecciones.Comentario;
-import org.example.Colecciones.Usuario;
+import org.example.entidades.Articulo;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicioArticulo {
-    private static ServicioComentario servicioComentario = ServicioComentario.getInstancia();
+public class ServicioArticulo extends GestionDb<Articulo> {
+    //private static ServicioComentario servicioComentario = ServicioComentario.getInstancia();
 
     private static  ServicioArticulo instancia;
+    private ServicioArticulo() {
+        super(Articulo.class);
+    }
 
+    public static ServicioArticulo getInstancia(){
+        if(instancia==null){
+            instancia = new ServicioArticulo();
+        }
+        return instancia;
+    }
+
+    public List<Articulo> findAllByNombre(String titulo){
+        EntityManager em = getEntityManager();
+        Query query = em.createQuery("select a from Articulo a where a.titulo like :titulo");
+        query.setParameter("titulo", titulo+"%");
+        List<Articulo> lista = query.getResultList();
+        return lista;
+    }
+
+    public List<Articulo> consultaNativa(){
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("select * from Articulo ", Articulo.class);
+        //query.setParameter("nombre", apellido+"%");
+        List<Articulo> lista = query.getResultList();
+        return lista;
+    }
+
+    //-----------------------FUNCIONES QUE SON USAN ORM-----------------------------------------------------
     private List<Articulos> ListaArticulos = new ArrayList<>();
     private Articulos artActual = null;
 
@@ -24,7 +52,7 @@ public class ServicioArticulo {
         this.artActual = artActual;
     }
 
-    private ServicioArticulo(){
+    /*private ServicioArticulo(){
         LocalDate date = LocalDate.now();
         Usuario autor = new Usuario();
         List<String> ListaEtiquetas = new ArrayList<>();
@@ -50,14 +78,7 @@ public class ServicioArticulo {
 
 
 
-    }
-
-    public static ServicioArticulo getInstancia(){
-        if(instancia==null){
-            instancia = new ServicioArticulo();
-        }
-        return instancia;
-    }
+    }*/
 
     public List<Articulos> getListaArticulos() {
         return ListaArticulos;
@@ -126,7 +147,7 @@ public class ServicioArticulo {
     }
 
     public boolean borrarComentario(long id, Articulos articulo) {
-        Comentario tmp = servicioComentario.getComentarioPorID(id);
+        Comentario tmp = ServicioComentario.getComentarioPorID(id);
         if(tmp==null) {
             System.out.println("ERROR");
             return false;

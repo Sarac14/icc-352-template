@@ -11,9 +11,9 @@ public class Comentario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //crear el ID de forma automatica
     private long id;
     private String comentario;
-    @OneToOne(mappedBy = "comentario")
+    @OneToOne//(mappedBy = "comentario")
     private Usuario autor;
-    @OneToOne(mappedBy = "comentario")
+    @ManyToOne
     private Articulo articulo;
 
     public long getId() {

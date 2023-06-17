@@ -1,7 +1,7 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
-import org.example.Colecciones.Usuario;
+import org.example.Colecciones.UsuarioColeccion;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
 
@@ -29,7 +29,7 @@ public class ControladorUsuario  extends BaseControlador {
                     });
 
                     app.get("/usuario", ctx ->{
-                        List<Usuario> lista = servicio_usuario.getListaUsuarios();
+                        List<UsuarioColeccion> lista = servicio_usuario.getListaUsuarios();
                         Map<String, Object> modelo = new HashMap<>();
                         modelo.put("titulo", "Vista Usuarios");
                         modelo.put("lista", lista);
@@ -51,7 +51,7 @@ public class ControladorUsuario  extends BaseControlador {
 
                         if (servicio_usuario.buscarUsuarioPorUsername(username) == null) {
                             ctx.redirect("/");
-                            servicio_usuario.crearUsuario(new Usuario(username, nombre, password, false, true));
+                            servicio_usuario.crearUsuario(new UsuarioColeccion(username, nombre, password, false, true));
                             ctx.html("Usuario creado. <a href='/'>Ir a inicio</a>");
                         } else {
                             ctx.html("Este usuario ya existe. <a href='/nuevoUsuario'>Volver a intentar</a>");

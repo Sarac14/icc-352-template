@@ -1,8 +1,9 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
-import org.example.Colecciones.Articulos;
-import org.example.Colecciones.Usuario;
+import org.example.Colecciones.UsuarioColeccion;
+import org.example.entidades.Articulo;
+import org.example.entidades.Usuario;
 import org.example.servicios.ServicioArticulo;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
@@ -38,7 +39,8 @@ public class ControladorLogin extends BaseControlador {
         });
 
         app.get("/listar", ctx ->{
-            List<Articulos> lista = servicio_art.getListaArticulos();
+            //List<Articulos> lista = servicio_art.getListaArticulos();
+            List<Articulo> lista = servicio_art.consultaNativa();
             Map<String, Object> modelo = new HashMap<>();
 
             modelo.put("titulo", "Inicio");
@@ -50,7 +52,9 @@ public class ControladorLogin extends BaseControlador {
 
 
         app.get("/login", ctx -> {
-            ctx.redirect("/login.html");
+            Map<String, Object> modelo = new HashMap<>();
+            modelo.put("titulo", "Inicio de Sesion");
+            ctx.render("publico/login.html",modelo);
         });
 
         app.post("/login", ctx -> {
@@ -58,8 +62,12 @@ public class ControladorLogin extends BaseControlador {
             String password = ctx.formParam("password");
 
             if (servicio_usuario.autenticarUsuario(username,password) != null) {
-                Usuario usuario = servicio_usuario.getUsuarioPorUsuario(username);
-                servicio_usuario.setUsuarioLogeado(usuario);
+                //UsuarioColeccion usuario = servicio_usuario.getUsuarioPorUsuario(username);
+                //Usuario usuario = servicio_usuario.find(username);
+                //servicio_usuario.setUsuarioLogeado(usuario);
+
+                //ctx.cookie("usuario", username);
+                ctx.sessionAttribute("username", username);
                 ctx.redirect("/");
             } else {
                 ctx.html("Credenciales incorrectas. <a href='/login'>Volver a intentar</a>");
