@@ -2,7 +2,7 @@ package org.example.Controladores;
 
 import io.javalin.Javalin;
 import org.example.Colecciones.Usuario;
-import org.example.Servicios.ServicioUsuario;
+import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
 
 import java.util.HashMap;
