@@ -38,6 +38,7 @@
                             <th class="text-center">Nombre</th>
                             <th class="text-center">Username</th>
                             <th class="text-center">Password</th>
+                            <th class="text-center">Foto</th>
                             <th class="text-center filter-false sorter-false">Acciones</th>
                         </tr>
                         </thead>
@@ -46,7 +47,16 @@
                             <td th:text="${usuario.Nombre}">Ana</td>
                             <td th:text="${usuario.username}">Diseñador</td>
                             <td th:text="${usuario.password}">Diseñador</td>
-                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"></a><a class="btn btnMaterial btn-flat success semicircle" role="button" style="color: green" th:href="'/editarUsuario/'+${usuario.id}">Editar</a><a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px; color: red" data-bs-toggle="modal" data-bs-target="#delete-modal" th:href="'/eliminarUsuario/'+${usuario.id}">Borrar</a></td>
+
+                            <!-- VISUALIZAR FOTO -->
+                            <td><a th:if="${usuario.foto != null}" th:href="'visualizar/'+${usuario.id}" role="button">Ver foto</a></td>
+
+
+                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;">
+                                <a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"></a>
+                                <a class="btn btnMaterial btn-flat success semicircle" role="button" style="color: green" th:href="'/editarUsuario/'+${usuario.id}">Editar</a>
+                                <a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px; color: red" data-bs-toggle="modal" data-bs-target="#delete-modal" th:href="'/eliminarUsuario/'+${usuario.id}">Borrar</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

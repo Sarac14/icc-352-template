@@ -1,6 +1,7 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
+import io.javalin.http.UploadedFile;
 import org.example.entidades.Articulo;
 import org.example.entidades.Etiqueta;
 import org.example.entidades.Foto;
@@ -36,10 +37,11 @@ public class ControladorUsuario  extends BaseControlador {
                     //READ
                     app.get("/usuario", ctx ->{
                         List<Usuario> lista = servicio_usuario.consultaNativa();
-
+                        //Foto foto = ctx.sessionAttribute("foto");
                         Map<String, Object> modelo = new HashMap<>();
                         modelo.put("titulo", "Vista Usuarios");
                         modelo.put("lista", lista);
+                        //modelo.put("foto", foto);
                         ctx.render("publico/VistaUsuario.html", modelo);
 
                     });
@@ -65,7 +67,9 @@ public class ControladorUsuario  extends BaseControlador {
 
 
                         if (servicio_usuario.findByUsername(username) == null) {
-                            servicio_usuario.crear(new Usuario(username, nombre, password, false, true));
+                            Usuario nuevoUsuario = new Usuario(username, nombre, password, true, true);
+
+
 
                             //---------------------------------------LO DE LA FOTO-------------------------------------------------------------
 
@@ -78,13 +82,18 @@ public class ControladorUsuario  extends BaseControlador {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
+                                //ctx.sessionAttribute("foto", foto);
+                                //nuevoUsuario.setFoto(foto);
+
                                 //ctx.redirect("/fotos/listar");
                             });
                             //-----------------------------------------------------------------------------------------------------------------
 
-                            if(usuario == null){
+                            servicio_usuario.crear(nuevoUsuario);
+
+                            if (usuario == null) {
                                 ctx.redirect("/login");
-                            }else{
+                            } else {
                                 ctx.redirect("/usuario");
                             }
                         } else {

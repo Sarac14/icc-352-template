@@ -28,12 +28,12 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-6 mb-3 mb-sm-0"><input th:value="${usuario} ? ${usuario.Nombre.split(' ')[0]} : ''" class="form-control form-control-user" type="text" placeholder="First Name" name="Fname"></div>
-                            <div class="col-sm-6"><input th:value="${usuario} ? ${usuario.Nombre} : ''" class="form-control form-control-user" type="text" placeholder="Last Name" name="Lname"></div>
+                            <div class="col-sm-6"><input th:value="${usuario} ? ${usuario.Nombre.split(' ')[1]} : ''" class="form-control form-control-user" type="text" placeholder="Last Name" name="Lname"></div>
                         </div>
                         <div class="row mb-3">
                             <!-- REGISTRO DE LA FOTO -->
 
-                            <div class="mb-3"><input action="/fotos/procesarFoto" method="post" th:if="${usuario == null}" class="form-control form-control-user" type="file" placeholder="Subir foto" name ="foto" required=""></div>
+                            <div class="mb-3"><input th:if="${usuario == null}" class="form-control form-control-user" type="file" placeholder="Subir foto" name ="foto" id="foto" required=""></div>
 
                             <p id="emailErrorMsg" class="text-danger" style="display: none;">Paragraph</p>
                             <p id="passwordErrorMsg" class="text-danger" style="display: none;">Paragraph</p>

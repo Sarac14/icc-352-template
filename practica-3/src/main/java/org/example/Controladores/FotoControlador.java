@@ -44,10 +44,9 @@ public class FotoControlador extends BaseControlador {
                 });
 
                 //CREAR
-                get("/procesarFoto", ctx ->{
+                //ESTA EN CONTROLADORUSUARIO
 
-                });
-                post("/procesarFoto", ctx -> {
+               /* post("/procesarFoto", ctx -> {
                     //String user = ctx.sessionAttribute("username");
                     //Usuario usuario = servicio_usuario.findByUsername(user);
 
@@ -64,25 +63,25 @@ public class FotoControlador extends BaseControlador {
                                 ctx.redirect("/login");
                         }else{
                                 ctx.redirect("/usuario");
-                            }*/
+                            }
                         ctx.redirect("/fotos/listar");
                     });
-                });
+                });*/
 
                 get("/visualizar/{id}", ctx -> {
                     try {
                         Foto foto = fotoServices.find(ctx.pathParamAsClass("id", Long.class).get());
                         if(foto==null){
-                            ctx.redirect("/fotos/listar");
+                            ctx.redirect("/usuario");
                             return;
                         }
                         Map<String, Object> modelo = new HashMap<>();
                         modelo.put("foto", foto);
                         //
-                        ctx.render("/templates/visualizar.html", modelo);
+                        ctx.render("publico/visualizar.html", modelo);
                     }catch (Exception e){
                         System.out.println("Error: "+e.getMessage());
-                        ctx.redirect("/fotos/listar");
+                        ctx.redirect("/usuario");
                     }
                 });
 
