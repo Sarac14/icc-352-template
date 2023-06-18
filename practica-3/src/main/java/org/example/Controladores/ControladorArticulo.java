@@ -186,7 +186,7 @@ public class ControladorArticulo extends BaseControlador {
             }
         });
         app.get("/eliminar/{id}", ctx -> {
-                servicioComentario.eliminar(ctx.pathParamAsClass("id", long.class).get());
+            servicioComentario.eliminar(ctx.pathParamAsClass("id", long.class).get());
             Articulo articulo = ctx.sessionAttribute("artActual");
             ctx.redirect("/verArticulo/"+articulo.getId());
         });

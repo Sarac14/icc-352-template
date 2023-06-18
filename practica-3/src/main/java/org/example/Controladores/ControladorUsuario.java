@@ -58,23 +58,20 @@ public class ControladorUsuario  extends BaseControlador {
 
 
                         if (servicio_usuario.findByUsername(username) == null) {
-                            ctx.redirect("/");
-
 
                             servicio_usuario.crear(new Usuario(username, nombre, password, false, true));
-
-                            ctx.html("Usuario creado. <a href='/'>Ir a inicio</a>");
+                            ctx.redirect("/usuario");
+                            //ctx.html("Usuario creado. <a href='/'>Ir a inicio</a>");
                         } else {
                             ctx.html("Este usuario ya existe. <a href='/nuevoUsuario'>Volver a intentar</a>");
                         }
                     });
 
-                    //--------------MODIFICAR NO FUNCIONA----------------------//
-
                     //UPDATE
                     app.get("/editarUsuario/{id}", ctx -> {
 
                         Usuario usuario = servicio_usuario.find(ctx.pathParamAsClass("id", Long.class).get());
+                        ctx.sessionAttribute("usuarioEditar", usuario);
 
                         Map<String, Object> modelo = new HashMap<>();
                         modelo.put("titulo", "Editar "+usuario.getUsername());
@@ -84,7 +81,8 @@ public class ControladorUsuario  extends BaseControlador {
                     });
 
                     app.post("/editarUsuario", ctx -> {
-                        Usuario usuario = servicio_usuario.findByUsername(ctx.sessionAttribute("username"));
+
+                        Usuario usuario = ctx.sessionAttribute("usuarioEditar");
 
                         String username = ctx.formParam("username");
                         String password = ctx.formParam("password");
@@ -92,7 +90,6 @@ public class ControladorUsuario  extends BaseControlador {
                         String Lname = ctx.formParam("Lname");
                         String nombre = Fname+ ' ' + Lname;
 
-                        ctx.sessionAttribute("username", username);
 
                         // Actualizar las propiedades del usuario
                         usuario.setUsername(username);
@@ -102,14 +99,14 @@ public class ControladorUsuario  extends BaseControlador {
                         // Llamar al método de servicio para editar el artículo
                         servicio_usuario.editar(usuario);
 
-                        // Redirigir a la página de visualización del artículo
+                        // Redirigir a la página de visualización de los usuarios
                         ctx.redirect("/usuario");
 
                     });
 
                     //-----------------ELIMINAR NO FUNCIONA----------------
                     app.get("/eliminarUsuario/{id}", ctx -> {
-                        servicio_usuario.eliminar(ctx.pathParamAsClass("id", long.class).get());
+                        ctx.json(servicio_usuario.eliminar(ctx.pathParamAsClass("id", long.class).get()));
                         ctx.redirect("/");
                     });
 

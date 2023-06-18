@@ -8,24 +8,22 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //crear el ID de forma automatica
     private long id;
     private String username;
 
     private String Nombre;
     private String password;
+    private boolean administrador;
+    private boolean autor;
 
     public Usuario(String username, String nombre, String password, boolean administrador, boolean autor) {
         this.username = username;
-        Nombre = nombre;
+        this.Nombre = nombre;
         this.password = password;
         this.administrador = administrador;
         this.autor = autor;
     }
-
-    private boolean administrador;
-    private boolean autor;
-
     public Usuario() {
 
     }
