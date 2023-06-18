@@ -5,13 +5,15 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 @Entity
 public class Foto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String nombre;
     private String mimeType;
     @Lob
     private String fotoBase64;
+
 
     public Foto() {
     }
@@ -22,11 +24,11 @@ public class Foto implements Serializable {
         this.fotoBase64 = fotoBase64;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

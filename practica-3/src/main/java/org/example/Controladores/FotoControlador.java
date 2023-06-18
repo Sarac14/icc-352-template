@@ -3,7 +3,9 @@ package org.example.Controladores;
 import io.javalin.Javalin;
 import org.example.Util.BaseControlador;
 import org.example.entidades.Foto;
+import org.example.entidades.Usuario;
 import org.example.servicios.FotoServices;
+import org.example.servicios.ServicioUsuario;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -17,6 +19,8 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 public class FotoControlador extends BaseControlador {
 
     private FotoServices fotoServices = FotoServices.getInstancia();
+    private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
+
 
 
     public FotoControlador(Javalin app){super (app);}
@@ -39,7 +43,14 @@ public class FotoControlador extends BaseControlador {
                     ctx.render("/templates/listar.html", modelo);
                 });
 
+                //CREAR
+                get("/procesarFoto", ctx ->{
+
+                });
                 post("/procesarFoto", ctx -> {
+                    //String user = ctx.sessionAttribute("username");
+                    //Usuario usuario = servicio_usuario.findByUsername(user);
+
                     ctx.uploadedFiles("foto").forEach(uploadedFile -> {
                         try {
                             byte[] bytes = uploadedFile.content().readAllBytes();
@@ -49,6 +60,11 @@ public class FotoControlador extends BaseControlador {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        /*if(usuario == null){
+                                ctx.redirect("/login");
+                        }else{
+                                ctx.redirect("/usuario");
+                            }*/
                         ctx.redirect("/fotos/listar");
                     });
                 });

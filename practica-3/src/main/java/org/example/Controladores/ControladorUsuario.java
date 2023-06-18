@@ -3,10 +3,13 @@ package org.example.Controladores;
 import io.javalin.Javalin;
 import org.example.entidades.Articulo;
 import org.example.entidades.Etiqueta;
+import org.example.entidades.Foto;
 import org.example.entidades.Usuario;
+import org.example.servicios.FotoServices;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
 
+import java.io.IOException;
 import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
@@ -14,7 +17,9 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 public class ControladorUsuario  extends BaseControlador {
 
     private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
-        public ControladorUsuario(Javalin app){super (app);}
+    private FotoServices fotoServices = FotoServices.getInstancia();
+
+    public ControladorUsuario(Javalin app){super (app);}
 
         public void aplicarRutas() {
             app.routes(()->{
@@ -61,6 +66,22 @@ public class ControladorUsuario  extends BaseControlador {
 
                         if (servicio_usuario.findByUsername(username) == null) {
                             servicio_usuario.crear(new Usuario(username, nombre, password, false, true));
+
+                            //---------------------------------------LO DE LA FOTO-------------------------------------------------------------
+
+                            ctx.uploadedFiles("foto").forEach(uploadedFile -> {
+                                try {
+                                    byte[] bytes = uploadedFile.content().readAllBytes();
+                                    String encodedString = Base64.getEncoder().encodeToString(bytes);
+                                    Foto foto = new Foto(uploadedFile.filename(), uploadedFile.contentType(), encodedString);
+                                    fotoServices.crear(foto);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                //ctx.redirect("/fotos/listar");
+                            });
+                            //-----------------------------------------------------------------------------------------------------------------
+
                             if(usuario == null){
                                 ctx.redirect("/login");
                             }else{

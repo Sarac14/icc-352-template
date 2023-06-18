@@ -6,6 +6,7 @@
         <class>org.example.entidades.Comentario</class>
         <class>org.example.entidades.Etiqueta</class>
         <class>org.example.entidades.Usuario</class>
+        <class>org.example.entidades.Foto</class>
         <properties>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />-->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/BlogORM"/>
@@ -28,6 +29,8 @@
         <class>org.example.entidades.Comentario</class>
         <class>org.example.entidades.Etiqueta</class>
         <class>org.example.entidades.Usuario</class>
+        <class>org.example.entidades.Foto</class>
+
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
