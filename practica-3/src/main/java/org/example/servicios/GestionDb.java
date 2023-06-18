@@ -175,6 +175,19 @@ public class GestionDb<T> {
         }
     }
 
+    public T findById(long id) throws PersistenceException {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT e FROM " + claseEntidad.getSimpleName() + " e WHERE e.id = :id");
+            query.setParameter("id", id);
+            return (T) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
 
 
     /**

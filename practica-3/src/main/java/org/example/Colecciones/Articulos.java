@@ -10,13 +10,13 @@ public class Articulos {
     String cuerpo;
     UsuarioColeccion autor;
     LocalDate fecha;
-    List<Comentario> listaComentarios;
+    List<ComentarioColeccion> listaComentarios;
     List<String> listaEtiquetas;
 
     public Articulos(){
     }
 
-    public Articulos(long id, String titulo, String cuerpo, UsuarioColeccion autor, LocalDate fecha, List<Comentario> listaComentarios, List<String> listaEtiquetas ){
+    public Articulos(long id, String titulo, String cuerpo, UsuarioColeccion autor, LocalDate fecha, List<ComentarioColeccion> listaComentarios, List<String> listaEtiquetas ){
         this.id = id;
         this.autor = autor;
         this.cuerpo = cuerpo;
@@ -44,7 +44,7 @@ public class Articulos {
         this.id = id;
     }
 
-    public List<Comentario> getListaComentarios() {
+    public List<ComentarioColeccion> getListaComentarios() {
         return listaComentarios;
     }
 
@@ -56,7 +56,7 @@ public class Articulos {
         this.listaEtiquetas = listaEtiquetas;
     }
 
-    public void setListaComentarios(List<Comentario> listaComentarios) {
+    public void setListaComentarios(List<ComentarioColeccion> listaComentarios) {
         this.listaComentarios = listaComentarios;
     }
 

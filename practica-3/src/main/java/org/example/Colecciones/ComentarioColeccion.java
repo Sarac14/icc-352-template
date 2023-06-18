@@ -1,15 +1,15 @@
 package org.example.Colecciones;
 
-public class Comentario {
+public class ComentarioColeccion {
     long id;
     String comentario;
     UsuarioColeccion autor;
     Articulos articulo;
 
-    public Comentario() {
+    public ComentarioColeccion() {
     }
 
-    public Comentario(long id, String comentario, UsuarioColeccion autor, Articulos articulo) {
+    public ComentarioColeccion(long id, String comentario, UsuarioColeccion autor, Articulos articulo) {
         this.id = id;
         this.comentario = comentario;
         this.autor = autor;

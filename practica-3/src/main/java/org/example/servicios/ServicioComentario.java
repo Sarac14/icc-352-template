@@ -2,7 +2,7 @@ package org.example.servicios;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import org.example.Colecciones.Comentario;
+import org.example.entidades.Comentario;
 import org.example.entidades.Articulo;
 
 import java.util.ArrayList;
@@ -34,13 +34,24 @@ public class ServicioComentario extends GestionDb<Comentario>{
         return lista;
     }*/
 
+    /*public List<Comentario> consultaNativa(Articulo art) {
+        EntityManager em = getEntityManager();
+       Query query = em.createNativeQuery("select c from Comentario c where c.articulo = :articulo", Comentario.class);
+        //Query query = em.createQuery("SELECT c FROM Comentario c WHERE c.articulo = :articulo", Comentario.class);
+        query.setParameter("articulo", art);
+        List<Comentario> lista = query.getResultList();
+        return lista;
+    }*/
     public List<Comentario> consultaNativa(Articulo art) {
         EntityManager em = getEntityManager();
-        Query query = em.createNativeQuery("select * from Comentario where Comentario.articulo_id = :articuloId", Comentario.class);
+        //Query query = em.createNativeQuery("SELECT c.* FROM Comentario c WHERE c.articulo_id = :articuloId", Comentario.class);
+        Query query = em.createNativeQuery("SELECT c.* FROM Comentario c INNER JOIN Articulo a ON c.articulo_id = a.id WHERE a.id = :articuloId", Comentario.class);
+
         query.setParameter("articuloId", art.getId());
         List<Comentario> lista = query.getResultList();
         return lista;
     }
+
 
 
 

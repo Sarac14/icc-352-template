@@ -3,8 +3,9 @@ package org.example.servicios;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.example.Colecciones.Articulos;
-import org.example.Colecciones.Comentario;
+import org.example.Colecciones.ComentarioColeccion;
 import org.example.entidades.Articulo;
+import org.example.entidades.Comentario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +33,6 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         return lista;
     }
 
-    public void editarArticulo(Articulos articulo) {
-        EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        try {
-            em.merge(articulo);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
 
     public List<Articulo> consultaNativa(){
         EntityManager em = getEntityManager();
@@ -50,6 +41,15 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         List<Articulo> lista = query.getResultList();
         return lista;
     }
+
+
+
+    public void agregarComentario(Articulo articulo, Comentario comentario) {
+        articulo.getListaComentario().add(comentario);
+        comentario.setArticulo(articulo);
+        editar(articulo);
+    }
+
 
     //-----------------------FUNCIONES QUE SON USAN ORM-----------------------------------------------------
     private List<Articulos> ListaArticulos = new ArrayList<>();
@@ -135,9 +135,9 @@ public class ServicioArticulo extends GestionDb<Articulo> {
 
 
 
-    public void agregarComentario(Articulos articulo, Comentario comentario) {
+   /* public void agregarComentario(Articulos articulo, ComentarioColeccion comentario) {
         if (articulo != null && comentario != null) {
-            List<Comentario> listaComentarios = articulo.getListaComentarios();
+            List<ComentarioColeccion> listaComentarios = articulo.getListaComentarios();
             if (listaComentarios == null) {
                 listaComentarios = new ArrayList<>();
                 articulo.setListaComentarios(listaComentarios);
@@ -147,7 +147,7 @@ public class ServicioArticulo extends GestionDb<Articulo> {
             System.out.println("ERROR Articulo o comentario nulo");
 
         }
-    }
+    }*/
 
     public Boolean autenticarArticulo(long id, String titulo, String cuerpo) {
         Articulos tmp = getArticuloPorID(id);
@@ -163,11 +163,12 @@ public class ServicioArticulo extends GestionDb<Articulo> {
             System.out.println("ERROR");
             return false;
         }
-        List<Comentario> listaComentarios = articulo.getListaComentarios();
+        List<ComentarioColeccion> listaComentarios = articulo.getListaComentarios();
         listaComentarios.remove(tmp);
         System.out.println("Comentario eliminado");
         return true;
     }
+
 
 }
 

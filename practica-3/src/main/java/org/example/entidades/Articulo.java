@@ -3,6 +3,7 @@ package org.example.entidades;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,12 +19,12 @@ public class Articulo implements Serializable {
     @OneToOne//(mappedBy = "articulo")
     private Usuario autor;
     LocalDate fecha;
-    @OneToMany(mappedBy = "articulo")
+    @OneToMany(mappedBy = "articulo", fetch = FetchType.EAGER)
     //private List<Comentario> ListaComentario;
-    private Set<Comentario> ListaComentario;
+    private Set<Comentario> ListaComentario = new HashSet<>();
     @OneToMany(fetch = FetchType.EAGER)//(mappedBy = "articulo")
     //private List<Etiqueta> ListaEtiqueta;
-    private Set<Etiqueta> ListaEtiqueta;
+    private Set<Etiqueta> ListaEtiqueta = new HashSet<>();
 
     public Articulo(String titulo, String cuerpo, Usuario autor, LocalDate fecha, Set<Etiqueta> listaEtiqueta) {
         this.titulo = titulo;
