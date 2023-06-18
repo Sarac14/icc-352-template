@@ -1,9 +1,7 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
-import org.example.Colecciones.UsuarioColeccion;
 import org.example.entidades.Articulo;
-import org.example.entidades.Usuario;
 import org.example.servicios.ServicioArticulo;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
@@ -12,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ControladorLogin extends BaseControlador {
+public class ControladorInicio extends BaseControlador {
     private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
     private static ServicioArticulo servicio_art = ServicioArticulo.getInstancia();
 
-    public ControladorLogin(Javalin app){super (app);}
+    public ControladorInicio(Javalin app){super (app);}
 
     public void aplicarRutas() {
 
@@ -39,17 +37,14 @@ public class ControladorLogin extends BaseControlador {
         });
 
         app.get("/listar", ctx ->{
-            //List<Articulos> lista = servicio_art.getListaArticulos();
             List<Articulo> lista = servicio_art.consultaNativa();
             Map<String, Object> modelo = new HashMap<>();
 
             modelo.put("titulo", "Inicio");
             modelo.put("lista", lista);
-            //modelo.put("articulo", articulo);
             ctx.render("publico/index.html", modelo);
 
         });
-
 
         app.get("/login", ctx -> {
             Map<String, Object> modelo = new HashMap<>();
@@ -62,11 +57,6 @@ public class ControladorLogin extends BaseControlador {
             String password = ctx.formParam("password");
 
             if (servicio_usuario.autenticarUsuario(username,password) != null) {
-                //UsuarioColeccion usuario = servicio_usuario.getUsuarioPorUsuario(username);
-                //Usuario usuario = servicio_usuario.find(username);
-                //servicio_usuario.setUsuarioLogeado(usuario);
-
-                //ctx.cookie("usuario", username);
                 ctx.sessionAttribute("username", username);
                 ctx.redirect("/");
             } else {

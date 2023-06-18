@@ -106,8 +106,8 @@ public class ControladorUsuario  extends BaseControlador {
 
                     //-----------------ELIMINAR NO FUNCIONA----------------
                     app.get("/eliminarUsuario/{id}", ctx -> {
-                        ctx.json(servicio_usuario.eliminar(ctx.pathParamAsClass("id", long.class).get()));
-                        ctx.redirect("/");
+                        servicio_usuario.eliminar(ctx.pathParamAsClass("id", long.class).get());
+                        ctx.redirect("/usuario");
                     });
 
 

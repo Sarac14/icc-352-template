@@ -4,7 +4,8 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.bundled.RouteOverviewPlugin;
 import org.example.Controladores.ControladorArticulo;
-import org.example.Controladores.ControladorLogin;
+import org.example.Controladores.ControladorComentario;
+import org.example.Controladores.ControladorInicio;
 import org.example.Controladores.ControladorUsuario;
 import org.example.entidades.Usuario;
 import org.example.servicios.BootStrapServices;
@@ -47,10 +48,10 @@ public class Main {
         }).start(getHerokuAssignedPort());
 
         //servicio_usuario.CreacionDeUsuarios();
-        new ControladorLogin(app).aplicarRutas();
+        new ControladorInicio(app).aplicarRutas();
         new ControladorUsuario(app).aplicarRutas();
         new ControladorArticulo(app).aplicarRutas();
-
+        new ControladorComentario(app).aplicarRutas();
 
     }
     static int getHerokuAssignedPort() {
