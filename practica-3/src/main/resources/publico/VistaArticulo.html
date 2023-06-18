@@ -65,19 +65,21 @@
                         <div class="header">
                             <h2>Etiquetas</h2>
                         </div>
-                        <div class="body widget" th:each="tag, tagStat : ${articulo.listaEtiquetas}">
+                        <div class="body widget" th:each="tag, tagStat : ${articulo.listaEtiqueta}">
                             <ul class="list-unstyled categories-clouds m-b-0">
-                                <li th:text="${tag}"><a>eCommerce</a></li>
+                                <li th:text="${tag.etiqueta}"><a>eCommerce</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="card"></div>
                     <div class="card"></div>
                     <div class="card"></div>
+                    <button class="btn btn-primary btn-block" type="submit"><a th:href="'/editar/'+${articulo.id}">Editar Articulo</a></button>
+
                 </div>
             </div>
-            <button class="btn btn-primary btn-block" type="submit"><a th:href="'/editar/'+${articulo.id}">Editar Articulo</a></button>
         </div>
+
     </div>
     <script src="js/bootstrap.minPArt.js"></script>
 </body>

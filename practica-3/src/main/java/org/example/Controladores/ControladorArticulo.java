@@ -32,7 +32,8 @@ public class ControladorArticulo extends BaseControlador {
     public void aplicarRutas() {
 
         app.before("/crearArticulo", ctx -> {
-            if(servicio_usuario.getUsuarioLogeado().getUsuario() == null){
+            String username = ctx.sessionAttribute("username");
+            if(servicio_usuario.findByUsername(username).getUsername() == null){
                 System.out.println("Necesita iniciar sesion");
                 ctx.redirect("/");
             }
@@ -56,15 +57,15 @@ public class ControladorArticulo extends BaseControlador {
             ctx.render("publico/NuevoArticulo.html", modelo);
         });
 
-        /*app.get("/editar/{id}", ctx -> {
-            Articulos articulo = servicio_art.getArticuloPorID(ctx.pathParamAsClass("id", long.class).get());
+        app.get("/editar/{id}", ctx -> {
+            Articulo articulo = servicio_art.find(ctx.pathParamAsClass("id", long.class).get());
 
             Map<String, Object> modelo = new HashMap<>();
             modelo.put("titulo", "Editar "+articulo.getId());
             modelo.put("articulo", articulo);
             modelo.put("accion", "/editar");
             ctx.render("publico/NuevoArticulo.html", modelo);
-        });*/
+        });
 
         /*app.post("/editar", ctx -> {
             //obteniendo la información enviada.
@@ -90,34 +91,39 @@ public class ControladorArticulo extends BaseControlador {
              ctx.redirect("/verArticulo/"+tmp.getId());
         });*/
 
-        app.post("/editarArticulo/:id", ctx -> {
-            long id = ctx.pathParamAsClass("id", Long.class).get();
+        app.post("/editar", ctx -> {
+            //long id = ctx.pathParamAsClass("id", Long.class).get();
             String titulo = ctx.formParam("titulo");
             String cuerpo = ctx.formParam("cuerpo");
             String etiquetas = ctx.formParam("etiquetas");
 
             // Obtener el artículo existente por su ID
-            Articulos articuloExistente = servicio_art.getArticuloPorID(id);
-
-            if (articuloExistente != null) {
-                // Actualizar las propiedades del artículo
-                articuloExistente.setTitulo(titulo);
-                articuloExistente.setCuerpo(cuerpo);
-                // Actualizar las etiquetas
-                String[] etiquetasArray = etiquetas.split(", ");
-                List<String> listaEtiquetas = Arrays.asList(etiquetasArray);
-                articuloExistente.setListaEtiquetas(listaEtiquetas);
-
-                // Llamar al método de servicio para editar el artículo
-                servicio_art.editarArticulo(articuloExistente);
+            Articulo articuloExistente = ctx.sessionAttribute("artActual");
 
 
-                // Redirigir a la página de visualización del artículo
-                ctx.redirect("/verArticulo/" + id);
-            } else {
-                // Manejar el caso en el que el artículo no existe
-                ctx.html("El artículo no existe.");
+            // Actualizar las propiedades del artículo
+            articuloExistente.setTitulo(titulo);
+            articuloExistente.setCuerpo(cuerpo);
+            // Actualizar las etiquetas
+
+            String[] etiquetasArray = etiquetas.split(", ");
+            //List<Etiqueta> listaEtiquetas = Arrays.asList(etiquetasArray);
+            Set<Etiqueta> listaEtiquetas = new HashSet<>();
+            for (String etiquetaStr : etiquetasArray) {
+                Etiqueta etiqueta = new Etiqueta(etiquetaStr); // Suponiendo que hay un constructor en la clase Etiqueta
+                servicioEti.crear(etiqueta);
+                listaEtiquetas.add(etiqueta);
             }
+            articuloExistente.setListaEtiqueta(listaEtiquetas);
+
+
+            // Llamar al método de servicio para editar el artículo
+            servicio_art.editar(articuloExistente);
+
+
+            // Redirigir a la página de visualización del artículo
+            ctx.redirect("/verArticulo/" + articuloExistente.getId());
+
         });
 
 
@@ -158,9 +164,12 @@ public class ControladorArticulo extends BaseControlador {
         });
 
         app.get("/verArticulo/{id}", ctx ->{
-            Articulos articulo = servicio_art.getArticuloPorID(ctx.pathParamAsClass("id", long.class).get());
-            servicio_art.setArtActual(articulo);
-            List<Comentario> listaComen = servicio_art.getArtActual().getListaComentarios();
+            Articulo articulo = servicio_art.find(ctx.pathParamAsClass("id", long.class).get());
+            //servicio_art.setArtActual(articulo);
+            ctx.sessionAttribute("artActual", articulo);
+
+            //List<Comentario> listaComen = servicio_art.getArtActual().getListaComentarios();
+            List<Comentario> listaComen = servicioComentario.consultaNativa(articulo);
 
             //List<Usuario> lista = servicio_art.get();
             Map<String, Object> modelo = new HashMap<>();

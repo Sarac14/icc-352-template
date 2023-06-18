@@ -21,7 +21,7 @@ public class Articulo implements Serializable {
     @OneToMany(mappedBy = "articulo")
     //private List<Comentario> ListaComentario;
     private Set<Comentario> ListaComentario;
-    @OneToMany//(mappedBy = "articulo")
+    @OneToMany(fetch = FetchType.EAGER)//(mappedBy = "articulo")
     //private List<Etiqueta> ListaEtiqueta;
     private Set<Etiqueta> ListaEtiqueta;
 

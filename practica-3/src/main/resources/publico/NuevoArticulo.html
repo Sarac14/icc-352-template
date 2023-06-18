@@ -20,15 +20,32 @@
         <div class="col-12 col-sm-6 col-md-6 site-form">
             <form id="my-form" th:attr="action=${accion}" method="POST">
                 <div class="form-group mb-3">
-                    <input th:value="${articulo} ? ${articulo.titulo} : 'Titulo de tu aticulo'" class="form-control" type="text" id="titulo" name="titulo"  autofocus="" required></div>
+                    <input th:value="${articulo} ? ${articulo.titulo} : ''" class="form-control" type="text" id="titulo" name="titulo"  autofocus="" placeholder="Titulo de tu articulo" required></div>
                 <div class="form-group mb-3">
-                    <input th:value="${articulo}  ? ${articulo.listaEtiquetas} : 'Etiquetas'" class="form-control" type="text" id="etiquetas" name="etiquetas" required>
-                <div class="form-group mb-3"></div>
+                    <!--<input th:value="${articulo}  ? ${articulo.listaEtiqueta} : ''" class="form-control" type="text" id="etiquetas" name="etiquetas" placeholder="Etiquetas" required>
+                    -->
+                    <input th:if="${articulo != null}" th:value="${articulo.listaEtiqueta ? '': articulo.listaEtiqueta[0].nombre }"
+                           class="form-control"
+                           type="text"
+                           id="etiquetas"
+                           name="etiquetas"
+                           placeholder="Etiquetas"
+                           required>
+                    <input th:if="${articulo == null}" th:attr="value=''"
+                           class="form-control"
+                           type="text"
+                           id="etiquetas"
+                           name="etiquetas"
+                           placeholder="Etiquetas"
+                           required>
+
+                    <div class="form-group mb-3"></div>
                 <div class="form-group mb-3"></div>
                 <div class="form-group mb-3">
-                    <textarea th:text="${articulo} ? ${articulo.cuerpo} : 'Escribe aquí tu artículo'" class="form-control" id="cuerpo" name="cuerpo" required="true" rows="8"></textarea>
+                    <textarea th:text="${articulo} ? ${articulo.cuerpo} : ''" class="form-control" id="cuerpo" name="cuerpo" required="true" rows="8" placeholder="Escribe aquí tu artículo"></textarea>
 
                     <button class="btn btn-light btn-lg" id="form-btn" type="submit">Publicar</button>
+                </div>
                 </div>
             </form>
         </div>

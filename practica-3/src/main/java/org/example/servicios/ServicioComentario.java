@@ -1,17 +1,22 @@
 package org.example.servicios;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.example.Colecciones.Comentario;
+import org.example.entidades.Articulo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicioComentario {
+public class ServicioComentario extends GestionDb<Comentario>{
 
     private static ServicioComentario instancia;
-    private static ServicioArticulo servicio_articulo = ServicioArticulo.getInstancia();
-    private static List<Comentario> listaComentarios = new ArrayList<>();
+    private static ServicioArticulo servicio_articulo = ServicioArticulo.getInstancia();// NO USA ORM
+    private static List<Comentario> listaComentarios = new ArrayList<>();//NO USA ORM
 
-    private ServicioComentario(){}
+    public ServicioComentario() {
+        super(Comentario.class);
+    }
 
     public static ServicioComentario getInstancia(){
         if(instancia==null){
@@ -20,6 +25,26 @@ public class ServicioComentario {
         return instancia;
     }
 
+
+    /*public List<Comentario> consultaNativa(Articulo art){
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("select * from Comentario where Comentario.articulo.id = art.id", Comentario.class);
+        query.setParameter("art", art+"%");
+        List<Comentario> lista = query.getResultList();
+        return lista;
+    }*/
+
+    public List<Comentario> consultaNativa(Articulo art) {
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("select * from Comentario where Comentario.articulo_id = :articuloId", Comentario.class);
+        query.setParameter("articuloId", art.getId());
+        List<Comentario> lista = query.getResultList();
+        return lista;
+    }
+
+
+
+    //------------------NO USAN ORM-------------------------------------
     public List<Comentario> getListaComentarios() {
         return listaComentarios;
     }
