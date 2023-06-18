@@ -2,12 +2,13 @@ package org.example.Controladores;
 
 import io.javalin.Javalin;
 import org.example.Colecciones.UsuarioColeccion;
+import org.example.entidades.Articulo;
+import org.example.entidades.Etiqueta;
+import org.example.entidades.Usuario;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
@@ -21,24 +22,31 @@ public class ControladorUsuario  extends BaseControlador {
                 path("/usuario/", () -> {
 
                     app.before("/usuario", ctx -> {
-                        if(servicio_usuario.getUsuarioLogeado().isAdmin() == false){
+                        Usuario usuario = servicio_usuario.findByUsername(ctx.sessionAttribute("username"));
+                        if(usuario.isAdministrador() == false){
                             System.out.println("Usted no tiene los permisos necesarios");
                             ctx.redirect("/");
-
                         }
                     });
 
+                    //READ
                     app.get("/usuario", ctx ->{
-                        List<UsuarioColeccion> lista = servicio_usuario.getListaUsuarios();
+                        List<Usuario> lista = servicio_usuario.consultaNativa();
+
                         Map<String, Object> modelo = new HashMap<>();
                         modelo.put("titulo", "Vista Usuarios");
                         modelo.put("lista", lista);
                         ctx.render("publico/VistaUsuario.html", modelo);
 
                     });
+
+                    //CREATE
                     app.get("/nuevoUsuario", ctx ->{
 
-                        ctx.redirect("/RegistrarUsuario.html");
+                        Map<String, Object> modelo = new HashMap<>();
+                        modelo.put("titulo", "Registro Usuario");
+                        modelo.put("accion", "/nuevoUsuario");
+                        ctx.render("publico/RegistrarUsuario.html",modelo);
                     });
 
                     app.post("/nuevoUsuario", ctx -> {
@@ -49,13 +57,60 @@ public class ControladorUsuario  extends BaseControlador {
                         String nombre = Fname+ ' ' + Lname;
 
 
-                        if (servicio_usuario.buscarUsuarioPorUsername(username) == null) {
+                        if (servicio_usuario.findByUsername(username) == null) {
                             ctx.redirect("/");
-                            servicio_usuario.crearUsuario(new UsuarioColeccion(username, nombre, password, false, true));
+
+
+                            servicio_usuario.crear(new Usuario(username, nombre, password, false, true));
+
                             ctx.html("Usuario creado. <a href='/'>Ir a inicio</a>");
                         } else {
                             ctx.html("Este usuario ya existe. <a href='/nuevoUsuario'>Volver a intentar</a>");
                         }
+                    });
+
+                    //--------------MODIFICAR NO FUNCIONA----------------------//
+
+                    //UPDATE
+                    app.get("/editarUsuario/{id}", ctx -> {
+
+                        Usuario usuario = servicio_usuario.find(ctx.pathParamAsClass("id", Long.class).get());
+
+                        Map<String, Object> modelo = new HashMap<>();
+                        modelo.put("titulo", "Editar "+usuario.getUsername());
+                        modelo.put("usuario", usuario);
+                        modelo.put("accion", "/editarUsuario");
+                        ctx.render("publico/RegistrarUsuario.html", modelo);
+                    });
+
+                    app.post("/editarUsuario", ctx -> {
+                        Usuario usuario = servicio_usuario.findByUsername(ctx.sessionAttribute("username"));
+
+                        String username = ctx.formParam("username");
+                        String password = ctx.formParam("password");
+                        String Fname = ctx.formParam("Fname");
+                        String Lname = ctx.formParam("Lname");
+                        String nombre = Fname+ ' ' + Lname;
+
+                        ctx.sessionAttribute("username", username);
+
+                        // Actualizar las propiedades del usuario
+                        usuario.setUsername(username);
+                        usuario.setPassword(password);
+                        usuario.setNombre(nombre);
+
+                        // Llamar al método de servicio para editar el artículo
+                        servicio_usuario.editar(usuario);
+
+                        // Redirigir a la página de visualización del artículo
+                        ctx.redirect("/usuario");
+
+                    });
+
+                    //-----------------ELIMINAR NO FUNCIONA----------------
+                    app.get("/eliminarUsuario/{id}", ctx -> {
+                        servicio_usuario.eliminar(ctx.pathParamAsClass("id", long.class).get());
+                        ctx.redirect("/");
                     });
 
 

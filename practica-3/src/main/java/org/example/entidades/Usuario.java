@@ -1,15 +1,17 @@
 package org.example.entidades;
 
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 @Entity
 public class Usuario implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String username;
+
     private String Nombre;
     private String password;
 
@@ -66,5 +68,13 @@ public class Usuario implements Serializable {
 
     public void setAutor(boolean autor) {
         this.autor = autor;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

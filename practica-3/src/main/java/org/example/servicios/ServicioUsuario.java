@@ -36,7 +36,7 @@ public class ServicioUsuario extends GestionDb<Usuario>{
 
     public List<Usuario> consultaNativa(){
         EntityManager em = getEntityManager();
-        Query query = em.createNativeQuery("select * from Usuario ", UsuarioColeccion.class);
+        Query query = em.createNativeQuery("select * from Usuario ", Usuario.class);
         //query.setParameter("nombre", apellido+"%");
         List<Usuario> lista = query.getResultList();
         return lista;
@@ -51,13 +51,16 @@ public class ServicioUsuario extends GestionDb<Usuario>{
     }
 
     public Usuario autenticarUsuario(String username, String password) {
-        Usuario usuario = findByUsername(username);
-        if(usuario != null) {
-            if (usuario.getPassword().equals(password)) {
-                return usuario;
-            }
+        EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("SELECT u.* FROM Usuario u WHERE u.username = :username AND u.password = :password", Usuario.class);
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            List<Usuario> usuarios = query.getResultList();
+
+        if (!usuarios.isEmpty()) {
+            return usuarios.get(0);
         }
-        return  null;
+        return null;
     }
 
     //------------------FUNCIONES QUE NO USAN ORM--------------------------------

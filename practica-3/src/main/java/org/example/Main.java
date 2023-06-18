@@ -26,6 +26,7 @@ public class Main {
             BootStrapServices.getInstancia().init();
         }
 
+
         ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
         ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
 
@@ -47,7 +48,8 @@ public class Main {
 
         //servicio_usuario.CreacionDeUsuarios();
         new ControladorLogin(app).aplicarRutas();
-        new ControladorUsuario(app).aplicarRutas();new ControladorArticulo(app).aplicarRutas();
+        new ControladorUsuario(app).aplicarRutas();
+        new ControladorArticulo(app).aplicarRutas();
 
 
     }

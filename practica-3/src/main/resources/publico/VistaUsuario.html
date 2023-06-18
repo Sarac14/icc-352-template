@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/theme.bootstrap_4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="css/Ludens---1-Index-Table-with-Search--Sort-Filters-v20.css">
+
 </head>
 
 <body>
@@ -42,10 +43,10 @@
                         </thead>
                         <tbody class="text-center">
                         <tr th:each="usuario : ${lista}">
-                            <td th:text="${usuario.nombre}">Ana</td>
+                            <td th:text="${usuario.Nombre}">Ana</td>
                             <td th:text="${usuario.username}">Diseñador</td>
                             <td th:text="${usuario.password}">Diseñador</td>
-                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"></a><a class="btn btnMaterial btn-flat success semicircle" role="button" style="color: green" href="#">Editar</a><a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px; color: red" data-bs-toggle="modal" data-bs-target="#delete-modal" href="#">Borrar</a></td>
+                            <td class="text-center align-middle" style="max-height: 60px;height: 60px;"><a class="btn btnMaterial btn-flat primary semicircle" role="button" href="#"></a><a class="btn btnMaterial btn-flat success semicircle" role="button" style="color: green" th:href="'/usuario/editarUsuario/'+${usuario.id}">Editar</a><a class="btn btnMaterial btn-flat accent btnNoBorders checkboxHover" role="button" style="margin-left: 5px; color: red" data-bs-toggle="modal" data-bs-target="#delete-modal" th:href="'/eliminarUsuario/'+${usuario.id}">Borrar</a></td>
                         </tr>
                         </tbody>
                     </table>
