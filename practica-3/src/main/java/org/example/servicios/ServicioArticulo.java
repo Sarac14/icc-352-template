@@ -32,6 +32,17 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         return lista;
     }
 
+    public void editarArticulo(Articulos articulo) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.merge(articulo);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Articulo> consultaNativa(){
         EntityManager em = getEntityManager();
         Query query = em.createNativeQuery("select * from Articulo ", Articulo.class);

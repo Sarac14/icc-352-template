@@ -12,6 +12,8 @@ import org.example.servicios.ServicioComentario;
 import org.example.servicios.ServicioEtiqueta;
 import org.example.servicios.ServicioUsuario;
 import org.example.Util.BaseControlador;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -54,7 +56,7 @@ public class ControladorArticulo extends BaseControlador {
             ctx.render("publico/NuevoArticulo.html", modelo);
         });
 
-        app.get("/editar/{id}", ctx -> {
+        /*app.get("/editar/{id}", ctx -> {
             Articulos articulo = servicio_art.getArticuloPorID(ctx.pathParamAsClass("id", long.class).get());
 
             Map<String, Object> modelo = new HashMap<>();
@@ -62,9 +64,9 @@ public class ControladorArticulo extends BaseControlador {
             modelo.put("articulo", articulo);
             modelo.put("accion", "/editar");
             ctx.render("publico/NuevoArticulo.html", modelo);
-        });
+        });*/
 
-         app.post("/editar", ctx -> {
+        /*app.post("/editar", ctx -> {
             //obteniendo la información enviada.
             long nuevoId = ultimoId;
             String titulo = ctx.formParam("titulo");
@@ -86,7 +88,38 @@ public class ControladorArticulo extends BaseControlador {
              }
              servicio_art.actualizarArticulo(tmp);
              ctx.redirect("/verArticulo/"+tmp.getId());
+        });*/
+
+        app.post("/editarArticulo/:id", ctx -> {
+            long id = ctx.pathParamAsClass("id", Long.class).get();
+            String titulo = ctx.formParam("titulo");
+            String cuerpo = ctx.formParam("cuerpo");
+            String etiquetas = ctx.formParam("etiquetas");
+
+            // Obtener el artículo existente por su ID
+            Articulos articuloExistente = servicio_art.getArticuloPorID(id);
+
+            if (articuloExistente != null) {
+                // Actualizar las propiedades del artículo
+                articuloExistente.setTitulo(titulo);
+                articuloExistente.setCuerpo(cuerpo);
+                // Actualizar las etiquetas
+                String[] etiquetasArray = etiquetas.split(", ");
+                List<String> listaEtiquetas = Arrays.asList(etiquetasArray);
+                articuloExistente.setListaEtiquetas(listaEtiquetas);
+
+                // Llamar al método de servicio para editar el artículo
+                servicio_art.editarArticulo(articuloExistente);
+
+
+                // Redirigir a la página de visualización del artículo
+                ctx.redirect("/verArticulo/" + id);
+            } else {
+                // Manejar el caso en el que el artículo no existe
+                ctx.html("El artículo no existe.");
+            }
         });
+
 
         app.post("/publicar", ctx -> {
             /*long nuevoId = ultimoId + 1;
