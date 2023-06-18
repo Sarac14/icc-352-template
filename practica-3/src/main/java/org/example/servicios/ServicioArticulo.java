@@ -47,6 +47,12 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         editar(articulo);
     }
 
+    public boolean autenticarArticulo(long id, String titulo, String cuerpo) {
+        if (titulo != null && !titulo.isEmpty() && cuerpo != null && !cuerpo.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }
 
 

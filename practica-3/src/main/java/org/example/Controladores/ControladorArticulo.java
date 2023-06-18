@@ -107,14 +107,14 @@ public class ControladorArticulo extends BaseControlador {
             //List<Etiqueta> listaEtiquetas = Arrays.asList(etiquetasArray);
             Set<Etiqueta> listaEtiquetas = new HashSet<>();
             for (String etiquetaStr : etiquetasArray) {
-                Etiqueta etiqueta = new Etiqueta(etiquetaStr); // Suponiendo que hay un constructor en la clase Etiqueta
+                Etiqueta etiqueta = new Etiqueta(etiquetaStr);
                 servicioEti.crear(etiqueta);
                 listaEtiquetas.add(etiqueta);
             }
 
             Articulo tmp = new Articulo(titulo,cuerpo,autor,fecha, listaEtiquetas);
 
-            if (servicio_art.getArticuloPorID(tmp.getId()) == null) {
+            if (servicio_art.findById(tmp.getId()) == null) {
                 if(servicio_art.autenticarArticulo(tmp.getId(), titulo,cuerpo)){
                     servicio_art.crear(tmp);
                 }else {
