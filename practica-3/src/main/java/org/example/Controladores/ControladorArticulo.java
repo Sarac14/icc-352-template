@@ -175,6 +175,16 @@ public class ControladorArticulo extends BaseControlador {
             ctx.redirect("/verArticulo/"+articulo.getId());
 
         });
+
+        app.before("/eliminar/{id}", ctx -> {
+            String username = ctx.sessionAttribute("username");
+            Usuario usuario = servicio_usuario.findByUsername(username);
+            if(usuario.isAdministrador() == false || usuario.isAutor() == false){
+                System.out.println("Necesita ser ADMIN o autor para eliminar un comentario");
+                Articulo articulo = ctx.sessionAttribute("artActual");
+                ctx.redirect("/verArticulo/"+articulo.getId());
+            }
+        });
         app.get("/eliminar/{id}", ctx -> {
                 servicioComentario.eliminar(ctx.pathParamAsClass("id", long.class).get());
             Articulo articulo = ctx.sessionAttribute("artActual");
