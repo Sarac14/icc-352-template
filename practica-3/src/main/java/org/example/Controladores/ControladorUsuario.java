@@ -50,6 +50,9 @@ public class ControladorUsuario  extends BaseControlador {
                     });
 
                     app.post("/nuevoUsuario", ctx -> {
+                        String user = ctx.sessionAttribute("username");
+                        Usuario usuario = servicio_usuario.findByUsername(user);
+
                         String username = ctx.formParam("username");
                         String password = ctx.formParam("password");
                         String Fname = ctx.formParam("Fname");
@@ -58,10 +61,12 @@ public class ControladorUsuario  extends BaseControlador {
 
 
                         if (servicio_usuario.findByUsername(username) == null) {
-
                             servicio_usuario.crear(new Usuario(username, nombre, password, false, true));
-                            ctx.redirect("/usuario");
-                            //ctx.html("Usuario creado. <a href='/'>Ir a inicio</a>");
+                            if(usuario == null){
+                                ctx.redirect("/login");
+                            }else{
+                                ctx.redirect("/usuario");
+                            }
                         } else {
                             ctx.html("Este usuario ya existe. <a href='/nuevoUsuario'>Volver a intentar</a>");
                         }
