@@ -1,7 +1,6 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
-import org.example.Colecciones.ComentarioColeccion;
 import org.example.Util.BaseControlador;
 import org.example.entidades.Articulo;
 import org.example.entidades.Comentario;

@@ -1,7 +1,6 @@
 package org.example.Controladores;
 
 import io.javalin.Javalin;
-import org.example.Colecciones.UsuarioColeccion;
 import org.example.entidades.Articulo;
 import org.example.entidades.Etiqueta;
 import org.example.entidades.Usuario;
