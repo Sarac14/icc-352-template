@@ -18,23 +18,20 @@ public class GestionDb<T> {
     private static EntityManagerFactory emf;
     private Class<T> claseEntidad;
 
-
     public GestionDb(Class<T> claseEntidad) {
-        if(emf == null) {
-            if(Main.getModoConexion().equalsIgnoreCase("Heroku")){
+        this.claseEntidad = claseEntidad;
+        if (emf == null) {
+            if (Main.getModoConexion().equalsIgnoreCase("Heroku")) {
                 emf = getConfiguracionBaseDatosHeroku();
-            }else{
+            } else {
                 emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
             }
         }
-        this.claseEntidad = claseEntidad;
-
     }
 
-    public EntityManager getEntityManager(){
+    public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
 
     /**
      * Configurar información de la conexión de Heroku.

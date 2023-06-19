@@ -41,6 +41,11 @@ dependencies {
 
     //sistemas de plantilla:
     implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    // https://mvnrepository.com/artifact/com.melloware/jasypt
+    implementation("com.melloware:jasypt:1.9.4")
+    implementation "javax.servlet:javax.servlet-api:4.0.1"
+    implementation("com.h2database:h2:1.4.200")
+
 }
 
 shadowJar{

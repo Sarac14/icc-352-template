@@ -25,8 +25,8 @@ public class Main {
         }
 
 
-        ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin jamon", "admin",true, true));
-        ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara queso", "sara",false, true));
+        //ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
+        //ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
 
         Javalin app = Javalin.create(config ->{
 
@@ -63,7 +63,4 @@ public class Main {
     public static String getModoConexion(){
         return modoConexion;
     }
-
-
-
 }
