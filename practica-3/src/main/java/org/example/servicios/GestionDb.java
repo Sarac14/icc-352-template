@@ -4,6 +4,8 @@ import org.example.Main;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaQuery;
 
+
+import java.awt.print.Pageable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
@@ -201,4 +203,5 @@ public class GestionDb<T> {
             em.close();
         }
     }
+
 }

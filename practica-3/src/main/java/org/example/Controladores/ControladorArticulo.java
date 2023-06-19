@@ -92,8 +92,7 @@ public class ControladorArticulo extends BaseControlador {
 
 
         app.post("/publicar", ctx -> {
-            /*long nuevoId = ultimoId + 1;
-            ultimoId = nuevoId;*/
+
             String titulo = ctx.formParam("titulo");
             String cuerpo = ctx.formParam("cuerpo");
             String etiquetas = ctx.formParam("etiquetas");
@@ -104,7 +103,6 @@ public class ControladorArticulo extends BaseControlador {
             LocalDate fecha =  LocalDate.now();
 
             String[] etiquetasArray = etiquetas.split(", ");
-            //List<Etiqueta> listaEtiquetas = Arrays.asList(etiquetasArray);
             Set<Etiqueta> listaEtiquetas = new HashSet<>();
             for (String etiquetaStr : etiquetasArray) {
                 Etiqueta etiqueta = new Etiqueta(etiquetaStr);

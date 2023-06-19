@@ -5,7 +5,6 @@ import jakarta.persistence.Query;
 import org.example.entidades.Articulo;
 import org.example.entidades.Comentario;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioArticulo extends GestionDb<Articulo> {
@@ -53,6 +52,8 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         }
         return false;
     }
+
+
 }
 
 

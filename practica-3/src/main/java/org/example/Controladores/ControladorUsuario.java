@@ -79,11 +79,12 @@ public class ControladorUsuario  extends BaseControlador {
                                     String encodedString = Base64.getEncoder().encodeToString(bytes);
                                     Foto foto = new Foto(uploadedFile.filename(), uploadedFile.contentType(), encodedString);
                                     fotoServices.crear(foto);
+                                    nuevoUsuario.setFoto(foto);
+
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                                 //ctx.sessionAttribute("foto", foto);
-                                //nuevoUsuario.setFoto(foto);
 
                                 //ctx.redirect("/fotos/listar");
                             });
