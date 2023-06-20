@@ -45,6 +45,19 @@ public class ControladorArticulo extends BaseControlador {
             ctx.render("publico/NuevoArticulo.html", modelo);
         });
 
+        app.before("/editar/{id}", ctx -> {
+            Articulo articulo = servicio_art.find(ctx.pathParamAsClass("id", long.class).get());
+            String autor = articulo.getAutor().getUsername();
+            String username = ctx.sessionAttribute("username");
+            if (!servicio_usuario.findByUsername(username).isAdministrador()) {
+                if (!autor.equals(username)) {
+                    System.out.println("Solo un admin o el autor del articulo lo puede editar");
+                    ctx.redirect("/");
+                }
+            }
+        });
+
+
         app.get("/editar/{id}", ctx -> {
             Articulo articulo = servicio_art.find(ctx.pathParamAsClass("id", long.class).get());
 

@@ -67,7 +67,7 @@ public class ControladorUsuario  extends BaseControlador {
 
 
                         if (servicio_usuario.findByUsername(username) == null) {
-                            Usuario nuevoUsuario = new Usuario(username, nombre, password, true, true);
+                            Usuario nuevoUsuario = new Usuario(username, nombre, password, false, true);
 
 
 
