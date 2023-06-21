@@ -24,23 +24,13 @@
                 <div class="form-group mb-3" >
                     <!--<input th:value="${articulo}  ? ${articulo.listaEtiqueta} : ''" class="form-control" type="text" id="etiquetas" name="etiquetas" placeholder="Etiquetas" required>
                     -->
-                   <!-- <input th:if="${articulo != null}" th:value="${articulo.listaEtiqueta}"
-
-                           class="form-control"
-                           type="text"
-                           id="etiquetas"
-                           name="etiquetas"
-                           placeholder="Etiquetas"
-                           required>-->
-                    <input th:if="${articulo != null}" th:each="etiqueta : ${articulo.listaEtiqueta}"
-                           th:value="${etiqueta.etiqueta}"
+                    <input th:if="${articulo != null}" th:value="${articulo.listaEtiqueta ? '': articulo.listaEtiqueta[0].nombre }"
                            class="form-control"
                            type="text"
                            id="etiquetas"
                            name="etiquetas"
                            placeholder="Etiquetas"
                            required>
-
                     <input th:if="${articulo == null}" th:attr="value=''"
                            class="form-control"
                            type="text"
@@ -48,6 +38,7 @@
                            name="etiquetas"
                            placeholder="Etiquetas"
                            required>
+
 
                     <div class="form-group mb-3"></div>
                 <div class="form-group mb-3"></div>

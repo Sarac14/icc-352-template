@@ -31,11 +31,13 @@
                         <div class="body" th:each="comentario : ${listaComen}">
                             <ul class="list-unstyled comment-reply">
                                 <li class="row clearfix">
-                                    <div class="icon-box col-md-2 col-4"><img class="img-thumbnail img-fluid" src="img/usuario.png"></div>
+                                    <div class="icon-box col-md-2 col-4">
+                                        <img class="img-thumbnail img-fluid" src="img/usuario.png">
+                                    </div>
                                     <div class="text-box col-md-10 col-8 p-l-0 p-r0">
                                         <h5 class="m-b-0" th:text="${comentario.autor.nombre}">Gigi Hadid </h5>
                                         <p th:text="${comentario.comentario}">Why are there so many tutorials on how to decouple WordPress? how fast and easy it is to get it running (and keep it running!) and its massive ecosystem. </p>
-                                         <button class="btn btn-primary btn-block" type="submit"><a th:href="'/eliminar/'+${comentario.id}">Borrar</a></button>
+                                         <button class="btn btn-primary  btn-sm" type="submit"><a style="color: white" th:href="'/eliminar/'+${comentario.id}">Borrar</a></button>
                                     </div>
                                 </li>
                             </ul>
@@ -74,7 +76,7 @@
                     <div class="card"></div>
                     <div class="card"></div>
                     <div class="card"></div>
-                    <button class="btn btn-primary btn-block" type="submit"><a th:href="'/editar/'+${articulo.id}">Editar Articulo</a></button>
+                    <button class="btn btn-primary btn-block" type="submit"><a style="color: white" th:href="'/editar/'+${articulo.id}">Editar Articulo</a></button>
 
                 </div>
             </div>
