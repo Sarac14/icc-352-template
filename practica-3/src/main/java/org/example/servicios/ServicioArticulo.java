@@ -30,10 +30,20 @@ public class ServicioArticulo extends GestionDb<Articulo> {
     }
 
 
-    public List<Articulo> consultaNativa(){
+   /* public List<Articulo> consultaNativa(){
         EntityManager em = getEntityManager();
         Query query = em.createNativeQuery("select * from Articulo ", Articulo.class);
         //query.setParameter("nombre", apellido+"%");
+        List<Articulo> lista = query.getResultList();
+        return lista;
+    }*/
+
+    public List<Articulo> consultaNativa(int pageNumber) {
+        int pageSize = 5;
+        EntityManager em = getEntityManager();
+        Query query = em.createNativeQuery("SELECT * FROM Articulo", Articulo.class);
+        query.setFirstResult((pageNumber - 1) * pageSize);
+        query.setMaxResults(pageSize);
         List<Articulo> lista = query.getResultList();
         return lista;
     }

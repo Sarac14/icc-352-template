@@ -30,7 +30,7 @@ public class ControladorInicio extends BaseControlador {
             String username = ctx.sessionAttribute("username");
             Usuario usuario = servicio_usuario.findByUsername(username);
 
-            List<Articulo> lista = servicio_art.consultaNativa();
+            List<Articulo> lista = servicio_art.consultaNativa(1);
             Map<String, Object> modelo = new HashMap<>();
 
             modelo.put("titulo", "Inicio");
