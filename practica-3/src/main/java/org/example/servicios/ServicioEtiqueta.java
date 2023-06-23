@@ -1,11 +1,14 @@
 package org.example.servicios;
 
+import io.javalin.http.Context;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.example.entidades.Articulo;
 import org.example.entidades.Etiqueta;
+
+import java.util.List;
 
 public class ServicioEtiqueta extends GestionDb<Etiqueta> {
     private static  ServicioEtiqueta instancia;

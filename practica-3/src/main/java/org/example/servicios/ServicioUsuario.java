@@ -1,12 +1,9 @@
 package org.example.servicios;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.example.entidades.Usuario;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioUsuario extends GestionDb<Usuario>{

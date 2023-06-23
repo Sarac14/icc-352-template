@@ -71,10 +71,11 @@
                         FG HKLATNHLSF.NG ,SG.GMHYmklgdmsh  nbg,mnlkstns,f gbhstgr,
                     </p>
                     <p class="post-meta">Posted by&nbsp;<a href="#" th:text="${articulo.autor.nombre}">Start Bootstrap on September 24, 2018</a></p>
-                    <p class="post-meta">On&nbsp;<a href="#" th:text="${articulo.fecha}">September 24, 2018</a></p>
+                    <p class="post-meta">On&nbsp;<a th:text="${articulo.fecha}">September 24, 2018</a></p>
                     <p class="post-etiquetas">
                     <span th:each="tag, tagStat : ${articulo.listaEtiqueta}">
-                        <span th:text="${tag.etiqueta}"></span>
+                        <!-- ETIQUETA -->
+                        <a th:href="'/vistaArticulo/etiqueta/'+${tag.etiqueta}"><span th:text="${tag.etiqueta}">etiqueta</span></a>
                         <span th:if="${!tagStat.last}">, </span>
                     </span>
                     </p>

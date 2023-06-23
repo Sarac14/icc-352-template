@@ -1,9 +1,12 @@
 package org.example.servicios;
 
+import io.javalin.http.Context;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.example.entidades.Articulo;
 import org.example.entidades.Comentario;
+import org.example.entidades.Etiqueta;
+import org.example.entidades.Usuario;
 
 import java.util.List;
 
@@ -29,19 +32,10 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         return lista;
     }
 
-
-   /* public List<Articulo> consultaNativa(){
-        EntityManager em = getEntityManager();
-        Query query = em.createNativeQuery("select * from Articulo ", Articulo.class);
-        //query.setParameter("nombre", apellido+"%");
-        List<Articulo> lista = query.getResultList();
-        return lista;
-    }*/
-
     public List<Articulo> consultaNativa(int pageNumber) {
         int pageSize = 5;
         EntityManager em = getEntityManager();
-        Query query = em.createNativeQuery("SELECT * FROM Articulo", Articulo.class);
+        Query query = em.createNativeQuery("SELECT * FROM Articulo  ORDER BY fecha DESC", Articulo.class);
         query.setFirstResult((pageNumber - 1) * pageSize);
         query.setMaxResults(pageSize);
         List<Articulo> lista = query.getResultList();
@@ -59,6 +53,15 @@ public class ServicioArticulo extends GestionDb<Articulo> {
             return true;
         }
         return false;
+    }
+
+    public List<Articulo> getArticulosbyEtiqueta(String etiqueta){
+        EntityManager em = getEntityManager();
+        Query query = em.createQuery("SELECT A FROM Articulo A JOIN A.ListaEtiqueta E WHERE E.etiqueta like :etiqueta");
+        query.setParameter("etiqueta", etiqueta+"%");
+        List<Articulo> Lista = query.getResultList();
+
+        return Lista;
     }
 
 

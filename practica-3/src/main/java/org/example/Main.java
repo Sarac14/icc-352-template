@@ -50,6 +50,7 @@ public class Main {
         new ControladorArticulo(app).aplicarRutas();
         new ControladorComentario(app).aplicarRutas();
         new FotoControlador(app).aplicarRutas();
+        new ControladorEtiqueta(app).aplicarRutas();
 
     }
     static int getHerokuAssignedPort() {
