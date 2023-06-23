@@ -31,7 +31,7 @@ public class GestionDb<T> {
         }
     }
 
-    public EntityManager getEntityManager() {
+    public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
