@@ -48,8 +48,6 @@ public class ServicioArticulo extends GestionDb<Articulo> {
         return lista;
     }
 
-
-
     public void agregarComentario(Articulo articulo, Comentario comentario) {
         articulo.getListaComentario().add(comentario);
         comentario.setArticulo(articulo);

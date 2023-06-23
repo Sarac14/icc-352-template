@@ -155,8 +155,5 @@ public class ControladorArticulo extends BaseControlador {
 
             ctx.render("publico/VistaArticulo.html", modelo);
         });
-
-
-
     }
 }

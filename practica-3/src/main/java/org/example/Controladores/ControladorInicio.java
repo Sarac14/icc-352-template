@@ -17,6 +17,9 @@ public class ControladorInicio extends BaseControlador {
     private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
     private static ServicioArticulo servicio_art = ServicioArticulo.getInstancia();
 
+    private static int pageNumber = 1;
+
+
     public ControladorInicio(Javalin app){super (app);}
 
     public void aplicarRutas() {
@@ -30,11 +33,12 @@ public class ControladorInicio extends BaseControlador {
             String username = ctx.sessionAttribute("username");
             Usuario usuario = servicio_usuario.findByUsername(username);
 
-            List<Articulo> lista = servicio_art.consultaNativa(1);
+            List<Articulo> lista = servicio_art.consultaNativa(pageNumber);
             Map<String, Object> modelo = new HashMap<>();
 
             modelo.put("titulo", "Inicio");
             modelo.put("lista", lista);
+            modelo.put("pageNumber", pageNumber);
             if(usuario == null){
                 modelo.put("accion", "LOG IN");
             }else{
@@ -109,6 +113,16 @@ public class ControladorInicio extends BaseControlador {
                 // Establecer la sesión del usuario automáticamente
                 ctx.sessionAttribute("username", decryptedUsername);
             }
+        });
+
+        app.get("/olderPost", ctx -> {
+            pageNumber ++;
+            ctx.redirect("/");
+        });
+
+        app.get("/volver", ctx -> {
+            pageNumber --;
+            ctx.redirect("/");
         });
     }
 
