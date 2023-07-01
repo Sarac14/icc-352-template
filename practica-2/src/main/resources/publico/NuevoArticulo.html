@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>NuevoArticulo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/ensign-form-form.css">
+    <link rel="stylesheet" href="css/ensign-form.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title th:text="${titulo}">...</title>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center text-info" style="margin-left: -223px;" th:text="${titulo}">¡Publica un artículo!</h2>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-xl-2" id="contact-box"></div>
+        <div class="col-12 col-sm-6 col-md-6 site-form">
+            <form id="my-form" th:attr="action=${accion}" method="POST">
+                <div class="form-group mb-3">
+                    <input th:value="${articulo} ? ${articulo.titulo} : ''" class="form-control" type="text" id="titulo" name="titulo"  autofocus="" placeholder="Titulo de tu articulo" required></div>
+                <div class="form-group mb-3" >
+                    <input th:value="${articulo}  ? ${articulo.listaEtiquetas} : ''" class="form-control" type="text" id="etiquetas" name="etiquetas" placeholder="Etiquetas" required>
+
+                    <div class="form-group mb-3"></div>
+                    <div class="form-group mb-3"></div>
+                    <div class="form-group mb-3">
+                        <textarea th:text="${articulo} ? ${articulo.cuerpo} : ''" class="form-control" id="cuerpo" name="cuerpo" required="true" rows="8" placeholder="Escribe aquí tu artículo"></textarea>
+
+                        <button class="btn btn-light btn-lg" id="form-btn" type="submit">Publicar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
