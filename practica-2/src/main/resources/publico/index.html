@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;display=swap">
+    <link rel="stylesheet" href="fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="css/Vertical-Mobile-Collapsible-Menu.css">
+    <title th:text="${titulo}">Listar</title>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var contentElements = document.querySelectorAll('.post-content');
+
+            contentElements.forEach(function(contentElement) {
+                var content = contentElement.textContent;
+                var maxLength = 70;
+
+                if (content.length > maxLength) {
+                    var truncatedContent = content.substring(0, maxLength) + '(...)';
+                    contentElement.textContent = truncatedContent;
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container"><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto" style="padding-left: 92px;">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="/usuario">Usuario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/listar">Inicio</a></li>
+                    <li class="nav-item">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item"></li>
+                            <li class="nav-item"></li>
+                            <li class="nav-item"><a class="nav-link" href="/crearArticulo">BLOG POST</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/login" th:text="${accion}">.</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background-image: url('img/en_what-is-a-blog-1.png');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                    <div class="site-heading">
+                        <h1>Sara's Blog</h1><span class="subheading"><strong>Un blog para compartir informacion</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row" th:each= "articulo : ${lista}">
+            <div class="col-md-10 col-lg-9">
+                <div class="post-preview">
+                    <h2 class="post-title"><a th:href="'/verArticulo/'+${articulo.id}" th:text="${articulo.titulo}">Man must explore, and this is exploration at its greatest</a></h2>
+                    <p class="post-content" th:text="${articulo.cuerpo}">
+                        FG HKLATNHLSF.NG ,SG.GMHYmklgdmsh  nbg,mnlkstns,f gbhstgr,
+                    </p>
+                    <p class="post-meta">Posted by&nbsp;<a href="#" th:text="${articulo.autor.nombre}">Start Bootstrap on September 24, 2018</a></p>
+                    <p class="post-meta">On&nbsp;<a th:text="${articulo.fecha}">September 24, 2018</a></p>
+                    <p class="post-etiquetas">
+                         <span th:each="tag, tagStat : ${articulo.listaEtiquetas}">
+                        <span th:text="${tag}"></span>
+                        <span th:if="${!tagStat.last}">, </span>
+                    </span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+        </div>
+                <!--div class="clearfix"><button class="btn btn-primary float-end" type="button">Older Posts&nbsp;⇒</button></div-->
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></li>
+                    </ul>
+                    <p class="text-muted copyright">Copyright&nbsp;©&nbsp;Brand 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/clean-blog.js"></script>
+</body>
+
+</html>
