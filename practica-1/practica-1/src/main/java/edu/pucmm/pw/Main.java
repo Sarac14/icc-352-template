@@ -18,9 +18,11 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese una URL: ");
+        String urlValidacion = scanner.nextLine();
+
+
         try {
-            System.out.print("Ingrese una URL: ");
-            String urlValidacion = scanner.nextLine();
             URL url = new URL(urlValidacion);
             //urlValida = true;
 

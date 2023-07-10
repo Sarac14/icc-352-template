@@ -25,8 +25,8 @@ public class Main {
         }
 
 
-        //ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
-        //ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
+        ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
+        ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
 
         Javalin app = Javalin.create(config ->{
 
