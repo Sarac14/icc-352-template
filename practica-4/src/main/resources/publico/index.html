@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Brand</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;display=swap">
@@ -12,6 +11,9 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/Vertical-Mobile-Collapsible-Menu.css">
     <title th:text="${titulo}">Listar</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
@@ -28,6 +30,73 @@
             });
         });
     </script>
+
+
+    <script>
+        function fetchArticles() {
+            axios
+                .get('/articles')
+                .then(function (response) {
+                    const articles = response.data.articles;
+                    const previousPage = response.data.previousPage;
+                    const nextPage = response.data.nextPage;
+
+                    const articleList = document.getElementById('article-list');
+                    articleList.innerHTML = '';
+
+                    articles.forEach(function (article) {
+                        const articleDiv = document.createElement('div');
+                        articleDiv.innerHTML = `
+          <h2>${article.title}</h2>
+          <p>${article.content}</p>
+        `;
+                        articleList.appendChild(articleDiv);
+                    });
+
+                    const previousBtn = document.getElementById('previous-btn');
+                    const nextBtn = document.getElementById('next-btn');
+
+                    previousBtn.disabled = previousPage === 0;
+                    previousBtn.onclick = function () {
+                        fetchPreviousArticles();
+                    };
+
+                    nextBtn.disabled = nextPage === 0;
+                    nextBtn.onclick = function () {
+                        fetchNextArticles(); // Pasar nextPage como argumento
+                    };
+                })
+                .catch(function (error) {
+                    console.log('Error:', error);
+                });
+        }
+
+        function fetchPreviousArticles() { // Aceptar el parámetro "page"
+            axios
+                .get('/volver') // Pasar el parámetro "page" en la URL
+                .then(function (response) {
+                    fetchArticles(); // Llamar a fetchArticles() después de obtener los datos
+                })
+                .catch(function (error) {
+                    console.log('Error:', error);
+                });
+        }
+
+        function fetchNextArticles() { // Aceptar el parámetro "page"
+            axios
+                .get('/olderPost') // Pasar el parámetro "page" en la URL
+                .then(function (response) {
+                    fetchArticles(); // Llamar a fetchArticles() después de obtener los datos
+                })
+                .catch(function (error) {
+                    console.log('Error:', error);
+                });
+        }
+
+    </script>
+
+
+
 </head>
 
 <body>
@@ -63,13 +132,19 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <div class="row" th:each= "articulo : ${lista}">
-            <div class="col-md-10 col-lg-9" >
+    <div class="container" id="article-list">
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <button class="btn btn-primary btn-Oscuro me-xxl-5" data-bss-hover-animate="tada" type="button" data-bs-toggle="modal" data-bs-target="#modalChat">Chat box</button>
+            </div>
+        </div>
+
+        <div class="row" th:each="articulo : ${lista}">
+            <div class="col-md-10 col-lg-9">
                 <div class="post-preview">
                     <h2 class="post-title"><a th:href="'/verArticulo/'+${articulo.id}" th:text="${articulo.titulo}">Man must explore, and this is exploration at its greatest</a></h2>
                     <p class="post-content" th:text="${articulo.cuerpo}">
-                        FG HKLATNHLSF.NG ,SG.GMHYmklgdmsh  nbg,mnlkstns,f gbhstgr,
+                        FG HKLATNHLSF.NG, SG.GMHYmklgdmsh nbg,mnlkstns,f gbhstgr,
                     </p>
                     <p class="post-meta">Posted by&nbsp;<a href="#" th:text="${articulo.autor.nombre}">Start Bootstrap on September 24, 2018</a></p>
                     <p class="post-meta">On&nbsp;<a th:text="${articulo.fecha}">September 24, 2018</a></p>
@@ -81,40 +156,47 @@
                     </span>
                     </p>
                 </div>
-                <!--AQUI div col-md-10 -->
                 <hr>
                 <div class="clearfix">
-                    <div>
-                        <div class="modal left fade in vichomChat" role="dialog" tabindex="-1" id="modalChat" aria-labelledby="modalChatLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <div class="col-12 col-lg-12 col-xl-12 padMar text-end">
-                                            <h5 class="text-primary padMar margenesCajas pointer" data-bs-dismiss="modal"><i class="icon ion-android-arrow-dropleft"></i>&nbsp; Hide messages</h5>
-                                        </div><button class="btn-close d-none" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                    <div class="modal left fade in vichomChat" role="dialog" tabindex="-1" id="modalChat" aria-labelledby="modalChatLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="col-12 col-lg-12 col-xl-12 padMar text-end">
+                                        <h5 class="text-primary padMar margenesCajas pointer" data-bs-dismiss="modal"><i class="icon ion-android-arrow-dropleft"></i>&nbsp; Hide messages</h5>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="col-12 col-xl-12 padMar">
-                                            <p class="text-muted margenesCompletas10px"><strong class="text-primary">Por favor ingrese su nombre para continuar al chat</strong><strong>&nbsp;</strong></p>
-                                        </div>
+                                    <button class="btn-close d-none" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-12 col-xl-12 padMar">
+                                        <p class="text-muted margenesCompletas10px"><strong class="text-primary">Por favor ingrese su nombre para continuar al chat</strong><strong>&nbsp;</strong></p>
                                     </div>
-                                    <div class="modal-footer">
-                                        <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 padMar margenesCompletas10px"><input class="form-control-sm vichomChatInput" type="text" placeholder="Escribe tu nombre"><button class="btn btn-primary mx-auto d-block margenesTxts" type="button">SEND</button></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 padMar margenesCompletas10px">
+                                        <input class="form-control-sm vichomChatInput" type="text" placeholder="Escribe tu nombre">
+                                        <button class="btn btn-primary mx-auto d-block margenesTxts" type="button">SEND</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary float-end" type="button"> <a href="/olderPost">Older Posts</a></button>
-                    <button th:if="${pageNumber} > 1" class="btn btn-primary float-start" type="button"> <a href="/volver">Volver</a></button>
                 </div>
-            </div> <!--AQUI div row--> <!--DEBERIA LLEGAR HASTA AQUI div col-md-10-->
-            <div class="col">
-                <button class="btn btn-primary btn-Oscuro me-xxl-5" data-bss-hover-animate="tada" type="button" data-bs-toggle="modal" data-bs-target="#modalChat">Chat box</button>
             </div>
-            <!--Deberia llegar hasta aqui div row-->
         </div>
+        <div class="clearfix">
+            <button class="btn btn-primary float-end" type="button" id="next-btn" onclick="fetchNextArticles()">Next</button>
+            <button class="btn btn-primary float-start" type="button" id="previous-btn" onclick="fetchPreviousArticles()">Previous</button>
+        </div>
+
+
     </div>
+
+
+
+
+
+
 
     <footer>
         <div class="container">

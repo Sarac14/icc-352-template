@@ -82,14 +82,19 @@ public class ControladorArticulo extends BaseControlador {
             // Actualizar las etiquetas
 
             String[] etiquetasArray = etiquetas.split(", ");
-            //List<Etiqueta> listaEtiquetas = Arrays.asList(etiquetasArray);
             Set<Etiqueta> listaEtiquetas = new HashSet<>();
             for (String etiquetaStr : etiquetasArray) {
-                Etiqueta etiqueta = new Etiqueta(etiquetaStr); // Suponiendo que hay un constructor en la clase Etiqueta
-                servicioEti.crear(etiqueta);
-                listaEtiquetas.add(etiqueta);
+                Etiqueta etiquetaExistente = servicioEti.findByNombre(etiquetaStr);
+                if (etiquetaExistente != null) {
+                    listaEtiquetas.add(etiquetaExistente);
+                } else {
+                    Etiqueta etiquetaNueva = new Etiqueta(etiquetaStr);
+                    servicioEti.crear(etiquetaNueva);
+                    listaEtiquetas.add(etiquetaNueva);
+                }
             }
             articuloExistente.setListaEtiqueta(listaEtiquetas);
+
 
 
             // Llamar al método de servicio para editar el artículo

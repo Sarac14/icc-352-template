@@ -46,6 +46,9 @@ dependencies {
     implementation "javax.servlet:javax.servlet-api:4.0.1"
     implementation("com.h2database:h2:1.4.200")
 
+    implementation group: 'org.json', name: 'json', version: '20180813'
+
+
 }
 
 shadowJar{

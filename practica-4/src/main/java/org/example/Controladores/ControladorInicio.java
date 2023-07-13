@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+
 public class ControladorInicio extends BaseControlador {
     private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
     private static ServicioArticulo servicio_art = ServicioArticulo.getInstancia();
@@ -47,6 +52,29 @@ public class ControladorInicio extends BaseControlador {
             ctx.render("publico/index.html", modelo);
 
         });
+
+        app.get("/articles", ctx -> {
+           // String pageParam = ctx.queryParam("page");
+           // int requestedPageNumber = pageParam != null ? Integer.parseInt(pageParam) : 1;
+            int requestedPageNumber = Integer.parseInt( ctx.queryParam("page")); // Obtener el número de página solicitado
+
+            int previousPage = requestedPageNumber - 1;
+            int nextPage = requestedPageNumber + 1;
+
+            List<Articulo> lista = servicio_art.consultaNativa(requestedPageNumber);
+
+            JSONObject response = new JSONObject();
+            response.put("articles", new JSONArray(lista));
+            response.put("previousPage", previousPage);
+            response.put("nextPage", nextPage);
+
+            ctx.result(response.toString());
+
+            ctx.contentType("application/json");
+        });
+
+
+
 
         app.get("/login", ctx -> {
             String user = ctx.sessionAttribute("username");
@@ -115,13 +143,13 @@ public class ControladorInicio extends BaseControlador {
             }
         });
 
-        app.get("/olderPost", ctx -> {
+       app.get("/olderPost", ctx -> {
             pageNumber ++;
             ctx.redirect("/");
         });
 
         app.get("/volver", ctx -> {
-            pageNumber --;
+            pageNumber = pageNumber - 1;
             ctx.redirect("/");
         });
     }
