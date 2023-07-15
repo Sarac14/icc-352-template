@@ -4,7 +4,6 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.bundled.RouteOverviewPlugin;
 import org.example.Controladores.*;
-import org.example.entidades.Usuario;
 import org.example.servicios.BootStrapServices;
 import org.example.servicios.ServicioUsuario;
 
@@ -51,6 +50,8 @@ public class Main {
         new ControladorComentario(app).aplicarRutas();
         new FotoControlador(app).aplicarRutas();
         new ControladorEtiqueta(app).aplicarRutas();
+        new ControladorChat(app).aplicarRutas();
+
 
     }
     static int getHerokuAssignedPort() {
@@ -58,7 +59,7 @@ public class Main {
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-        return 7000; //Retorna el puerto por defecto en caso de no estar en Heroku.
+        return 7001; //Retorna el puerto por defecto en caso de no estar en Heroku.
     }
 
     public static String getModoConexion(){

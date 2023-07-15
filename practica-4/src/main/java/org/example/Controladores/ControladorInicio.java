@@ -1,5 +1,6 @@
 package org.example.Controladores;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import jakarta.servlet.http.Cookie;
 import org.example.Util.BaseControlador;
@@ -38,12 +39,15 @@ public class ControladorInicio extends BaseControlador {
             String username = ctx.sessionAttribute("username");
             Usuario usuario = servicio_usuario.findByUsername(username);
 
-            List<Articulo> lista = servicio_art.consultaNativa(pageNumber);
+            String pageNumberStr = ctx.queryParam("pageNumber");
+            int pageNumber1 = pageNumberStr != null ? Integer.parseInt(pageNumberStr) : 1;
+
+            List<Articulo> lista = servicio_art.consultaNativa(pageNumber1);
             Map<String, Object> modelo = new HashMap<>();
 
             modelo.put("titulo", "Inicio");
             modelo.put("lista", lista);
-            modelo.put("pageNumber", pageNumber);
+            modelo.put("pageNumber", pageNumber1);
             if(usuario == null){
                 modelo.put("accion", "LOG IN");
             }else{
@@ -52,28 +56,6 @@ public class ControladorInicio extends BaseControlador {
             ctx.render("publico/index.html", modelo);
 
         });
-
-        app.get("/articles", ctx -> {
-           // String pageParam = ctx.queryParam("page");
-           // int requestedPageNumber = pageParam != null ? Integer.parseInt(pageParam) : 1;
-            int requestedPageNumber = Integer.parseInt( ctx.queryParam("page")); // Obtener el número de página solicitado
-
-            int previousPage = requestedPageNumber - 1;
-            int nextPage = requestedPageNumber + 1;
-
-            List<Articulo> lista = servicio_art.consultaNativa(requestedPageNumber);
-
-            JSONObject response = new JSONObject();
-            response.put("articles", new JSONArray(lista));
-            response.put("previousPage", previousPage);
-            response.put("nextPage", nextPage);
-
-            ctx.result(response.toString());
-
-            ctx.contentType("application/json");
-        });
-
-
 
 
         app.get("/login", ctx -> {
@@ -141,16 +123,6 @@ public class ControladorInicio extends BaseControlador {
                 // Establecer la sesión del usuario automáticamente
                 ctx.sessionAttribute("username", decryptedUsername);
             }
-        });
-
-       app.get("/olderPost", ctx -> {
-            pageNumber ++;
-            ctx.redirect("/");
-        });
-
-        app.get("/volver", ctx -> {
-            pageNumber = pageNumber - 1;
-            ctx.redirect("/");
         });
     }
 

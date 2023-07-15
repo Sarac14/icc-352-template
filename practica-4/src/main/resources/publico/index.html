@@ -32,71 +32,28 @@
     </script>
 
 
-    <script>
-        function fetchArticles() {
-            axios
-                .get('/articles')
-                .then(function (response) {
-                    const articles = response.data.articles;
-                    const previousPage = response.data.previousPage;
-                    const nextPage = response.data.nextPage;
+   <!-- <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const chatForm = document.getElementById('chat-form');
+            chatForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const nameInput = document.getElementById('name-input');
+                const name = nameInput.value.trim();
 
-                    const articleList = document.getElementById('article-list');
-                    articleList.innerHTML = '';
+                if (name !== '') {
+                    axios
+                        .post('/chat', { nombre: name })
+                        .then(function(response) {
+                            window.location.href = '/chat';
+                        })
+                        .catch(function(error) {
+                            console.log('Error:', error);
+                        });
+                }
+            });
+        });
 
-                    articles.forEach(function (article) {
-                        const articleDiv = document.createElement('div');
-                        articleDiv.innerHTML = `
-          <h2>${article.title}</h2>
-          <p>${article.content}</p>
-        `;
-                        articleList.appendChild(articleDiv);
-                    });
-
-                    const previousBtn = document.getElementById('previous-btn');
-                    const nextBtn = document.getElementById('next-btn');
-
-                    previousBtn.disabled = previousPage === 0;
-                    previousBtn.onclick = function () {
-                        fetchPreviousArticles();
-                    };
-
-                    nextBtn.disabled = nextPage === 0;
-                    nextBtn.onclick = function () {
-                        fetchNextArticles(); // Pasar nextPage como argumento
-                    };
-                })
-                .catch(function (error) {
-                    console.log('Error:', error);
-                });
-        }
-
-        function fetchPreviousArticles() { // Aceptar el parámetro "page"
-            axios
-                .get('/volver') // Pasar el parámetro "page" en la URL
-                .then(function (response) {
-                    fetchArticles(); // Llamar a fetchArticles() después de obtener los datos
-                })
-                .catch(function (error) {
-                    console.log('Error:', error);
-                });
-        }
-
-        function fetchNextArticles() { // Aceptar el parámetro "page"
-            axios
-                .get('/olderPost') // Pasar el parámetro "page" en la URL
-                .then(function (response) {
-                    fetchArticles(); // Llamar a fetchArticles() después de obtener los datos
-                })
-                .catch(function (error) {
-                    console.log('Error:', error);
-                });
-        }
-
-    </script>
-
-
-
+    </script>-->
 </head>
 
 <body>
@@ -108,6 +65,7 @@
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="/usuario">Usuario</a></li>
                     <li class="nav-item"><a class="nav-link" href="/listar">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/listaChats">Chats</a></li>
                     <li class="nav-item">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item"></li>
@@ -132,6 +90,7 @@
             </div>
         </div>
     </header>
+
     <div class="container" id="article-list">
         <div class="row">
             <div class="col d-flex justify-content-end">
@@ -149,11 +108,11 @@
                     <p class="post-meta">Posted by&nbsp;<a href="#" th:text="${articulo.autor.nombre}">Start Bootstrap on September 24, 2018</a></p>
                     <p class="post-meta">On&nbsp;<a th:text="${articulo.fecha}">September 24, 2018</a></p>
                     <p class="post-etiquetas">
-                    <span th:each="tag, tagStat : ${articulo.listaEtiqueta}">
-                        <!-- ETIQUETA -->
-                        <a th:href="'/vistaArticulo/etiqueta/'+${tag.etiqueta}"><span th:text="${tag.etiqueta}">etiqueta</span></a>
-                        <span th:if="${!tagStat.last}">, </span>
-                    </span>
+                <span th:each="tag, tagStat : ${articulo.listaEtiqueta}">
+                    <!-- ETIQUETA -->
+                    <a th:href="'/vistaArticulo/etiqueta/'+${tag.etiqueta}"><span th:text="${tag.etiqueta}">etiqueta</span></a>
+                    <span th:if="${!tagStat.last}">, </span>
+                </span>
                     </p>
                 </div>
                 <hr>
@@ -174,9 +133,12 @@
                                 </div>
                                 <div class="modal-footer">
                                     <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 padMar margenesCompletas10px">
-                                        <input class="form-control-sm vichomChatInput" type="text" placeholder="Escribe tu nombre">
-                                        <button class="btn btn-primary mx-auto d-block margenesTxts" type="button">SEND</button>
+                                        <form id="chat-form" action="/chat" method="post">
+                                            <input id="name-input" class="form-control" type="text" name="nombre" placeholder="Escribe tu nombre">
+                                            <button class="btn btn-primary mx-auto d-block margenesTxts" type="submit">SEND</button>
+                                        </form>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -184,12 +146,6 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix">
-            <button class="btn btn-primary float-end" type="button" id="next-btn" onclick="fetchNextArticles()">Next</button>
-            <button class="btn btn-primary float-start" type="button" id="previous-btn" onclick="fetchPreviousArticles()">Previous</button>
-        </div>
-
-
     </div>
 
 
@@ -197,8 +153,40 @@
 
 
 
-
     <footer>
+        <div class="row">
+            <div class="col" id="pagination-container">
+               <nav style="padding-left: 489px;">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Previous" href="/listar?pageNumber=${pageNumber - 1}">
+                                <span aria-hidden="true"><<</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/listar?pageNumber=1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/listar?pageNumber=2">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/listar?pageNumber=3">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/listar?pageNumber=4">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/listar?pageNumber=5">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Next" href="/listar?pageNumber=${pageNumber + 1}">
+                                <span aria-hidden="true">>></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-lg-8 mx-auto">
@@ -212,8 +200,13 @@
             </div>
         </div>
     </footer>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="js/clean-blog.js"></script>
     <script src="js/bs-init.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+
+
 </body>
 </html>
