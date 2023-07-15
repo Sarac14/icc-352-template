@@ -9,6 +9,7 @@
     <title th:text="${titulo}">Listar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/animate.min.css">
 
 </head>
 
@@ -63,10 +64,17 @@
                 </div>
                 <div class="col-md-12 col-lg-4 right-box">
                     <div class="card"></div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button class="btn btn-primary btn-Oscuro me-xxl-5" data-bss-hover-animate="tada" type="button" data-bs-toggle="modal" data-bs-target="#modalChat">Chat box</button>
+                        </div>
+                    </div>
+                    <br>
                     <div class="card">
                         <div class="header">
                             <h2>Etiquetas</h2>
                         </div>
+
                         <div class="body widget" th:each="tag, tagStat : ${articulo.listaEtiqueta}">
                             <ul class="list-unstyled categories-clouds m-b-0">
                                 <li th:text="${tag.etiqueta}"><a>eCommerce</a></li>
@@ -79,10 +87,42 @@
                     <button class="btn btn-primary btn-block" type="submit"><a style="color: white" th:href="'/editar/'+${articulo.id}">Editar Articulo</a></button>
 
                 </div>
+
+                <div class="clearfix">
+                    <div class="modal left fade in vichomChat" role="dialog" tabindex="-1" id="modalChat" aria-labelledby="modalChatLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="col-12 col-lg-12 col-xl-12 padMar text-end">
+                                        <h5 class="text-primary padMar margenesCajas pointer" data-bs-dismiss="modal"><i class="icon ion-android-arrow-dropleft"></i>&nbsp; Hide messages</h5>
+                                    </div>
+                                    <button class="btn-close d-none" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-12 col-xl-12 padMar">
+                                        <p class="text-muted margenesCompletas10px"><strong class="text-primary">Por favor ingrese su nombre para continuar al chat</strong><strong>&nbsp;</strong></p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 padMar margenesCompletas10px">
+                                        <form id="chat-form" action="/chat" method="post">
+                                            <input id="name-input" class="form-control" type="text" name="nombre" placeholder="Escribe tu nombre">
+                                            <button class="btn btn-primary mx-auto d-block margenesTxts" type="submit">SEND</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     <script src="js/bootstrap.minPArt.js"></script>
+    <script src="js/bs-init.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
 </body>
 
 </html>
