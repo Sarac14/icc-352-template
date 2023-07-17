@@ -52,7 +52,11 @@
                                             <div class="col-md-12">
                                                 <p th:text="${chat.usuario}">Sara Pérez:</p>
                                                 <p th:text="${chat.solicitud}">&nbsp;Muy buen pan en Chillán, y tienen buena variedad de dulces chilenos, con precios bastante aceptables.<br></p>
-                                                <button class="btn btn-primary" type="button"  style="background-color: #ffbf00;width: 150px;margin: 8px;font-size: 10px;"><i class="fa fa-reply" style="color: rgb(244,244,244);font-size: 12px;"></i><a href="/responder">&nbsp;Responder</a></button>
+                                                <button class="btn btn-primary" type="button" style="background-color: #ffbf00;width: 150px;margin: 8px;font-size: 10px;">
+                                                    <i class="fa fa-reply" style="color: rgb(244,244,244);font-size: 12px;"></i>
+                                                    <a th:href="@{'/responder?idChat=' + ${chat.id}}">&nbsp;Responder</a>
+                                                </button>
+
                                                 <div class="gift__rating"></div>
                                             </div>
                                         </div>

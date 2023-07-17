@@ -35,5 +35,16 @@ public class ServicioChat {
         return chat;
     }
 
+    public String buscarUsuarioPorId(String idChat) {
+        // Iterar sobre la lista de chats y buscar el chat con el ID correspondiente
+        int id = Integer.parseInt(idChat);
+        for (chat chat : listaChat) {
+            if (chat.getId() == id) {
+                return chat.getUsuario();
+            }
+        }
+        // Si no se encuentra el chat, se puede retornar null o algún valor por defecto
+        return null;
+    }
 
 }

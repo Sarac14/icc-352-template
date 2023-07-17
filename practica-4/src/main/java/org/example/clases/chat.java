@@ -2,8 +2,10 @@ package org.example.clases;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class chat {
+    private static AtomicInteger idGenerator = new AtomicInteger(0);
     private int id;
     private String usuario; //usuario que inicia el chat
     private String agente;//Admin o autor que responde
@@ -33,17 +35,18 @@ public class chat {
         this.agente = agente;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
     public chat() {
-
+        this.id = idGenerator.incrementAndGet();
     }
+
+    public int getId() {
+        return id;
+    }
+
 
     public chat(int id, String usuario, String agente) {
         this.id = id;
