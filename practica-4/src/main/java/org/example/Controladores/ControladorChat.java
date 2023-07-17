@@ -106,9 +106,11 @@ public class ControladorChat extends BaseControlador {
 
             ws.onMessage(ctx -> {
                 String chatId = ctx.pathParam("idChat");
+                chat newChat = chatService.getChatPorId(Integer.parseInt(chatId));
                 System.out.println("Mensaje Recibido de " + ctx.getSessionId() + " ====== ");
                 System.out.println("Mensaje: " + ctx.message());
                 String mensaje = ctx.message();
+                newChat.setSolicitud(mensaje);
                 String username = ctx.sessionAttribute("username");
                 Usuario usuario = servicio_usuario.findByUsername(username);
                 enviarMensajeAClientesConectados(mensaje, chatId, usuario);
