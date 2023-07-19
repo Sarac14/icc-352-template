@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.bundled.RouteOverviewPlugin;
 import org.example.Controladores.*;
+import org.example.entidades.Usuario;
 import org.example.servicios.BootStrapServices;
 import org.example.servicios.ServicioUsuario;
 
@@ -24,8 +25,8 @@ public class Main {
         }
 
 
-        //ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
-        //ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
+        ServicioUsuario.getInstancia().crear(new Usuario("admin", "admin", "admin",true, true));
+        ServicioUsuario.getInstancia().crear(new Usuario("sara", "sara", "sara",false, true));
 
         Javalin app = Javalin.create(config ->{
 
