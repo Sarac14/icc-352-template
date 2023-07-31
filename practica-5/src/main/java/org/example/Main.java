@@ -10,7 +10,7 @@ import org.example.servicios.ServicioUsuario;
 
 public class Main {
     private static String modoConexion = "";
-    private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
+   // private static ServicioUsuario servicio_usuario = ServicioUsuario.getInstancia();
 
 
     public static void main(String[] args) {
