@@ -1,10 +1,10 @@
 package org.example.util;
 
-public enum TablasMongo {
-    agente("agente");
+public enum TablaFormulario {
+    formulario("formulario");
     private String valor;
 
-    TablasMongo(String valor){
+    TablaFormulario(String valor){
         this.valor =  valor;
     }
 
