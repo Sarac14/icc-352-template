@@ -27,7 +27,7 @@ public class ServicioAgente {
     private ServicioAgente(){
         //
         mongoDbConexion = MongoDbConexion.getInstance();
-        mongoDbConexion.getBaseDatos();
+        mongoDbConexion.getBaseDatos1();
 
     }
 
@@ -44,7 +44,7 @@ public class ServicioAgente {
         List<Agente> lista = new ArrayList<>();
 
         //
-        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos().getCollection(TablasMongo.agente.getValor());
+        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
 
         //Consultando todos los elementos.
         MongoCursor<Document> iterator = agentes.find().iterator();
@@ -71,7 +71,7 @@ public class ServicioAgente {
     public Agente getAgentePorUsuario(String usuario){
         Agente agente = null;
         //Conexion a Mongo.
-        MongoCollection<Document> estudiantes = mongoDbConexion.getBaseDatos().getCollection(TablasMongo.agente.getValor());
+        MongoCollection<Document> estudiantes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
 
         //
         Document filtro = new Document("usuario", usuario);
@@ -106,7 +106,7 @@ public class ServicioAgente {
                 .append("role", agente.getRol());
 
         //
-        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos().getCollection(TablasMongo.agente.getValor());
+        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
         //
         InsertOneResult insertOneResult = agentes.insertOne(document);
         //
@@ -123,7 +123,7 @@ public class ServicioAgente {
         }
 
         //Actualizando Documento.
-        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos().getCollection(TablasMongo.agente.getValor());
+        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
 
         //
         Document filtro = new Document("_id", new ObjectId(agente.getId()));
@@ -144,10 +144,35 @@ public class ServicioAgente {
         //
         Agente agentePorUsuario = getAgentePorUsuario(usuario);
         //Actualizando Documento.
-        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos().getCollection(TablasMongo.agente.getValor());
+        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
         //
         Document filtro = new Document("_id", new ObjectId(agentePorUsuario.getId()));
         //
         return agentes.findOneAndDelete(filtro) !=null;
+    }
+
+    public Agente getAgentePorId(String agenteId) {
+        Agente agente = null;
+        //Conexion a Mongo.
+        MongoCollection<Document> estudiantes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
+
+        //
+        Document filtro = new Document("agenteId", agenteId);
+        Document first = estudiantes.find(filtro).first();
+
+        //si no fue encontrado retorna null.
+        if(first!=null){
+            agente = new Agente();
+            agente.setId(first.getObjectId("_id").toHexString());
+            agente.setPassword(first.getString("password"));
+            agente.setNombre(first.getString("nombre"));
+            agente.setUsuario(first.getString("usuario"));
+            agente.setRol(first.getString("role"));
+
+            System.out.println("Consultado: "+agente.toString());
+        }
+
+        //retornando.
+        return agente;
     }
 }

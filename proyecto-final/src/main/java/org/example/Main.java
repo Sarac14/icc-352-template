@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import org.example.controladores.ApiControlador;
 import org.example.controladores.CrudTradicionalControlador;
+import org.example.controladores.FormularioControlador;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,6 +39,7 @@ public class Main {
             //incluyendo los controladores.
             new ApiControlador(app).aplicarRutas();
             new CrudTradicionalControlador(app).aplicarRutas();
+            new FormularioControlador(app).aplicarRutas();
 
 
         }
