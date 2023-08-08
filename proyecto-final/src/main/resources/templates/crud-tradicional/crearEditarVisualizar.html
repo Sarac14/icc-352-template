@@ -24,13 +24,34 @@
                 <input th:readonly="${visualizar}" th:value="${agente} ? ${agente.nombre} : ''" type="text"  name="nombre" class="form-control" id="nombreForm">
             </div>
             <div class="form-group">
-                <label for="carreraForm">Carrera</label>
+                <label for="carreraForm">Password</label>
                 <input th:readonly="${visualizar}" th:value="${agente} ? ${agente.password} : ''" type="text"  name="password" class="form-control" id="carreraForm">
             </div>
-            <div class="form-group">
+           <!-- <div class="form-group">
                 <label for="rolForm">Rol</label>
                 <input th:readonly="${visualizar}" th:value="${agente} ? ${agente.rol} : ''" type="text"  name="rol" class="form-control" id="rolForm">
             </div>
+            -->
+            <div class="form-group">
+                <label>Rol</label>
+                <div th:readonly="${visualizar}">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rol" id="adminRol" th:checked="${agente != null && agente.rol == 'Admin'}" value="Admin">
+                        <label class="form-check-label" for="adminRol">
+                            Admin
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rol" id="agenteRol" th:checked="${agente != null && agente.rol == 'Agente'}" value="Agente">
+                        <label class="form-check-label" for="agenteRol">
+                            Agente
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
             <!-- Los botones para la creación del estudiante -->
             <button th:if="${!visualizar}" type="submit" class="btn btn-primary">Crear</button>
             <a href="/crud-simple/" class="btn btn-primary">Cancelar</a>
