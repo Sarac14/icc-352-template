@@ -3,7 +3,8 @@ package org.example;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import org.example.controladores.ApiControlador;
-import org.example.controladores.CrudTradicionalControlador;
+import org.example.controladores.AgenteControlador;
+import org.example.controladores.ControladorInicio;
 import org.example.controladores.FormularioControlador;
 
 public class Main {
@@ -37,8 +38,9 @@ public class Main {
             app.start(getPuertoDimanico());
 
             //incluyendo los controladores.
+        new ControladorInicio(app).aplicarRutas();
             new ApiControlador(app).aplicarRutas();
-            new CrudTradicionalControlador(app).aplicarRutas();
+            new AgenteControlador(app).aplicarRutas();
             new FormularioControlador(app).aplicarRutas();
 
 

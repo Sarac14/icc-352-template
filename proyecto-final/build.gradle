@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'org.example'
@@ -24,8 +25,10 @@ dependencies {
     //Librería de plantilla.
     implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
     //conversion a JSON
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
-
+//Procesamiento JSON para Javalin.
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.15.2')
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
     //Librería de MongoDB
     // https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-sync
     implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.10.2'
@@ -35,9 +38,21 @@ dependencies {
 
     implementation 'com.j2html:j2html:1.6.0'
 
+    implementation("com.melloware:jasypt:1.9.4")
+    implementation "javax.servlet:javax.servlet-api:4.0.1"
 
 }
+shadowJar{
+    archiveBaseName.set("app")
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
 
-test {
-    useJUnitPlatform()
+/**
+ * tarea necesaria para heroku si optamos por la tarea de Shadowjar
+ * en el archivo Procfile debe estar el siguiente comando:
+ * web: java -jar build/libs/app.jar
+ */
+task stage {
+    dependsOn shadowJar
 }

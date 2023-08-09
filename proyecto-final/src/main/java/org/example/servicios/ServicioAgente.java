@@ -175,4 +175,23 @@ public class ServicioAgente {
         //retornando.
         return agente;
     }
+
+    public Agente autenticarUsuario(String username, String password) {
+        MongoCollection<Document> agentes = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.agente.getValor());
+
+        Document usuarioDoc = agentes.find(new Document("usuario", username)).first();
+
+        if (usuarioDoc != null) {
+            String contrasenaAgente = usuarioDoc.getString("password");
+
+            if (contrasenaAgente.equals(password)) {
+                Agente usuario = new Agente();
+                usuario.setUsuario(username);
+                usuario.setPassword(password);
+                return usuario;
+            }
+        }
+
+        return null;
+    }
 }

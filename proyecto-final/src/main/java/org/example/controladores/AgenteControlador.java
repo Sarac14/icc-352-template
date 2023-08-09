@@ -17,11 +17,11 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 /**
  * Representa las rutas para manejar las operaciones de petición - respuesta.
  */
-public class CrudTradicionalControlador extends BaseControlador {
+public class AgenteControlador extends BaseControlador {
 
     ServicioAgente agenteService = ServicioAgente.getInstancia();
 
-    public CrudTradicionalControlador(Javalin app) {
+    public AgenteControlador(Javalin app) {
         super(app);
     }
 
@@ -61,9 +61,9 @@ public class CrudTradicionalControlador extends BaseControlador {
             path("/crud-simple/", () -> {
 
 
-                get("/", ctx -> {
+               /* get("/", ctx -> {
                     ctx.redirect("/crud-simple/listar");
-                });
+                });*/
 
                 get("/listar", ctx -> {
                     //tomando el parametro utl y validando el tipo.
