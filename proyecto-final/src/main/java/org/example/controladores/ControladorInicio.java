@@ -41,7 +41,7 @@ public class ControladorInicio extends BaseControlador {
             }else{
                 modelo.put("accion", "LOG OUT");
             }
-            ctx.render("publico/index.html", modelo);
+            ctx.render("publico/index1.html", modelo);
 
         });
 
