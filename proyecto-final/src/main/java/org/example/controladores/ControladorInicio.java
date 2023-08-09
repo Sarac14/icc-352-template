@@ -52,7 +52,7 @@ public class ControladorInicio extends BaseControlador {
             if(agente == null) {
                 Map<String, Object> modelo = new HashMap<>();
                 modelo.put("titulo", "Inicio de Sesion");
-                ctx.render("/templates/crud-tradicional/login.html", modelo);
+                ctx.render("publico/login.html", modelo);
             }else{
                 Cookie rememberMeCookie = new Cookie("rememberMe", "");
                 rememberMeCookie.setMaxAge(0);
