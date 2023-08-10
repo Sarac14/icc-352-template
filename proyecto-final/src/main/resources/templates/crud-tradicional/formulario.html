@@ -52,7 +52,7 @@
                             <div class="col-md-8 offset-md-1">
                                 <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
                             </div>
-                            <div class="col-md-10 offset-md-1"><input th:readonly="${visualizar}" th:value="${formulario} ? ${formulario.agente.usuario} : ''" class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario"></div>
+                            <div class="col-md-10 offset-md-1"><input readonly="true" th:value="${nombreAgente}" class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario"></div>
                         </div>
                         <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                             <div class="col-12 col-md-4 offset-md-4"><button class="btn btn-light btn-lg" style="font-family:Roboto, sans-serif;" type="reset">Limpiar</button><button class="btn btn-light btn-lg" style="margin-left:16px;" type="submit">Enviar</button></div>

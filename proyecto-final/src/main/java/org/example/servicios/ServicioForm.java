@@ -63,10 +63,10 @@ public class ServicioForm {
             formulario.setLatitud(next.getString("latitud"));
             formulario.setLongitud(next.getString("longitud"));
             //formulario.setAgente(next.getString("agente"));
-            String agenteId = next.getString("agente");
+            String agenteUser = next.getString("agente");
 
-            Agente agente = agenteService.getAgentePorId(agenteId);
-            formulario.setAgente(agente);
+            //String agente = agenteService.getAgentePorId(agenteId).getId();
+            formulario.setAgente(agenteUser);
 
 
 
@@ -83,7 +83,7 @@ public class ServicioForm {
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
 
         //
-        Document filtro = new Document("_id", id);
+        Document filtro = new Document("_id", new ObjectId(id));
         Document first = formularios.find(filtro).first();
 
         //si no fue encontrado retorna null.
@@ -116,7 +116,7 @@ public class ServicioForm {
         Document document = new Document("sector", formulario.getSector())
                 .append("nombre", formulario.getNombre())
                 .append("nivelEscolar", formulario.getNivelEscolar())
-                .append("agente", formulario.getAgente().getId())
+                .append("agente", formulario.getAgente())
                 .append("longitud",formulario.getLongitud())
                 .append("latitud",formulario.getLatitud());
 
@@ -144,7 +144,7 @@ public class ServicioForm {
         Document filtro = new Document("_id", new ObjectId(formulario.getId()));
         //
         //
-        Document document = new Document("agente", formulario.getAgente().getId())
+        Document document = new Document("agente", formulario.getAgente())
                 .append("nombre", formulario.getNombre())
                 .append("sector", formulario.getSector())
                 .append("nivelEscolar",formulario.getNivelEscolar())

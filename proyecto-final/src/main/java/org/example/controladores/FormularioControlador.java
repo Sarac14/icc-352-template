@@ -34,6 +34,15 @@ public class FormularioControlador extends BaseControlador {
                 /*get("/", ctx -> {
                     ctx.redirect("/crud-form/listar");
                 });*/
+                before("/listarForm", ctx -> {
+                    Agente agente = ctx.sessionAttribute("agente");
+                    if(agente == null) {
+                        ctx.contentType("text/html");
+                        ctx.html("<script>alert('Primero inice sesion'); </script>");
+                        ctx.redirect("/");
+                    }
+                });
+
 
                 get("/listarForm", ctx -> {
                     //tomando el parametro utl y validando el tipo.
@@ -42,15 +51,18 @@ public class FormularioControlador extends BaseControlador {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Listado de Formularios");
                     modelo.put("lista", lista);
+                    //modelo.put("usuarioAgente", usuarioAgente);
                     //enviando al sistema de plantilla.
                     ctx.render("/templates/crud-tradicional/listarForm.html", modelo);
                 });
 
                 get("/crearForm", ctx -> {
                     //
+                    Agente agente  = ctx.sessionAttribute("agente");
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Nuevo Formulario");
                     modelo.put("accion", "/crud-form/crearForm");
+                    modelo.put("nombreAgente", agente.getNombre());
                     //enviando al sistema de plantilla.
                     ctx.render("/templates/crud-tradicional/formulario.html", modelo);
                 });
@@ -64,15 +76,18 @@ public class FormularioControlador extends BaseControlador {
                     String sector = ctx.formParam("sector");
                     String nombre = ctx.formParam("nombre");
                     String nivelEscolar = ctx.formParam("nivelEscolar");
-                    Agente userAgente = ServicioAgente.getInstancia().getAgentePorUsuario("sara"); //CAMBIAR POR EL USUARIO QUE LO REALICE
+
+                    Agente agente = ctx.sessionAttribute("agente");
+
+
                     String latitud = ctx.formParam("latitud");
                     String longitud = ctx.formParam("longitud");
 
                     //
-                    Formulario tmp = new Formulario(nombre, sector, nivelEscolar, userAgente, longitud, latitud);
+                    Formulario tmp = new Formulario(nombre, sector, nivelEscolar, agente.getUsuario(), longitud, latitud);
                     //realizar algún tipo de validación...
                     formService.crearForm(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-form/");
+                    ctx.redirect("/crud-form/listarForm");
                 });
 
                 get("/visualizarForm/{id}", ctx -> {
@@ -94,7 +109,7 @@ public class FormularioControlador extends BaseControlador {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Editar Formulario "+form.getId());
                     modelo.put("formulario", form);
-                    modelo.put("accion", "/crud-simple/editarForm");
+                    modelo.put("accion", "/crud-form/editarForm");
 
                     //enviando al sistema de ,plantilla.
                     ctx.render("/templates/crud-tradicional/formulario.html", modelo);
@@ -108,7 +123,7 @@ public class FormularioControlador extends BaseControlador {
                     String sector = ctx.formParam("sector");
                     String nombre = ctx.formParam("nombre");
                     String nivelEscolar = ctx.formParam("nivelEscolar");
-                    Agente userAgente = ServicioAgente.getInstancia().getAgentePorUsuario("sara");
+                    String userAgente = ServicioAgente.getInstancia().getAgentePorUsuario(ctx.sessionAttribute("agente")).getId();
                     String latitud = ctx.formParam("latitud");
                     String longitud = ctx.formParam("longitud");
                     String id = ctx.formParam("_id");
@@ -116,7 +131,7 @@ public class FormularioControlador extends BaseControlador {
                     Formulario tmp = new Formulario(id,nombre, sector, nivelEscolar, userAgente, longitud, latitud);
                     //realizar algún tipo de validación...
                     formService.acrutalizarForm(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-form/");
+                    ctx.redirect("/crud-form/listarForm");
                 });
 
                 /**
@@ -124,7 +139,7 @@ public class FormularioControlador extends BaseControlador {
                  */
                 get("/eliminar/{id}", ctx -> {
                     formService.elimanandoForm(ctx.pathParam("id"));
-                    ctx.redirect("/crud-form/");
+                    ctx.redirect("/crud-form/listarForm");
                 });
 
             });

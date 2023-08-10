@@ -77,7 +77,6 @@ public class AgenteControlador extends BaseControlador {
                         ctx.contentType("text/html");
                         ctx.html("<script>alert('Usted no tiene los permisos necesarios'); </script>");
                         ctx.redirect("/");
-
                     }
                 });
 

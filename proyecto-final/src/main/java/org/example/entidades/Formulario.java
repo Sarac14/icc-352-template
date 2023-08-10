@@ -1,27 +1,31 @@
 package org.example.entidades;
 
+import org.example.servicios.ServicioAgente;
+
 public class Formulario {
     private String id;
     private String nombre;
     private String nivelEscolar;
     private String sector;
-    private Agente agente;
+    private String agente;
     private String longitud;
     private String latitud;
+
 
     public Formulario() {
     }
 
-    public Formulario(String nombre, String sector, String nivelEscolar, Agente agente, String longitud, String latitud) {
+    public Formulario(String nombre, String sector, String nivelEscolar, String agente, String longitud, String latitud) {
         this.nombre = nombre;
         this.nivelEscolar = nivelEscolar;
         this.sector = sector;
         this.agente = agente;
         this.longitud = longitud;
         this.latitud = latitud;
+
     }
 
-    public Formulario(String id, String nombre, String nivelEscolar, String sector, Agente agente, String longitud, String latitud) {
+    public Formulario(String id, String nombre, String nivelEscolar, String sector, String agente, String longitud, String latitud) {
         this.id = id;
         this.nombre = nombre;
         this.nivelEscolar = nivelEscolar;
@@ -29,6 +33,8 @@ public class Formulario {
         this.agente = agente;
         this.longitud = longitud;
         this.latitud = latitud;
+
+
     }
 
     public String getId() {
@@ -63,11 +69,11 @@ public class Formulario {
         this.sector = sector;
     }
 
-    public Agente getAgente() {
+    public String getAgente() {
         return agente;
     }
 
-    public void setAgente(Agente agente) {
+    public void setAgente(String agente) {
         this.agente = agente;
     }
 
@@ -86,4 +92,5 @@ public class Formulario {
     public void setLatitud(String latitud) {
         this.latitud = latitud;
     }
+
 }

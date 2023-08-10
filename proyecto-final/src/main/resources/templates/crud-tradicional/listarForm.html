@@ -13,7 +13,6 @@
                     <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="/crud-simple/listar">Agentes</a></li>
                     <li class="nav-item"><a class="nav-link" href="/crud-form/listarForm">Encuestas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Log in</a></li>
                 </ul>
             </div>
         </div>
@@ -50,11 +49,11 @@
                 <td th:text="${formulario.sector}">sector</td>
                 <td th:text="${formulario.nivelEscolar}">NivelEsc</td>
                 <td th:text="${formulario.agente}">agente</td>
-                <td th:text="${formulario.latitud}">latitud</td>
+               <td th:text="${formulario.latitud}">latitud</td>
                 <td th:text="${formulario.longitud}">longitud</td>
 
                 <td>
-                    <a th:text="Editar" th:href="'editar/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
+                    <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
                     <a th:text="Eliminar" th:href="'eliminar/'+${formulario.id}" th class="btn btn-danger btn-sm"/>
                 </td>
             </tr>
