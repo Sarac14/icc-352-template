@@ -103,6 +103,18 @@ public class FormularioControlador extends BaseControlador {
                     ctx.render("/templates/crud-tradicional/formulario.html", modelo);
                 });
 
+                before("/editarForm/{id}", ctx -> {
+                    Formulario formulario = formService.getFormPorId(ctx.pathParam("id"));
+                    String agente = formulario.getAgente();
+                    Agente user = ctx.sessionAttribute("agente");
+                    if (!user.getRol().equalsIgnoreCase("Admin")) {
+                        if (!agente.equals(user.getUsuario())) {
+                            ctx.contentType("text/html");
+                            ctx.html("<script>alert('Solo un Admin o el usuario que realizo la encuesta pueda editarla'); window.location.href='/crud-form/listar';</script>");
+                        }
+                    }
+                });
+
                 get("/editarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
                     //
@@ -119,18 +131,19 @@ public class FormularioControlador extends BaseControlador {
                  * Proceso para editar un estudiante.
                  */
                 post("/editarForm", ctx -> {
+                    Agente agente = ctx.sessionAttribute("agente");
                     //obteniendo la información enviada.
                     String sector = ctx.formParam("sector");
                     String nombre = ctx.formParam("nombre");
                     String nivelEscolar = ctx.formParam("nivelEscolar");
-                    String userAgente = ServicioAgente.getInstancia().getAgentePorUsuario(ctx.sessionAttribute("agente")).getId();
+                    String userAgente = agente.getUsuario();
                     String latitud = ctx.formParam("latitud");
                     String longitud = ctx.formParam("longitud");
                     String id = ctx.formParam("_id");
                     //
                     Formulario tmp = new Formulario(id,nombre, sector, nivelEscolar, userAgente, longitud, latitud);
                     //realizar algún tipo de validación...
-                    formService.acrutalizarForm(tmp); //puedo validar, existe un error enviar a otro vista.
+                    formService.acrutalizarForm(tmp);
                     ctx.redirect("/crud-form/listarForm");
                 });
 

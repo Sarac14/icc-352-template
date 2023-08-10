@@ -78,12 +78,13 @@ public class ServicioForm {
     }
 
     public Formulario getFormPorId(String id){
-        Formulario formulario = null;
+        Formulario formulario = new Formulario();
         //Conexion a Mongo.
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
 
         //
         Document filtro = new Document("_id", new ObjectId(id));
+
         Document first = formularios.find(filtro).first();
 
         //si no fue encontrado retorna null.
@@ -95,7 +96,7 @@ public class ServicioForm {
             formulario.setNivelEscolar(first.getString("nivelEscolar"));
             formulario.setLongitud(first.getString("longitud"));
             formulario.setLatitud(first.getString("latitud"));
-            formulario.setLatitud(first.getString("agente"));
+            formulario.setAgente(first.getString("agente"));
 
 
 
@@ -131,6 +132,7 @@ public class ServicioForm {
     }
 
     public Formulario acrutalizarForm (@NotNull Formulario formulario){
+
         Formulario tmp = getFormPorId(formulario.getId());
 
         if(tmp == null){//no existe, no puede se actualizado
@@ -164,6 +166,7 @@ public class ServicioForm {
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
         //
         Document filtro = new Document("_id", new ObjectId(formPorId.getId()));
+
         //
         return formularios.findOneAndDelete(filtro) !=null;
     }

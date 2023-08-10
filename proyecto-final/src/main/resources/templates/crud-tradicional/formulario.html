@@ -16,6 +16,7 @@
     <div class="container">
         <div>
             <form enctype="application/x-www-form-urlencoded" method="post" th:attr="action=${accion}" >
+                <input type="hidden" name="_id" th:value="${formulario} ? ${formulario.id}" />
                 <div class="form-group mb-3">
                     <div id="formdiv">
                         <div class="row" style="margin-right: 0px;margin-left: 0px;padding-top: 24px;margin-top: 28px;">
@@ -52,7 +53,7 @@
                             <div class="col-md-8 offset-md-1">
                                 <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
                             </div>
-                            <div class="col-md-10 offset-md-1"><input readonly="true" th:value="${nombreAgente}" class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario"></div>
+                            <div class="col-md-10 offset-md-1"><input readonly="true" th:value="${formulario} ? ${formulario.agente} : ${nombreAgente}" class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario"></div>
                         </div>
                         <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                             <div class="col-12 col-md-4 offset-md-4"><button class="btn btn-light btn-lg" style="font-family:Roboto, sans-serif;" type="reset">Limpiar</button><button class="btn btn-light btn-lg" style="margin-left:16px;" type="submit">Enviar</button></div>
@@ -68,7 +69,7 @@
 
     <script>
         document.querySelector("form").addEventListener("submit", function(event) {
-            event.preventDefault(); // evitar el envío del formulario inmediatamente
+            event.preventDefault();
 
             if (!navigator.geolocation) {
                 alert("La geolocalización no está disponible en tu navegador. Por favor, introduce la latitud y longitud manualmente.");
@@ -79,7 +80,7 @@
                 document.getElementById("latitud").value = position.coords.latitude;
                 document.getElementById("longitud").value = position.coords.longitude;
 
-                event.target.submit(); // enviar el formulario una vez que se han obtenido las coordenadas
+                event.target.submit();
             }, function() {
                 alert("Error al obtener la ubicación. Por favor, introduce la latitud y longitud manualmente.");
             });
