@@ -94,7 +94,7 @@ public class AgenteControlador extends BaseControlador {
                 get("/crear", ctx -> {
                     //
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Formulario Creación Estudiante");
+                    modelo.put("titulo", "Formulario Creacion Agente");
                     modelo.put("accion", "/crud-simple/crear");
                     //enviando al sistema de plantilla.
                     ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
@@ -112,13 +112,20 @@ public class AgenteControlador extends BaseControlador {
                     String rol = ctx.formParam("rol");
                     Agente agente = ctx.sessionAttribute("agente");
                     //
-                    Agente tmp = new Agente(usuario, password, nombre,rol);
-                    //realizar algún tipo de validación...
-                    agenteService.crearAgente(tmp);
-                    if (agente == null) {
-                        ctx.redirect("/login");
-                    } else {
-                        ctx.redirect("/crud-simple/listar");
+
+                    if(agenteService.getAgentePorUsuario(usuario) == null) {
+
+                        Agente tmp = new Agente(usuario, password, nombre, rol);
+                        //realizar algún tipo de validación...
+                        agenteService.crearAgente(tmp);
+                        if (agente == null) {
+                            ctx.redirect("/login");
+                        } else {
+                            ctx.redirect("/crud-simple/listar");
+                        }
+                    }else{
+                        ctx.contentType("text/html");
+                        ctx.html("<script>alert('Este usuario ya existe.'); window.location.href='/crud-simple/crear';</script>");
                     }
                     //ctx.redirect("/crud-simple/");
                 });
@@ -127,7 +134,7 @@ public class AgenteControlador extends BaseControlador {
                     Agente agente = agenteService.getAgentePorUsuario(ctx.pathParam("usuario"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Formulario Visaulizar Estudiante "+agente.getUsuario());
+                    modelo.put("titulo", "Formulario Visaulizar Agente "+agente.getUsuario());
                     modelo.put("agente", agente);
                     modelo.put("visualizar", true); //para controlar en el formulario si es visualizar
                     modelo.put("accion", "/crud-simple/");
@@ -140,7 +147,7 @@ public class AgenteControlador extends BaseControlador {
                     Agente agente = agenteService.getAgentePorUsuario(ctx.pathParam("usuario"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Formulario Editar Estudiante "+agente.getUsuario());
+                    modelo.put("titulo", "Formulario Editar Agente "+agente.getUsuario());
                     modelo.put("agente", agente);
                     modelo.put("accion", "/crud-simple/editar");
 
