@@ -64,6 +64,22 @@ public class AgenteControlador extends BaseControlador {
                /* get("/", ctx -> {
                     ctx.redirect("/crud-simple/listar");
                 });*/
+                before("/listar", ctx -> {
+                    Agente agente = ctx.sessionAttribute("agente");
+                    if(agente != null) {
+                        if (agente.getRol().equalsIgnoreCase("Agente") ) {
+                            ctx.contentType("text/html");
+                            ctx.html("<script>alert('Usted no tiene los permisos necesarios'); </script>");
+                            ctx.redirect("/");
+
+                        }
+                    }else{
+                        ctx.contentType("text/html");
+                        ctx.html("<script>alert('Usted no tiene los permisos necesarios'); </script>");
+                        ctx.redirect("/");
+
+                    }
+                });
 
                 get("/listar", ctx -> {
                     //tomando el parametro utl y validando el tipo.
@@ -95,11 +111,17 @@ public class AgenteControlador extends BaseControlador {
                     String nombre = ctx.formParam("nombre");
                     String password = ctx.formParam("password");
                     String rol = ctx.formParam("rol");
+                    Agente agente = ctx.sessionAttribute("agente");
                     //
                     Agente tmp = new Agente(usuario, password, nombre,rol);
                     //realizar algún tipo de validación...
-                    agenteService.crearAgente(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-simple/");
+                    agenteService.crearAgente(tmp);
+                    if (agente == null) {
+                        ctx.redirect("/login");
+                    } else {
+                        ctx.redirect("/crud-simple/listar");
+                    }
+                    //ctx.redirect("/crud-simple/");
                 });
 
                 get("/visualizar/{usuario}", ctx -> {
@@ -141,7 +163,7 @@ public class AgenteControlador extends BaseControlador {
                     Agente tmp = new Agente(usuario, password,nombre, rol,id);
                     //realizar algún tipo de validación...
                     agenteService.actualizarAgente(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-simple/");
+                    ctx.redirect("/crud-simple/listar");
                 });
 
                 /**
@@ -149,7 +171,7 @@ public class AgenteControlador extends BaseControlador {
                  */
                 get("/eliminar/{usuario}", ctx -> {
                     agenteService.eliminandoAgente(ctx.pathParam("usuario"));
-                    ctx.redirect("/crud-simple/");
+                    ctx.redirect("/crud-simple/listar");
                 });
 
             });

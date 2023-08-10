@@ -37,9 +37,9 @@ public class ControladorInicio extends BaseControlador {
             //modelo.put("lista", lista);
             //modelo.put("pageNumber", pageNumber);
             if(agente == null){
-                modelo.put("accion", "LOG IN");
+                modelo.put("accion", "Log In");
             }else{
-                modelo.put("accion", "LOG OUT");
+                modelo.put("accion", "Log Out");
             }
             ctx.render("publico/index1.html", modelo);
 
