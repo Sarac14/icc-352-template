@@ -6,8 +6,8 @@
 var CACHE_NAME = 'mi-app-cache-v1';
 //listado de
 var urlsToCache = [
-    '/app/temporaly',
-    '/app/register',
+    '/crud-form/listarFormLocal',
+    '/crud-form/crearForm',
     '/serviceworkers.js',
     '/html5/offline.html'
 ];

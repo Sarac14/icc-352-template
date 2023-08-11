@@ -33,6 +33,28 @@ public class FormularioControlador extends BaseControlador {
                 /*get("/", ctx -> {
                     ctx.redirect("/crud-form/listar");
                 });*/
+                before("/listarFormLocal", ctx -> {
+                    Agente agente = ctx.sessionAttribute("agente");
+                    if(agente == null) {
+                        ctx.contentType("text/html");
+                        ctx.html("<script>alert('Primero inice sesion'); </script>");
+                        ctx.redirect("/");
+                    }
+                });
+
+
+                get("/listarFormLocal", ctx -> {
+                    //tomando el parametro utl y validando el tipo.
+                    //List<Formulario> lista = formService.listarFormulario();
+                    //
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Listado local de Formularios");
+                    //modelo.put("lista", lista);
+                    //modelo.put("usuarioAgente", usuarioAgente);
+                    //enviando al sistema de plantilla.
+                    ctx.render("/templates/crud-tradicional/listarFormLocal.html", modelo);
+                });
+
                 before("/listarForm", ctx -> {
                     Agente agente = ctx.sessionAttribute("agente");
                     if(agente == null) {
@@ -52,7 +74,7 @@ public class FormularioControlador extends BaseControlador {
                     modelo.put("lista", lista);
                     //modelo.put("usuarioAgente", usuarioAgente);
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/listarFormOriginal.html", modelo);
+                    ctx.render("/templates/crud-tradicional/listarForm.html", modelo);
                 });
 
                 get("/crearForm", ctx -> {
@@ -70,7 +92,7 @@ public class FormularioControlador extends BaseControlador {
                  * manejador para la creación del estudiante, una vez creado
                  * pasa nuevamente al listado.
                  */
-                post("/crearForm", ctx -> {
+               /* post("/crearForm", ctx -> {
                     //obteniendo la información enviada.
                     String sector = ctx.formParam("sector");
                     String nombre = ctx.formParam("nombre");
@@ -87,7 +109,7 @@ public class FormularioControlador extends BaseControlador {
                     //realizar algún tipo de validación...
                     formService.crearForm(tmp); //puedo validar, existe un error enviar a otro vista.
                     ctx.redirect("/crud-form/listarForm");
-                });
+                });*/
 
                /* get("/visualizarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
