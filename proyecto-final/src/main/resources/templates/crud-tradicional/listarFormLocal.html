@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="/templates/crud-tradicional/plantilla.html::head">
+        <title>Encuentas no almacenadas</title>
+    </head>
+    <body>
+
+  <div th:replace="/templates/crud-tradicional/plantilla.html::scriptDB"></div>
+
+
+    <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark" style="background-color: #1EB6F3;">
+        <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/crud-simple/listar">Agentes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/crud-form/listarForm">Encuestas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4" th:text="${titulo}">....</h1>
+            <p class="lead">Listado de los Formularios</p>
+        </div>
+
+        <a href="/crud-form/crearForm" class="btn btn-primary">Realizar Encuesta</a>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Sector</th>
+                <th scope="col">Nivel Escolar</th>
+                <th scope="col">Agente</th>
+                <th scope="col">Latitud</th>
+                <th scope="col">Longitud</th>
+               <!-- <th scope="col">Acciones</th>-->
+
+
+            </tr>
+            </thead>
+           <!------------------------ESTA PARTE NO ESTA--------------------------------->
+
+           <!-- <tbody>
+            <tr th:each="formulario : ${lista}">
+                <th scope="row">
+                    <a th:text="${formulario.id}" th:href="'visualizarForm/'+${formulario.id}"/>
+                </th>
+                <td th:text="${formulario.nombre}">nombre</td>
+                <td th:text="${formulario.sector}">sector</td>
+                <td th:text="${formulario.nivelEscolar}">NivelEsc</td>
+                <td th:text="${formulario.agente}">agente</td>
+               <td th:text="${formulario.latitud}">latitud</td>
+                <td th:text="${formulario.longitud}">longitud</td>
+
+                <td>
+                    <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
+                    <a th:text="Eliminar" th:href="'eliminar/'+${formulario.id}" th class="btn btn-danger btn-sm"/>
+                </td>
+            </tr>
+            </tbody> -->
+            <!------------------------ESTA PARTE NO ESTA--------------------------------->
+
+        </table>
+        <button style="margin-top: 20px; width: 100%;" id="sync" class="btn btn-primary">Sincronizar</button>
+    </div>
+  <div th:replace="/templates/crud-tradicional/plantilla.html::script"></div>
+
+
+  <!-- incluyendo la parte de javascript del template.        -->
+        <div th:replace="/templates/crud-tradicional/plantilla.html::javascript"></div>
+
+  <script>
+      $(document).ready(function () {
+          setTimeout(() => {
+              listarDatos()
+          }, 1000)
+      });
+  </script>
+  <script>
+      $(document).ready(function () {
+          var webSocket;
+          var tiempoReconectar = 5000;
+          $(document).ready(function(){
+              conectar();
+              $("#sync").click(async function () {
+                  var data = dataBase.result.transaction(["registros"]);
+                  var registros = data.objectStore("registros");
+                  var contador = 0;
+                  var registros_recuperados = [];
+                  registros.openCursor().onsuccess = function (e) {
+                      var cursor = e.target.result;
+                      if (cursor) {
+                          contador++;
+                          registros_recuperados.push(cursor.value);
+                          cursor.continue();
+                      }
+                  };
+                  data.oncomplete = function () {
+                      console.log(JSON.stringify(registros_recuperados));
+                      console.log(sessionStorage)
+                      webSocket.send(JSON.stringify(registros_recuperados));
+                  };
+              });
+          });
+          function conectar() {
+              webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/sync");
+              webSocket.onmessage = function(data){recibirInformacionServidor(data);};
+              webSocket.onopen  = function(e){ console.log("Conectado - status "+this.readyState); };
+              webSocket.onclose = function(e){
+                  console.log("Desconectado - status "+this.readyState);
+              };
+          }
+          function recibirInformacionServidor(mensaje){
+              console.log(mensaje.data)
+              if (!mensaje.data.localeCompare('DELETE')) {
+                  eliminarTodo()
+              }
+          }
+          function verificarConexion(){
+              if(!webSocket || webSocket.readyState == 3){
+                  conectar();
+              }
+          }
+          setInterval(verificarConexion, tiempoReconectar);
+      });
+  </script>
+    </body>
+
+</html>

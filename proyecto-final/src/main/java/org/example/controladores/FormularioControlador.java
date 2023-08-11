@@ -5,7 +5,6 @@ import io.javalin.rendering.JavalinRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.example.entidades.Agente;
 import org.example.entidades.Formulario;
-import org.example.servicios.ServicioAgente;
 import org.example.servicios.ServicioForm;
 import org.example.util.BaseControlador;
 
@@ -53,7 +52,7 @@ public class FormularioControlador extends BaseControlador {
                     modelo.put("lista", lista);
                     //modelo.put("usuarioAgente", usuarioAgente);
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/listarForm.html", modelo);
+                    ctx.render("/templates/crud-tradicional/listarFormOriginal.html", modelo);
                 });
 
                 get("/crearForm", ctx -> {
@@ -90,7 +89,7 @@ public class FormularioControlador extends BaseControlador {
                     ctx.redirect("/crud-form/listarForm");
                 });
 
-                get("/visualizarForm/{id}", ctx -> {
+               /* get("/visualizarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
@@ -115,7 +114,7 @@ public class FormularioControlador extends BaseControlador {
                     }
                 });
 
-                get("/editarForm/{id}", ctx -> {
+                /*get("/editarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
@@ -130,7 +129,7 @@ public class FormularioControlador extends BaseControlador {
                 /**
                  * Proceso para editar un estudiante.
                  */
-                post("/editarForm", ctx -> {
+                /*post("/editarForm", ctx -> {
                     Agente agente = ctx.sessionAttribute("agente");
                     //obteniendo la información enviada.
                     String sector = ctx.formParam("sector");
@@ -150,10 +149,10 @@ public class FormularioControlador extends BaseControlador {
                 /**
                  * Puede ser implementando por el metodo post, por simplicidad utilizo el get. ;-D
                  */
-                get("/eliminar/{id}", ctx -> {
+                /*get("/eliminar/{id}", ctx -> {
                     formService.elimanandoForm(ctx.pathParam("id"));
                     ctx.redirect("/crud-form/listarForm");
-                });
+                });*/
 
             });
         });
