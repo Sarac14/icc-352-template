@@ -78,8 +78,7 @@ public class ServicioForm {
     }
 
     public Formulario getFormPorId(String id){
-        Formulario formulario = new Formulario();
-        //cambios dfhdt
+        Formulario formulario = null;
         //Conexion a Mongo.
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
 
@@ -166,7 +165,7 @@ public class ServicioForm {
         //Actualizando Documento.
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
         //
-        Document filtro = new Document("_id", new ObjectId(formPorId.getId()));
+        Document filtro = new Document("_id", formPorId.getId());
 
         //
         return formularios.findOneAndDelete(filtro) !=null;
