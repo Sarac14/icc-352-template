@@ -5,13 +5,13 @@
     </head>
     <body>
 
+
     <nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark" style="background-color: #1EB6F3;">
         <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="/crud-simple/listar">Agentes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/crud-form/listarFormLocal">Encuestas Locales</a></li>
                     <li class="nav-item"><a class="nav-link" href="/crud-form/listarForm">Encuestas</a></li>
                 </ul>
             </div>
@@ -21,32 +21,40 @@
     <div class="container">
         <div class="jumbotron">
             <h1 class="display-4" th:text="${titulo}">....</h1>
-            <p class="lead">Listado de los Agentes</p>
+            <p class="lead">Listado de los Formularios</p>
         </div>
 
-        <a href="/crud-simple/crear" class="btn btn-primary">Nuevo Agente</a>
+        <a href="/crud-form/crearForm" class="btn btn-primary">Nuevo Formulario</a>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Usuario</th>
+                <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Password</th>
-                <th scope="col">Rol</th>
+                <th scope="col">Sector</th>
+                <th scope="col">Nivel Escolar</th>
+                <th scope="col">Agente</th>
+                <th scope="col">Latitud</th>
+                <th scope="col">Longitud</th>
                 <th scope="col">Acciones</th>
+
+
             </tr>
             </thead>
             <tbody>
-            <tr th:each="agente : ${lista}">
+            <tr th:each="formulario : ${lista}">
                 <th scope="row">
-                    <a th:text="${agente.usuario}" th:href="'visualizar/'+${agente.usuario}"/>
+                    <a th:text="${formulario.id}" th:href="'visualizarForm/'+${formulario.id}"/>
                 </th>
-                <td th:text="${agente.nombre}">Agente</td>
-                <td th:text="${agente.password}">Password</td>
-                <td th:text="${agente.rol}">Password</td>
+                <td th:text="${formulario.nombre}">nombre</td>
+                <td th:text="${formulario.sector}">sector</td>
+                <td th:text="${formulario.nivelEscolar}">NivelEsc</td>
+                <td th:text="${formulario.agente}">agente</td>
+               <td th:text="${formulario.latitud}">latitud</td>
+                <td th:text="${formulario.longitud}">longitud</td>
 
                 <td>
-                    <a th:text="Editar" th:href="'editar/'+${agente.usuario}" th class="btn btn-secondary btn-sm"/> |
-                    <a th:text="Eliminar" th:href="'eliminar/'+${agente.usuario}" th class="btn btn-danger btn-sm"/>
+                    <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
+                    <a th:text="Eliminar" th:href="'eliminar/'+${formulario.id}" th class="btn btn-danger btn-sm"/>
                 </td>
             </tr>
             </tbody>

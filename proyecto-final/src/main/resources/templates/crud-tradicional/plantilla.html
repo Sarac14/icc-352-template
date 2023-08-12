@@ -20,7 +20,172 @@
 <body>
 
 
+<script th:fragment="scriptDB">
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB
+    var dataBase = indexedDB.open("programacion_web", 1);
+    dataBase.onupgradeneeded = function (e) {
+        active = dataBase.result;
+        var registro = active.createObjectStore("registros", { keyPath: 'id', autoIncrement: false });
+        registro.createIndex('por_indice', 'indice', { unique: false });
+    };
+    dataBase.onsuccess = function (e) {
+        console.log('Proceso ejecutado de forma correctamente');
+    };
+    dataBase.onerror = function (e) {
+        console.error('Error en el proceso: ' + e.target.errorCode);
+    };
 
+    function registrar() {
+        var dbActiva = dataBase.result;
+        var transaccion = dbActiva.transaction(["registros"], "readwrite");
+        transaccion.onerror = function (e) {
+            alert(request.error.name + '\n\n' + request.error.message);
+        };
+        transaccion.oncomplete = function (e) {
+            document.querySelector("#name").value = "",
+                alert('Objeto agregado correctamente');
+            location.reload();
+        };
+        var registros = transaccion.objectStore("registros");
+        var request = registros.put({
+            id: Math.floor(Math.random() * 10000),
+            name: document.querySelector("#name").value,
+            sector: document.querySelector("#sector").value,
+            level: document.querySelector("#level").value,
+            longitud: document.querySelector("#longitud").value,
+            latitud: document.querySelector("#latitud").value,
+            usuario: document.querySelector("#usuario").value,
+        });
+        request.onerror = function (e) {
+            var mensaje = "Error: " + e.target.errorCode;
+            console.error(mensaje);
+            alert(mensaje)
+        };
+        request.onsuccess = function (e) {
+            console.log("Datos Procesado con exito");
+            document.querySelector("#name").value = "";
+            document.querySelector("#sector").value = "";
+            document.querySelector("#level").value = "";
+            document.querySelector("#longitud").value = "";
+            document.querySelector("#latitud").value = "";
+            document.querySelector("#usuario").value = "";
+        };
+    }
+
+    function modificar() {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        const id = params.id;
+
+        var data = dataBase.result.transaction(["registros"], "readwrite");
+        var registros = data.objectStore("registros");
+
+        registros.get(parseInt(id)).onsuccess = function (e) {
+            var resultado = e.target.result;
+            console.log("los datos: " + JSON.stringify(resultado));
+            if (resultado !== undefined) {
+
+                resultado.name = document.querySelector("#name").value;
+                resultado.sector = document.querySelector("#sector").value;
+                resultado.level = document.querySelector("#longitud").value;
+                resultado.longitud = document.querySelector("#level").value;
+                resultado.latitud = document.querySelector("#latitud").value;
+                resultado.usuario = document.querySelector("#usuario").value;
+
+
+                var solicitudUpdate = registros.put(resultado);
+
+                solicitudUpdate.onerror = function (e) {
+                    console.error("Error Datos Actualizados....");
+                }
+            } else {
+                console.log("Registro no encontrado...");
+            }
+        };
+    }
+
+    function eliminarTodo() {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        var data = dataBase.result.transaction(["registros"], "readwrite");
+        data.objectStore("registros").clear();
+        location.reload();
+    }
+
+    function listarDatos() {
+        var data = dataBase.result.transaction(["registros"]);
+        var registros = data.objectStore("registros");
+        var contador = 0;
+        var registros_recuperados = [];
+        registros.openCursor().onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (cursor) {
+                contador++;
+                registros_recuperados.push(cursor.value);
+                cursor.continue();
+            } else {
+                console.log("La cantidad de registros recuperados es: " + contador);
+            }
+        };
+        data.oncomplete = function () {
+            imprimirTabla(registros_recuperados);
+        }
+    }
+
+    function eliminar(id) {
+
+        var data = dataBase.result.transaction(["registros"], "readwrite");
+        var registros = data.objectStore("registros");
+
+        registros.get(parseInt(id)).onsuccess = function (e) {
+            var resultado = e.target.result;
+            console.log("los datos: " + JSON.stringify(resultado));
+            if (resultado !== undefined) {
+
+                var solicitudUpdate = registros.delete(resultado);
+
+                solicitudUpdate.onerror = function (e) {
+                    console.error("Error Datos Actualizados....");
+                }
+            } else {
+                console.log("Registro no encontrado...");
+            }
+        };
+    }
+
+    function imprimirTabla(registros_recuperados) {
+        var tabla = document.getElementById("table");
+        for (var key in registros_recuperados) {
+            filaTabla = tabla.insertRow();
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].id;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].name;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].sector;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].level;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].longitud;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].latitud;
+            filaTabla.insertCell().textContent = "" + registros_recuperados[key].usuario;
+
+            filaTabla.insertCell().insertAdjacentHTML(
+                'beforeend',
+                `<button type='button' onclick="location.href='/records/update?id=${registros_recuperados[key].id}&name=${registros_recuperados[key].name}&sector=${registros_recuperados[key].sector}&longitud=${registros_recuperados[key].longitud}&latitud=${registros_recuperados[key].latitud}&level=${registros_recuperados[key].level}&usuario=${registros_recuperados[key].usuario}';" class="btn btn-primary">Editar</button> <button type='button' onclick="eliminar(registros_recuperados[key].id);" class="btn btn-warning">Eliminar</button>`);
+        }
+    }
+</script>
+
+<div th:fragment="script">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+            integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+            integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+</div>
 
 
 <h1 th:text="${titulo-ventana}">Titulo</h1>
