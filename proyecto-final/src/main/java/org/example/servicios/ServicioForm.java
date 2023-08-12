@@ -165,7 +165,7 @@ public class ServicioForm {
         //Actualizando Documento.
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
         //
-        Document filtro = new Document("_id", formPorId.getId());
+        Document filtro = new Document("_id", new ObjectId(formPorId.getId()));
 
         //
         return formularios.findOneAndDelete(filtro) !=null;

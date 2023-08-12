@@ -5,6 +5,7 @@ import io.javalin.rendering.JavalinRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.example.entidades.Agente;
 import org.example.entidades.Formulario;
+import org.example.servicios.ServicioAgente;
 import org.example.servicios.ServicioForm;
 import org.example.util.BaseControlador;
 
@@ -33,28 +34,6 @@ public class FormularioControlador extends BaseControlador {
                 /*get("/", ctx -> {
                     ctx.redirect("/crud-form/listar");
                 });*/
-                before("/listarFormLocal", ctx -> {
-                    Agente agente = ctx.sessionAttribute("agente");
-                    if(agente == null) {
-                        ctx.contentType("text/html");
-                        ctx.html("<script>alert('Primero inice sesion'); </script>");
-                        ctx.redirect("/");
-                    }
-                });
-
-
-                get("/listarFormLocal", ctx -> {
-                    //tomando el parametro utl y validando el tipo.
-                    //List<Formulario> lista = formService.listarFormulario();
-                    //
-                    Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Listado local de Formularios");
-                    //modelo.put("lista", lista);
-                    //modelo.put("usuarioAgente", usuarioAgente);
-                    //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/listarFormLocal.html", modelo);
-                });
-
                 before("/listarForm", ctx -> {
                     Agente agente = ctx.sessionAttribute("agente");
                     if(agente == null) {
@@ -92,7 +71,7 @@ public class FormularioControlador extends BaseControlador {
                  * manejador para la creación del estudiante, una vez creado
                  * pasa nuevamente al listado.
                  */
-               /* post("/crearForm", ctx -> {
+                post("/crearForm", ctx -> {
                     //obteniendo la información enviada.
                     String sector = ctx.formParam("sector");
                     String nombre = ctx.formParam("nombre");
@@ -109,9 +88,9 @@ public class FormularioControlador extends BaseControlador {
                     //realizar algún tipo de validación...
                     formService.crearForm(tmp); //puedo validar, existe un error enviar a otro vista.
                     ctx.redirect("/crud-form/listarForm");
-                });*/
+                });
 
-               /* get("/visualizarForm/{id}", ctx -> {
+                get("/visualizarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
@@ -136,7 +115,7 @@ public class FormularioControlador extends BaseControlador {
                     }
                 });
 
-                /*get("/editarForm/{id}", ctx -> {
+                get("/editarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));
                     //
                     Map<String, Object> modelo = new HashMap<>();
@@ -151,7 +130,7 @@ public class FormularioControlador extends BaseControlador {
                 /**
                  * Proceso para editar un estudiante.
                  */
-                /*post("/editarForm", ctx -> {
+                post("/editarForm", ctx -> {
                     Agente agente = ctx.sessionAttribute("agente");
                     //obteniendo la información enviada.
                     String sector = ctx.formParam("sector");
@@ -171,10 +150,10 @@ public class FormularioControlador extends BaseControlador {
                 /**
                  * Puede ser implementando por el metodo post, por simplicidad utilizo el get. ;-D
                  */
-                /*get("/eliminar/{id}", ctx -> {
+                get("/eliminar/{id}", ctx -> {
                     formService.elimanandoForm(ctx.pathParam("id"));
                     ctx.redirect("/crud-form/listarForm");
-                });*/
+                });
 
             });
         });
