@@ -83,7 +83,7 @@ public class ServicioForm {
         MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario.getValor());
 
         //
-        Document filtro = new Document("_id", new ObjectId(id));
+        Document filtro = new Document("_id", id);
 
         Document first = formularios.find(filtro).first();
 
