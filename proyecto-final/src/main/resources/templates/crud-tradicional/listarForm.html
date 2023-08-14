@@ -37,7 +37,6 @@
                 <th scope="col">Longitud</th>
                <!-- <th scope="col">Acciones</th>-->
 
-
             </tr>
             </thead>
             <tbody>
@@ -51,6 +50,15 @@
                 <td th:text="${formulario.agente}">agente</td>
                <td th:text="${formulario.latitud}">latitud</td>
                 <td th:text="${formulario.longitud}">longitud</td>
+
+                <td>
+                <td>
+                <a class="btn btn-primary" th:href="@{/vermapa.html(latitud=${formulario.latitud}, longitud=${formulario.longitud})}">
+                    Ver Mapa
+                </a>
+                </td>
+
+                </td>
 
                <!-- <td>
                     <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
