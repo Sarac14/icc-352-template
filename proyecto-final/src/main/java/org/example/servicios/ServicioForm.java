@@ -6,7 +6,6 @@ import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 //import org.example.entidades.Agente;
-import org.example.entidades.Agente;
 import org.example.entidades.Formulario;
 import org.example.util.NoExisteAgenteException;
 import org.example.util.TablasMongo;
@@ -58,15 +57,15 @@ public class ServicioForm {
             Formulario formulario = new Formulario();
             formulario.setId(next.getObjectId("_id").toHexString());
             formulario.setSector(next.getString("sector"));
-            formulario.setNombre(next.getString("nombre"));
-            formulario.setNivelEscolar(next.getString("nivelEscolar"));
+            formulario.setName(next.getString("nombre"));
+            formulario.setLevel(next.getString("nivelEscolar"));
             formulario.setLatitud(next.getString("latitud"));
             formulario.setLongitud(next.getString("longitud"));
             //formulario.setAgente(next.getString("agente"));
             String agenteUser = next.getString("agente");
 
             //String agente = agenteService.getAgentePorId(agenteId).getId();
-            formulario.setAgente(agenteUser);
+            formulario.setUsuario(agenteUser);
 
 
 
@@ -92,11 +91,11 @@ public class ServicioForm {
             formulario = new Formulario();
             formulario.setId(first.getObjectId("_id").toHexString());
             formulario.setSector(first.getString("sector"));
-            formulario.setNombre(first.getString("nombre"));
-            formulario.setNivelEscolar(first.getString("nivelEscolar"));
+            formulario.setName(first.getString("nombre"));
+            formulario.setLevel(first.getString("nivelEscolar"));
             formulario.setLongitud(first.getString("longitud"));
             formulario.setLatitud(first.getString("latitud"));
-            formulario.setAgente(first.getString("agente"));
+            formulario.setUsuario(first.getString("agente"));
 
 
 
@@ -115,9 +114,9 @@ public class ServicioForm {
 
         //
         Document document = new Document("sector", formulario.getSector())
-                .append("nombre", formulario.getNombre())
-                .append("nivelEscolar", formulario.getNivelEscolar())
-                .append("agente", formulario.getAgente())
+                .append("nombre", formulario.getName())
+                .append("nivelEscolar", formulario.getLevel())
+                .append("agente", formulario.getUsuario())
                 .append("longitud",formulario.getLongitud())
                 .append("latitud",formulario.getLatitud());
 
@@ -146,10 +145,10 @@ public class ServicioForm {
         Document filtro = new Document("_id", new ObjectId(formulario.getId()));
         //
         //
-        Document document = new Document("agente", formulario.getAgente())
-                .append("nombre", formulario.getNombre())
+        Document document = new Document("agente", formulario.getUsuario())
+                .append("nombre", formulario.getName())
                 .append("sector", formulario.getSector())
-                .append("nivelEscolar",formulario.getNivelEscolar())
+                .append("nivelEscolar",formulario.getLevel())
                 .append("longitud",formulario.getLongitud())
                 .append("latitud",formulario.getLatitud())
                 .append("_id", new ObjectId(formulario.getId()));

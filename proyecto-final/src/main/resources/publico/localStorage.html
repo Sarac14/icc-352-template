@@ -33,7 +33,6 @@
 
     <div class="container">
         <div>
-
           <!-- <form enctype="application/x-www-form-urlencoded" method="post" action="/listarFormLocal.html" >-->
             <form enctype="application/x-www-form-urlencoded">
 
@@ -73,13 +72,7 @@
                                 <input class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="sector" id="sector" placeholder="Sector">
                             </div>
                         </div>
-                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
-                            <div class="col-md-8 offset-md-1">
-                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
-                            </div>
-                            <div class="col-md-10 offset-md-1"><input readonly="true"  class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario" id="user"></div>
 
-                        </div>
                         <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                             <div class="col-12 col-md-4 offset-md-4"><button class="btn btn-light btn-lg" style="font-family:Roboto, sans-serif;" type="reset">Limpiar</button>
                                 <button type="button" class="btn btn-light btn-lg" style="margin-left:16px;" id="btnEnviar">Enviar</button>
@@ -87,8 +80,14 @@
                         </div>
                     </div>
                 </div>
-
            </form>
+            <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                <div class="col-md-8 offset-md-1">
+                    <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
+                </div>
+                <div class="col-md-10 offset-md-1"><input readonly="true"  class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario" id="user"></div>
+
+            </div>
         </div>
     </div>
 
@@ -113,6 +112,11 @@
             </tbody>
 
         </table>
+        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+            <div class="col-12 col-md-4 offset-md-4">
+                <button type="button" class="btn btn-light btn-lg" style="margin-left:16px;" id="sync">Sincronizar datos</button>
+            </div>
+        </div>
     </div>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/uiLogic.js"></script>

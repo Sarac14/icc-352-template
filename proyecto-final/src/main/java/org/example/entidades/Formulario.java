@@ -1,13 +1,11 @@
 package org.example.entidades;
 
-import org.example.servicios.ServicioAgente;
-
 public class Formulario {
     private String id;
-    private String nombre;
-    private String nivelEscolar;
+    private String name;
+    private String level;
     private String sector;
-    private String agente;
+    private String usuario;
     private String longitud;
     private String latitud;
 
@@ -16,10 +14,10 @@ public class Formulario {
     }
 
     public Formulario(String nombre, String sector, String nivelEscolar, String agente, String longitud, String latitud) {
-        this.nombre = nombre;
-        this.nivelEscolar = nivelEscolar;
+        this.name = nombre;
+        this.level = nivelEscolar;
         this.sector = sector;
-        this.agente = agente;
+        this.usuario = agente;
         this.longitud = longitud;
         this.latitud = latitud;
 
@@ -27,10 +25,10 @@ public class Formulario {
 
     public Formulario(String id, String nombre, String nivelEscolar, String sector, String agente, String longitud, String latitud) {
         this.id = id;
-        this.nombre = nombre;
-        this.nivelEscolar = nivelEscolar;
+        this.name = nombre;
+        this.level = nivelEscolar;
         this.sector = sector;
-        this.agente = agente;
+        this.usuario = agente;
         this.longitud = longitud;
         this.latitud = latitud;
 
@@ -45,20 +43,20 @@ public class Formulario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getNivelEscolar() {
-        return nivelEscolar;
+    public String getLevel() {
+        return level;
     }
 
-    public void setNivelEscolar(String nivelEscolar) {
-        this.nivelEscolar = nivelEscolar;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getSector() {
@@ -69,12 +67,12 @@ public class Formulario {
         this.sector = sector;
     }
 
-    public String getAgente() {
-        return agente;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setAgente(String agente) {
-        this.agente = agente;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getLongitud() {

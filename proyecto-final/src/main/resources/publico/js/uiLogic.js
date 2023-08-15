@@ -59,6 +59,7 @@ function  saveRegister(){
     }
     var formElement = document.querySelector("form");
     formElement.reset();
+    //formElement.name='';
 
     registerTable();
 }
@@ -160,5 +161,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+//--------------------------WEB WORKER-------------------------------------------------
+let worker = new Worker('js/webWorker.js');
 
+document.getElementById("sync").addEventListener("click", function() {
+    let data = getRegisterList();
+    worker.postMessage(data);
+
+    localStorage.removeItem('localRegisterList');
+    registerList = [];
+    registerTable();
+});
+
+
+worker.onmessage = function(event) {
+    console.log("Mensaje recibido del worker: ", event.data);
+}
 

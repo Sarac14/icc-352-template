@@ -1,5 +1,7 @@
 package org.example.controladores;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.JavalinRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -55,125 +57,40 @@ public class FormularioControlador extends BaseControlador {
                     ctx.render("/templates/crud-tradicional/listarForm.html", modelo);
                 });
 
-                get("/crearForm", ctx -> {
-                    //
-                    Agente agente = ctx.sessionAttribute("agente");
-
-                    Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Nuevo Formulario");
-                    modelo.put("accion", "/crud-form/crearForm");
-                    modelo.put("nombreAgente", agente.getNombre());
-                    //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
-                });
-                get("/listarFormLocal", ctx -> {
-                    //
-                   // Agente agente = ctx.sessionAttribute("agente");
-
-                    Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Nuevo Formulario");
-                   // modelo.put("accion", "/crud-form/crearForm");
-                  //  modelo.put("nombreAgente", agente.getNombre());
-                    //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
-                });
-
-                /**
-                 * manejador para la creación del estudiante, una vez creado
-                 * pasa nuevamente al listado.
-                 */
-                post("/crearForm", ctx -> {
-                    //obteniendo la información enviada.
-                    String sector = ctx.formParam("sector");
-                    String nombre = ctx.formParam("nombre");
-                    String nivelEscolar = ctx.formParam("nivelEscolar");
-
-                    Agente agente = ctx.sessionAttribute("agente");
-
-
-                    String latitud = ctx.formParam("latitud");
-                    String longitud = ctx.formParam("longitud");
-
-                    //
-                    Formulario tmp = new Formulario(nombre, sector, nivelEscolar, agente.getUsuario(), longitud, latitud);
-                    //realizar algún tipo de validación...
-                    formService.crearForm(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-form/listarForm");
-                });
                 app.get("/obtener-usuario", ctx -> {
                     Agente agente = ctx.sessionAttribute("agente");
                     String usuario = agente.getUsuario();
                     ctx.result(usuario);
                 });
 
-
-                get("/visualizarForm/{id}", ctx -> {
-                    Formulario form = formService.getFormPorId(ctx.pathParam("id"));
-                    //
-                    Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Visaulizar Formulario "+form.getId());
-                    modelo.put("formulario", form);
-                    modelo.put("visualizar", true); //para controlar en el formulario si es visualizar
-                    modelo.put("accion", "/crud-form/");
-
-                    //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
-                });
-
-                before("/editarForm/{id}", ctx -> {
-                    Formulario formulario = formService.getFormPorId(ctx.pathParam("id"));
-                    String agente = formulario.getAgente();
-                    Agente user = ctx.sessionAttribute("agente");
-                    if (!user.getRol().equalsIgnoreCase("Admin")) {
-                        if (!agente.equals(user.getUsuario())) {
-                            ctx.contentType("text/html");
-                            ctx.html("<script>alert('Solo un Admin o el usuario que realizo la encuesta pueda editarla'); window.location.href='/crud-form/listar';</script>");
-                        }
-                    }
-                });
-
-                get("/editarForm/{id}", ctx -> {
-                    Formulario form = formService.getFormPorId(ctx.pathParam("id"));
-                    //
-                    Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Editar Formulario "+form.getId());
-                    modelo.put("formulario", form);
-                    modelo.put("accion", "/crud-form/editarForm");
-
-                    //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
-                });
-
-                /**
-                 * Proceso para editar un estudiante.
-                 */
-                post("/editarForm", ctx -> {
-                    Agente agente = ctx.sessionAttribute("agente");
-                    //obteniendo la información enviada.
-                    String sector = ctx.formParam("sector");
-                    String nombre = ctx.formParam("nombre");
-                    String nivelEscolar = ctx.formParam("nivelEscolar");
-                    String userAgente = agente.getUsuario();
-                    String latitud = ctx.formParam("latitud");
-                    String longitud = ctx.formParam("longitud");
-                    String id = ctx.formParam("_id");
-                    //
-                    Formulario tmp = new Formulario(id,nombre, sector, nivelEscolar, userAgente, longitud, latitud);
-                    //realizar algún tipo de validación...
-                    formService.acrutalizarForm(tmp);
-                    ctx.redirect("/crud-form/listarForm");
-                });
-
-                /**
-                 * Puede ser implementando por el metodo post, por simplicidad utilizo el get. ;-D
-                 */
-                get("/eliminar/{id}", ctx -> {
-                    formService.elimanandoForm(ctx.pathParam("id"));
-                    ctx.redirect("/crud-form/listarForm");
-                });
-
             });
         });
+        //--------------------------WEB SOCKETS--------------------------------
+        app.ws("/sync", ws -> {
+            ws.onConnect(ctx -> {
+                System.out.println("Conexión establecida");
+            });
+
+
+            ws.onMessage(ctx -> {
+                String message = ctx.message();
+                ObjectMapper mapper = new ObjectMapper();
+                List<Formulario> registros = mapper.readValue(message, new TypeReference<List<Formulario>>(){});
+
+                for (Formulario formulario : registros) {
+                    formService.crearForm(formulario);
+                }
+            });
+
+            ws.onClose(ctx -> {
+                System.out.println("Conexión cerrada");
+            });
+
+            ws.onError(ctx -> {
+                System.out.println("Ocurrió un error");
+            });
+        });
+
     }
 
 
