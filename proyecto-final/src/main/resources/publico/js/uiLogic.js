@@ -63,6 +63,7 @@ function registerTable(){
 
 
 
+
         idCell.innerHTML = list[i].id;
         nameCell.innerHTML = list[i].name;
         sectorCell.innerHTML = list[i].sector;
@@ -71,9 +72,44 @@ function registerTable(){
         latitudCell.innerHTML = list[i].latitud;
         longitudCell.innerHTML = list[i].longitud;
 
+        var actionsCell = row.insertCell(6); // Nueva celda para acciones
+
+
+        var editButton = document.createElement("button");
+        editButton.innerHTML = "Modificar";
+        editButton.className = "btn btn-primary btn-sm";
+        editButton.addEventListener("click", function() {
+        });
+        actionsCell.appendChild(editButton);
+
+        var deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Eliminar";
+        deleteButton.className = "btn btn-danger btn-sm";
+
+        (function(id) {
+            deleteButton.addEventListener("click", function() {
+                deleteRegister(id);
+                registerTable();
+            });
+        })(list[i].id);
+
+        actionsCell.appendChild(deleteButton);
+
 
 
         tbody.appendChild(row);
     }
 }
+
+function deleteRegister(registerId) {
+    for (var i = 0; i < registerList.length; i++) {
+        if (registerList[i].id == registerId) {
+            registerList.splice(i, 1);
+            localStorageRegisterList(registerList);
+            break;
+        }
+    }
+}
+
+
 
