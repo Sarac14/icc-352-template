@@ -100,6 +100,12 @@ public class FormularioControlador extends BaseControlador {
                     formService.crearForm(tmp); //puedo validar, existe un error enviar a otro vista.
                     ctx.redirect("/crud-form/listarForm");
                 });
+                app.get("/obtener-usuario", ctx -> {
+                    Agente agente = ctx.sessionAttribute("agente");
+                    String usuario = agente.getUsuario();
+                    ctx.result(usuario);
+                });
+
 
                 get("/visualizarForm/{id}", ctx -> {
                     Formulario form = formService.getFormPorId(ctx.pathParam("id"));

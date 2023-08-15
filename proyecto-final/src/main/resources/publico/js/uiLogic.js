@@ -1,6 +1,6 @@
 
 var registerList = [];
-function addRegisterToSystem(pname, psector, plevel, plongitud, platitud){//, pusuario){
+function addRegisterToSystem(pname, psector, plevel, plongitud, platitud, pusuario){
     var newRegister = {
         id: Math.floor(Math.random() * 10000),
         name : pname,
@@ -8,7 +8,7 @@ function addRegisterToSystem(pname, psector, plevel, plongitud, platitud){//, pu
         level : plevel,
         longitud : plongitud,
         latitud : platitud,
-        //usuario : pusuario
+        usuario : pusuario
     };
     console.log(newRegister);
     registerList.push(newRegister);
@@ -51,11 +51,11 @@ function  saveRegister(){
         var sName = document.querySelector('#name').value,
             sSector = document.querySelector('#sector').value,
             sNivel = document.querySelector('#level').value,
-            // sUsuario = document.querySelector('#usuario').value,
+            sUsuario = document.querySelector('#user').value,
             sLongitud = document.querySelector('#longitud').value,
             sLatitud = document.querySelector('#latitud').value;
 
-        addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud);//, sUsuario);
+        addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud, sUsuario);
     }
     var formElement = document.querySelector("form");
     formElement.reset();
@@ -76,9 +76,9 @@ function registerTable(){
             nameCell = row.insertCell(1),
             sectorCell = row.insertCell(2),
             levelCell = row.insertCell(3),
-            //  usuarioCell = row.insertCell(4),
-            latitudCell = row.insertCell(4),
-            longitudCell = row.insertCell(5);
+            usuarioCell = row.insertCell(4),
+            latitudCell = row.insertCell(5),
+            longitudCell = row.insertCell(6);
 
 
 
@@ -87,11 +87,11 @@ function registerTable(){
         nameCell.innerHTML = list[i].name;
         sectorCell.innerHTML = list[i].sector;
         levelCell.innerHTML = list[i].level;
-        // usuarioCell.innerHTML = list[i].usuario;
+        usuarioCell.innerHTML = list[i].usuario;
         latitudCell.innerHTML = list[i].latitud;
         longitudCell.innerHTML = list[i].longitud;
 
-        var actionsCell = row.insertCell(6); // Nueva celda para acciones
+        var actionsCell = row.insertCell(7); // Nueva celda para acciones
 
 
         var editButton = document.createElement("button");
@@ -106,6 +106,7 @@ function registerTable(){
                 document.getElementById("level").value = register.level;
                 document.getElementById("latitud").value = register.latitud;
                 document.getElementById("longitud").value = register.longitud;
+                document.getElementById("user").value = register.usuario;
                 document.getElementById("id").value = register.id;
             });
         })(list[i].id);
@@ -148,6 +149,15 @@ function getRegisterById(registerId) {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetch('/obtener-usuario')
+        .then(response => response.text())
+        .then(usuario => {
+            document.getElementById("user").value = usuario;
+        });
+});
+
 
 
 
