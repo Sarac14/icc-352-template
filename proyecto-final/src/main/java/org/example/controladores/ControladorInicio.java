@@ -57,7 +57,7 @@ public class ControladorInicio extends BaseControlador {
                 Cookie rememberMeCookie = new Cookie("rememberMe", "");
                 rememberMeCookie.setMaxAge(0);
                 ctx.res().addCookie(rememberMeCookie);
-                ctx.sessionAttribute("username", null);
+                ctx.sessionAttribute("agente", null);
                 ctx.redirect("/");
             }
         });

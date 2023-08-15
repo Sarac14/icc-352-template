@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="/templates/crud-tradicional/plantilla.html::head">
+
+        <title>Nuevo registro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="css/Responsive-Form-Contact-Form-Clean.css">
+    <link rel="stylesheet" href="css/Responsive-Form.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+    </head>
+
+<body>
+<nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark" style="background-color: #1EB6F3;">
+    <div class="container"><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarNav"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/crud-simple/listar">Agentes</a></li>
+                <li class="nav-item"><a class="nav-link" href="/localStorage.html">Encuestas Locales</a></li>
+                <li class="nav-item"><a class="nav-link" href="/crud-form/listarForm">Encuestas</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login" th:text="${accion}">.</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+
+
+    <div class="container">
+        <div>
+
+          <!-- <form enctype="application/x-www-form-urlencoded" method="post" action="/listarFormLocal.html" >-->
+            <form enctype="application/x-www-form-urlencoded">
+
+
+            <input type="hidden" name="_id" id="id"/>
+                <input type="hidden" id="latitud" name="latitud">
+                <input type="hidden" id="longitud" name="longitud">
+                <div class="form-group mb-3">
+                    <div id="formdiv">
+                        <div class="row" style="margin-right: 0px;margin-left: 0px;padding-top: 24px;margin-top: 28px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Nombre Completo</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><input class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="nombre" id="name" placeholder="nombre"></div>
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;margin-top:-16px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Nivel Escolar</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><select class="form-select" style="font-family:Roboto, sans-serif;" name="nivelEscolar" id="level">
+                                <optgroup label="Gender">
+                                    <option value="Basico">Basico</option>
+                                    <option value="Medio" >Medio</option>
+                                    <option value="Grado Universitario" >Grado Universitario</option>
+                                    <option value="Postgrado">Postgrado</option>
+                                    <option value="Doctorado" >Doctorado</option>
+                                </optgroup>
+                            </select></div>
+
+                        </div>
+
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Sector</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1">
+                                <input class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="sector" id="sector" placeholder="Sector">
+                            </div>
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><input readonly="true"  class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario" id="user"></div>
+
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-12 col-md-4 offset-md-4"><button class="btn btn-light btn-lg" style="font-family:Roboto, sans-serif;" type="reset">Limpiar</button>
+                                <button type="button" class="btn btn-light btn-lg" style="margin-left:16px;" id="btnEnviar">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+           </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Registros</h2>
+        <table class="table table-hover" id="registerTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Sector</th>
+                    <th>Nivel Escolar</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+
+        </table>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/uiLogic.js"></script>
+
+
+
+    <script>
+        document.querySelector('#btnEnviar').addEventListener('click', function(event) {
+            event.preventDefault();
+            registerTable();
+
+            if (!navigator.geolocation) {
+                alert("La geolocalización no está disponible en tu navegador. Por favor, introduce la latitud y longitud manualmente.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById("latitud").value = position.coords.latitude;
+                document.getElementById("longitud").value = position.coords.longitude;
+                saveRegister();
+
+               // event.target.submit();
+            }, function() {
+                alert("Error al obtener la ubicación. Por favor, introduce la latitud y longitud manualmente.");
+            });
+        });
+        registerTable();
+    </script>
+
+
+
+</body>
+
+</html>

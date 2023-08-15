@@ -5,7 +5,6 @@ import io.javalin.rendering.JavalinRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.example.entidades.Agente;
 import org.example.entidades.Formulario;
-import org.example.servicios.ServicioAgente;
 import org.example.servicios.ServicioForm;
 import org.example.util.BaseControlador;
 
@@ -58,13 +57,25 @@ public class FormularioControlador extends BaseControlador {
 
                 get("/crearForm", ctx -> {
                     //
-                    Agente agente  = ctx.sessionAttribute("agente");
+                    Agente agente = ctx.sessionAttribute("agente");
+
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Nuevo Formulario");
                     modelo.put("accion", "/crud-form/crearForm");
                     modelo.put("nombreAgente", agente.getNombre());
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/formulario.html", modelo);
+                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
+                });
+                get("/listarFormLocal", ctx -> {
+                    //
+                   // Agente agente = ctx.sessionAttribute("agente");
+
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Nuevo Formulario");
+                   // modelo.put("accion", "/crud-form/crearForm");
+                  //  modelo.put("nombreAgente", agente.getNombre());
+                    //enviando al sistema de plantilla.
+                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
                 });
 
                 /**
@@ -100,7 +111,7 @@ public class FormularioControlador extends BaseControlador {
                     modelo.put("accion", "/crud-form/");
 
                     //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/formulario.html", modelo);
+                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
                 });
 
                 before("/editarForm/{id}", ctx -> {
@@ -124,7 +135,7 @@ public class FormularioControlador extends BaseControlador {
                     modelo.put("accion", "/crud-form/editarForm");
 
                     //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/formulario.html", modelo);
+                    ctx.render("/templates/crud-tradicional/NewFormulario.html", modelo);
                 });
 
                 /**

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="/templates/crud-tradicional/plantilla.html::head">
+
+        <title>Nuevo registro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="css/Responsive-Form-Contact-Form-Clean.css">
+    <link rel="stylesheet" href="css/Responsive-Form.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <script >
+            var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB
+            var dataBase = indexedDB.open("programacion_web", 1);
+            dataBase.onupgradeneeded = function (e) {
+                active = dataBase.result;
+                var registro = active.createObjectStore("registros", { keyPath: 'id', autoIncrement: false });
+                registro.createIndex('por_indice', 'indice', { unique: false });
+            };
+            dataBase.onsuccess = function (e) {
+                console.log('Proceso ejecutado de forma correctamente');
+            };
+            dataBase.onerror = function (e) {
+                console.error('Error en el proceso: ' + e.target.errorCode);
+            };
+
+            function registrar() {
+                var dbActiva = dataBase.result;
+                var transaccion = dbActiva.transaction(["registros"], "readwrite");
+                transaccion.onerror = function (e) {
+                    alert(request.error.name + '\n\n' + request.error.message);
+                };
+                transaccion.oncomplete = function (e) {
+                    document.querySelector("#name").value = "",
+                        alert('Objeto agregado correctamente');
+                    location.reload();
+                };
+                var registros = transaccion.objectStore("registros");
+                var request = registros.put({
+                    id: Math.floor(Math.random() * 10000),
+                    name: document.querySelector("#name").value,
+                    sector: document.querySelector("#sector").value,
+                    level: document.querySelector("#level").value,
+                    longitude: document.querySelector("#longitud").value,
+                    latitude: document.querySelector("#latitud").value
+                });
+                request.onerror = function (e) {
+                    var mensaje = "Error: " + e.target.errorCode;
+                    console.error(mensaje);
+                    alert(mensaje)
+                };
+                request.onsuccess = function (e) {
+                    console.log("Datos Procesado con exito");
+                    document.querySelector("#name").value = "";
+                    document.querySelector("#sector").value = "";
+                    document.querySelector("#level").value = "";
+                    document.querySelector("#longitud").value = "";
+                    document.querySelector("#latitud").value = "";
+                };
+            }
+
+            function modificar() {
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+                const id = params.id;
+
+                var data = dataBase.result.transaction(["registros"], "readwrite");
+                var registros = data.objectStore("registros");
+
+                registros.get(parseInt(id)).onsuccess = function (e) {
+                    var resultado = e.target.result;
+                    console.log("los datos: " + JSON.stringify(resultado));
+                    if (resultado !== undefined) {
+
+                        resultado.name = document.querySelector("#name").value;
+                        resultado.sector = document.querySelector("#sector").value;
+                        resultado.level = document.querySelector("#longitud").value;
+                        resultado.longitude = document.querySelector("#level").value;
+                        resultado.latitude = document.querySelector("#latitud").value;
+
+                        var solicitudUpdate = registros.put(resultado);
+
+                        solicitudUpdate.onerror = function (e) {
+                            console.error("Error Datos Actualizados....");
+                        }
+                    } else {
+                        console.log("Registro no encontrado...");
+                    }
+                };
+            }
+
+            function eliminarTodo() {
+                const params = new Proxy(new URLSearchParams(window.location.search), {
+                    get: (searchParams, prop) => searchParams.get(prop),
+                });
+                var data = dataBase.result.transaction(["registros"], "readwrite");
+                data.objectStore("registros").clear();
+                location.reload();
+            }
+
+            function listarDatos() {
+                var data = dataBase.result.transaction(["registros"]);
+                var registros = data.objectStore("registros");
+                var contador = 0;
+                var registros_recuperados = [];
+                registros.openCursor().onsuccess = function (e) {
+                    var cursor = e.target.result;
+                    if (cursor) {
+                        contador++;
+                        registros_recuperados.push(cursor.value);
+                        cursor.continue();
+                    } else {
+                        console.log("La cantidad de registros recuperados es: " + contador);
+                    }
+                };
+                data.oncomplete = function () {
+                    imprimirTabla(registros_recuperados);
+                }
+            }
+
+            function getDatos() {
+                var data = dataBase.result.transaction(["registros"]);
+                var registros = data.objectStore("registros");
+                var contador = 0;
+                var registros_recuperados = [];
+                registros.openCursor().onsuccess = function (e) {
+                    var cursor = e.target.result;
+                    if (cursor) {
+                        contador++;
+                        registros_recuperados.push(cursor.value);
+                        cursor.continue();
+                    } else {
+                        console.log("La cantidad de registros recuperados es: " + contador);
+                    }
+                };
+                data.oncomplete = function () {
+                    return registros_recuperados;
+                }
+            }
+
+            function eliminar(id) {
+
+                var data = dataBase.result.transaction(["registros"], "readwrite");
+                var registros = data.objectStore("registros");
+
+                registros.get(parseInt(id)).onsuccess = function (e) {
+                    var resultado = e.target.result;
+                    console.log("los datos: " + JSON.stringify(resultado));
+                    if (resultado !== undefined) {
+
+                        var solicitudUpdate = registros.delete(resultado);
+
+                        solicitudUpdate.onerror = function (e) {
+                            console.error("Error Datos Actualizados....");
+                        }
+                    } else {
+                        console.log("Registro no encontrado...");
+                    }
+                };
+            }
+
+            function imprimirTabla(registros_recuperados) {
+                var tabla = document.getElementById("table");
+                for (var key in registros_recuperados) {
+                    filaTabla = tabla.insertRow();
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].id;
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].name;
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].sector;
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].level;
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].longitude;
+                    filaTabla.insertCell().textContent = "" + registros_recuperados[key].latitude;
+                    filaTabla.insertCell().insertAdjacentHTML(
+                        'beforeend',
+                        `<button type='button' onclick="location.href='/records/update?id=${registros_recuperados[key].id}&name=${registros_recuperados[key].name}&sector=${registros_recuperados[key].sector}&longitude=${registros_recuperados[key].longitude}&latitude=${registros_recuperados[key].latitude}&level=${registros_recuperados[key].level}';" class="btn btn-primary">Edit</button> <button type='button' onclick="eliminar(registros_recuperados[key].id);" class="btn btn-warning">Delete</button>`);
+                }
+                document.getElementById("listaRegistro").innerHTML="";
+                document.getElementById("listaRegistro").appendChild(tabla);
+            }
+        </script>
+    </head>
+
+<body>
+    <div class="container">
+        <div>
+           <!-- <form enctype="application/x-www-form-urlencoded" method="post" action="/listarFormLocal.html" >-->
+                <input type="hidden" name="_id" id="id"/>
+                <div class="form-group mb-3">
+                    <div id="formdiv">
+                        <div class="row" style="margin-right: 0px;margin-left: 0px;padding-top: 24px;margin-top: 28px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Nombre Completo</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><input class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="nombre" id="name" placeholder="nombre"></div>
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;margin-top:-16px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Nivel Escolar</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><select class="form-select" style="font-family:Roboto, sans-serif;" name="nivelEscolar" id="level">
+                                <optgroup label="Gender">
+                                    <option value="Basico">Basico</option>
+                                    <option value="Medio" >Medio</option>
+                                    <option value="Grado Universitario" >Grado Universitario</option>
+                                    <option value="Postgrado">Postgrado</option>
+                                    <option value="Doctorado" >Doctorado</option>
+                                </optgroup>
+                            </select></div>
+
+                        </div>
+
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Sector</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1">
+                                <input class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="sector" id="sector" placeholder="Sector">
+                            </div>
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-md-8 offset-md-1">
+                                <p style="margin-left:2%;font-family:Roboto, sans-serif;font-size:24px;"><strong>Usuario</strong></p>
+                            </div>
+                            <div class="col-md-10 offset-md-1"><input readonly="true"  class="form-control" type="text" style="margin-left:0px;font-family:Roboto, sans-serif;" name="usuario" placeholder="usuario" id="user"></div>
+                            <input type="hidden" id="latitud" name="latitud">
+                            <input type="hidden" id="longitud" name="longitud">
+                        </div>
+                        <div class="row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                            <div class="col-12 col-md-4 offset-md-4"><button class="btn btn-light btn-lg" style="font-family:Roboto, sans-serif;" type="reset">Limpiar</button>
+                                <button onclick="registrar()" class="btn btn-light btn-lg" style="margin-left:16px;" >Enviar</button>
+                                <button onclick="listarDatos()">Listar Datos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!--            </form>-->
+        </div>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            if (!navigator.geolocation) {
+                alert("La geolocalización no está disponible en tu navegador. Por favor, introduce la latitud y longitud manualmente.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById("latitud").value = position.coords.latitude;
+                document.getElementById("longitud").value = position.coords.longitude;
+
+                event.target.submit();
+            }, function() {
+                alert("Error al obtener la ubicación. Por favor, introduce la latitud y longitud manualmente.");
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
