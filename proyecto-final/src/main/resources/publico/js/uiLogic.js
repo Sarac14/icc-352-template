@@ -33,14 +33,33 @@ function localStorageRegisterList(plist){
 //document.querySelector('#btnEnviar').addEventListener('click', saveRegister);
 //registerTable();
 function  saveRegister(){
-    var sName = document.querySelector('#name').value,
-        sSector = document.querySelector('#sector').value,
-        sNivel = document.querySelector('#level').value,
-        // sUsuario = document.querySelector('#usuario').value,
-        sLongitud = document.querySelector('#longitud').value,
-        sLatitud = document.querySelector('#latitud').value;
+    var sId = document.getElementById("id").value;
 
-    addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud);//, sUsuario);
+    if (sId) {
+        // Si hay un ID, estamos modificando un registro existente
+        for (var i = 0; i < registerList.length; i++) {
+            if (registerList[i].id == sId) {
+                registerList[i].name = document.getElementById("name").value;
+                registerList[i].sector = document.getElementById("sector").value;
+                registerList[i].level = document.getElementById("level").value;
+
+                localStorageRegisterList(registerList);
+                break;
+            }
+        }
+    }else {
+        var sName = document.querySelector('#name').value,
+            sSector = document.querySelector('#sector').value,
+            sNivel = document.querySelector('#level').value,
+            // sUsuario = document.querySelector('#usuario').value,
+            sLongitud = document.querySelector('#longitud').value,
+            sLatitud = document.querySelector('#latitud').value;
+
+        addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud);//, sUsuario);
+    }
+    var formElement = document.querySelector("form");
+    formElement.reset();
+
     registerTable();
 }
 
@@ -78,8 +97,19 @@ function registerTable(){
         var editButton = document.createElement("button");
         editButton.innerHTML = "Modificar";
         editButton.className = "btn btn-primary btn-sm";
-        editButton.addEventListener("click", function() {
-        });
+        (function(currentId) {
+            editButton.addEventListener("click", function() {
+                var register = getRegisterById(currentId);
+
+                document.getElementById("name").value = register.name;
+                document.getElementById("sector").value = register.sector;
+                document.getElementById("level").value = register.level;
+                document.getElementById("latitud").value = register.latitud;
+                document.getElementById("longitud").value = register.longitud;
+                document.getElementById("id").value = register.id;
+            });
+        })(list[i].id);
+
         actionsCell.appendChild(editButton);
 
         var deleteButton = document.createElement("button");
@@ -110,6 +140,15 @@ function deleteRegister(registerId) {
         }
     }
 }
+
+function getRegisterById(registerId) {
+    for (var i = 0; i < registerList.length; i++) {
+        if (registerList[i].id == registerId) {
+            return registerList[i];
+        }
+    }
+}
+
 
 
 
