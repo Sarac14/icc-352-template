@@ -8,7 +8,17 @@ public class Formulario {
     private String usuario;
     private String longitud;
     private String latitud;
+    private Foto foto;
 
+    public Formulario(String name, String level, String sector, String usuario, String longitud, String latitud, Foto foto) {
+        this.name = name;
+        this.level = level;
+        this.sector = sector;
+        this.usuario = usuario;
+        this.longitud = longitud;
+        this.latitud = latitud;
+        this.foto = foto;
+    }
 
     public Formulario() {
     }

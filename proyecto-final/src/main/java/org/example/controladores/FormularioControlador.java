@@ -65,6 +65,7 @@ public class FormularioControlador extends BaseControlador {
 
             });
         });
+
         //--------------------------WEB SOCKETS--------------------------------
         app.ws("/sync", ws -> {
             ws.onConnect(ctx -> {

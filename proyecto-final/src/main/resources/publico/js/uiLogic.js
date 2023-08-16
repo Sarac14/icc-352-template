@@ -1,16 +1,16 @@
 
 var registerList = [];
-function addRegisterToSystem(pname, psector, plevel, plongitud, platitud, pusuario){
+function addRegisterToSystem(pname, psector, plevel, plongitud, platitud, pusuario, pimagenBase64) {
     var newRegister = {
         id: Math.floor(Math.random() * 10000),
-        name : pname,
-        sector : psector,
-        level : plevel,
-        longitud : plongitud,
-        latitud : platitud,
-        usuario : pusuario
+        name: pname,
+        sector: psector,
+        level: plevel,
+        longitud: plongitud,
+        latitud: platitud,
+        usuario: pusuario,
+        imagenBase64: pimagenBase64 // Agregar la imagen base64 al nuevo registro
     };
-    console.log(newRegister);
     registerList.push(newRegister);
     localStorageRegisterList(registerList);
 }
@@ -47,19 +47,21 @@ function  saveRegister(){
                 break;
             }
         }
-    }else {
+    } else {
         var sName = document.querySelector('#name').value,
             sSector = document.querySelector('#sector').value,
             sNivel = document.querySelector('#level').value,
             sUsuario = document.querySelector('#user').value,
             sLongitud = document.querySelector('#longitud').value,
-            sLatitud = document.querySelector('#latitud').value;
+            sLatitud = document.querySelector('#latitud').value,
+            sImagenBase64 = document.querySelector('#imagen-base64').value; // Obtener la imagen base64
+        console.log("Imagen base64:", sImagenBase64);
 
-        addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud, sUsuario);
+        addRegisterToSystem(sName, sSector, sNivel, sLongitud, sLatitud, sUsuario, sImagenBase64);
     }
+
     var formElement = document.querySelector("form");
     formElement.reset();
-    //formElement.name='';
 
     registerTable();
 }
@@ -127,7 +129,25 @@ function registerTable(){
 
         actionsCell.appendChild(deleteButton);
 
+        var viewFormImageButton = document.createElement("button");
+        viewFormImageButton.innerHTML = "Ver Foto del Formulario";
+        viewFormImageButton.className = "btn btn-info btn-sm";
+        (function(currentId) {
+            viewFormImageButton.addEventListener("click", function() {
+                var register = getRegisterById(currentId);
+                var imageBase64 = register.imagenBase64; // Obtener la imagen base64 del registro
+                var imageName = register.name; // Obtener el nombre de la imagen u otro dato relevante
 
+                // Almacenar los datos de la imagen en el Local Storage
+                localStorage.setItem("fotoBase64", imageBase64);
+                localStorage.setItem("nombreFoto", imageName);
+
+                // Redirigir a la página de visualización de la foto
+                window.location.href = "VerFoto.html";
+            });
+        })(list[i].id);
+
+        actionsCell.appendChild(viewFormImageButton);
 
         tbody.appendChild(row);
     }

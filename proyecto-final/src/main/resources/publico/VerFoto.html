@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ver Foto</title>
+  <!-- Agrega aquí los enlaces a las hojas de estilo y otros recursos si es necesario -->
+</head>
+<body>
+<div class="container">
+  <h1>Datos de la Foto</h1>
+  <div class="card">
+    <img id="foto" class="card-img-top" alt="Foto">
+    <div class="card-body">
+      <h5 class="card-title" id="nombre">Nombre de la Foto</h5>
+      <p class="card-text" id="tipo">Tipo de Foto</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Obtener los datos de la imagen desde el Local Storage
+    var fotoBase64 = localStorage.getItem("fotoBase64");
+    var nombreFoto = localStorage.getItem("nombreFoto");
+
+    // Obtener los elementos de la página
+    var fotoElement = document.getElementById("foto");
+    var nombreElement = document.getElementById("nombre");
+
+    // Cargar los datos de la imagen en los elementos
+    fotoElement.src = "data:image/jpeg;base64," + fotoBase64;
+    nombreElement.textContent = "Nombre de la Foto: " + nombreFoto;
+  });
+</script>
+
+</body>
+</html>
