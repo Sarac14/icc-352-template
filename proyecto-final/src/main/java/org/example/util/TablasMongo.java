@@ -1,7 +1,7 @@
 package org.example.util;
 
 public enum TablasMongo {
-    agente("agente"), formulario("formulario");
+    agente("agente"), formulario1("formulario1");
 
     private String valor;
 

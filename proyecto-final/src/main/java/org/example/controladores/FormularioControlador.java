@@ -7,6 +7,7 @@ import io.javalin.rendering.JavalinRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.example.entidades.Agente;
 import org.example.entidades.Formulario;
+import org.example.entidades.Foto;
 import org.example.servicios.ServicioForm;
 import org.example.util.BaseControlador;
 
@@ -61,6 +62,42 @@ public class FormularioControlador extends BaseControlador {
                     Agente agente = ctx.sessionAttribute("agente");
                     String usuario = agente.getUsuario();
                     ctx.result(usuario);
+                });
+
+                app.get("/obtener-formulario/{id}", ctx -> {
+                    String formularioId = ctx.queryParam("id");
+
+                    if (formularioId != null && !formularioId.isEmpty()) {
+                        Formulario formulario = ServicioForm.getInstancia().getFormPorId(formularioId);
+
+                        if (formulario != null) {
+                            ctx.json(formulario);
+                        } else {
+                            ctx.status(404);
+                            ctx.result("Formulario no encontrado");
+                        }
+                    } else {
+                        ctx.status(400);
+                        ctx.result("ID del formulario no proporcionado");
+                    }
+                });
+
+                get("/visualizar/{id}", ctx -> {
+                    try {
+                        String formularioId = ctx.queryParam("id");
+                        Formulario formulario = ServicioForm.getInstancia().getFormPorId(formularioId);
+                        if(formulario==null){
+                            ctx.redirect("/listarForm");
+                            return;
+                        }
+                        Map<String, Object> modelo = new HashMap<>();
+                        modelo.put("formulario", formulario);
+                        //
+                        ctx.render("publico/visualizar.html", modelo);
+                    }catch (Exception e){
+                        System.out.println("Error: "+e.getMessage());
+                        ctx.redirect("/listarForm");
+                    }
                 });
 
             });
