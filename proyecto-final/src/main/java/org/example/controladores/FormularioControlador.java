@@ -100,6 +100,23 @@ public class FormularioControlador extends BaseControlador {
                     }
                 });
 
+                get("/visualizarFoto/{id}", ctx -> {
+                    try {
+                        String foto = ctx.pathParam("id");
+                        if(foto==null){
+                            ctx.redirect("/crud-form/listarForm");
+                            return;
+                        }
+                        Map<String, Object> modelo = new HashMap<>();
+                        modelo.put("foto", foto);
+                        //
+                        ctx.render("publico/visualizar.html", modelo);
+                    }catch (Exception e){
+                        System.out.println("Error: "+e.getMessage());
+                        ctx.redirect("/crud-form/listarForm");
+                    }
+                });
+
             });
         });
 

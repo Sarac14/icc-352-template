@@ -56,21 +56,20 @@
                 <td th:text="${formulario.longitud}">longitud</td>
 
                 <td>
-                <td>
                 <a class="btn btn-primary" th:href="@{/vermapa.html(latitud=${formulario.latitud}, longitud=${formulario.longitud})}">
                     Ver Mapa
                 </a>
-                <a class="btn btn-info" th:href="'formulario/visualizar/'+${formulario.id}">
-                    Ver Foto
-                </a>
                 </td>
 
-                </td>
+                <!--visualizar foto-->
+                <td><a th:if="${formulario.imagenBase64 != null}" th:href="'/crud-form/visualizarFoto/'+${formulario.imagenBase64}" role="button">Ver foto</a></td>
 
-               <!-- <td>
-                    <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
-                    <a th:text="Eliminar" th:href="'eliminar/'+${formulario.id}" th class="btn btn-danger btn-sm"/>
-                </td>-->
+
+
+                <!-- <td>
+                     <a th:text="Editar" th:href="'editarForm/'+${formulario.id}" th class="btn btn-secondary btn-sm"/> |
+                     <a th:text="Eliminar" th:href="'eliminar/'+${formulario.id}" th class="btn btn-danger btn-sm"/>
+                 </td>-->
             </tr>
             </tbody>
         </table>
