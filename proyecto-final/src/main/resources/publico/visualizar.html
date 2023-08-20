@@ -12,12 +12,12 @@
 </head>
 <body>
 <div class="container">
-    <h1 th:text="'Datos de la Foto: '+ ${formulario.nombre}">Datos de la Foto</h1>
+    <h1 th:text="'Datos de la Foto: '+ ${formulario.name}">Datos de la Foto</h1>
     <div class="card" >
         <img th:src="@{${formulario.getImagenBase64()}}" class="card-img-top" alt="Foto enviada">
         <div class="card-body">
-            <h5 class="card-title" th:text="${formulario.nombre}">Card title</h5>
-            <p class="card-text" th:text="'Foto del tipo: '+ ${formulario.nombre}"></p>
+            <h5 class="card-title" th:text="${formulario.name}">Card title</h5>
+            <p class="card-text" th:text="'Foto del tipo: '+ ${formulario.name}"></p>
         </div>
     </div>
 </div>

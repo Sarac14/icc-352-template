@@ -102,13 +102,28 @@ public class FormularioControlador extends BaseControlador {
 
                 get("/visualizarFoto/{id}", ctx -> {
                     try {
-                        String foto = ctx.pathParam("id");
-                        if(foto==null){
+                        String id = ctx.pathParam("id");
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                        System.out.println("ID obtenido: " + id);
+
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+                        Formulario formulario = formService.getFormPorId1(id);
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                        System.out.println("Nombre del formulario: " + formulario.getName());
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+
+
+                        if(formulario==null){
                             ctx.redirect("/crud-form/listarForm");
                             return;
                         }
                         Map<String, Object> modelo = new HashMap<>();
-                        modelo.put("foto", foto);
+                        modelo.put("formulario", formulario);
                         //
                         ctx.render("publico/visualizar.html", modelo);
                     }catch (Exception e){

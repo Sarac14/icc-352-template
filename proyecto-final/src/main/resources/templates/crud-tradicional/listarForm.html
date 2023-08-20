@@ -62,7 +62,10 @@
                 </td>
 
                 <!--visualizar foto-->
-                <td><a th:if="${formulario.imagenBase64 != null}" th:href="'/crud-form/visualizarFoto/'+${formulario.imagenBase64}" role="button">Ver foto</a></td>
+                <td>
+                    <a th:if="${formulario.imagenBase64 != null}" th:href="'visualizarFoto/'+${formulario.id}" role="button">Ver foto</a>
+
+                </td>
 
 
 

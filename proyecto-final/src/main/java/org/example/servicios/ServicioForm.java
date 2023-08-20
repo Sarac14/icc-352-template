@@ -106,6 +106,37 @@ public class ServicioForm {
         return formulario;
     }
 
+    public Formulario getFormPorId1 (String id){
+        Formulario formulario = new Formulario();
+        //Conexion a Mongo.
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+
+        //
+        Document filtro = new Document("_id", new ObjectId(id));
+
+        Document first = formularios.find(filtro).first();
+
+        //si no fue encontrado retorna null.
+        if(first!=null){
+            formulario = new Formulario();
+            formulario.setId(first.getObjectId("_id").toHexString());
+            formulario.setSector(first.getString("sector"));
+            formulario.setName(first.getString("nombre"));
+            formulario.setLevel(first.getString("nivelEscolar"));
+            formulario.setLongitud(first.getString("longitud"));
+            formulario.setLatitud(first.getString("latitud"));
+            formulario.setUsuario(first.getString("agente"));
+            formulario.setImagenBase64(first.getString("imagenBase64"));
+
+
+
+            System.out.println("Consultado: "+formulario.toString());
+        }
+
+        //retornando.
+        return formulario;
+    }
+
     public Formulario crearForm (@NotNull Formulario formulario){
         if(getFormPorId(formulario.getId())!=null){
             System.out.println("Formulario registrado...");
