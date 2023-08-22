@@ -35,7 +35,7 @@ public class ApiControlador extends BaseControlador {
                     });
 
                     get("/{matricula}", ctx -> {
-                        ctx.json(agenteService.getAgentePorUsuario(ctx.pathParam("usuario")));
+                        ctx.json(agenteService.getAgentePorUsuario(ctx.pathParam("matricula")));
                     });
 
                     post("/", ctx -> {
@@ -55,7 +55,7 @@ public class ApiControlador extends BaseControlador {
 
                     delete("/{matricula}", ctx -> {
                         //creando.
-                        ctx.json(agenteService.eliminandoAgente(ctx.pathParam("usuario")));
+                        ctx.json(agenteService.eliminandoAgente(ctx.pathParam("matricula")));
                     });
                 });
             });

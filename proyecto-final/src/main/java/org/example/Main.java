@@ -2,10 +2,7 @@ package org.example;
 
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
-import org.example.controladores.ApiControlador;
-import org.example.controladores.AgenteControlador;
-import org.example.controladores.ControladorInicio;
-import org.example.controladores.FormularioControlador;
+import org.example.controladores.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -42,6 +39,7 @@ public class Main {
             new ApiControlador(app).aplicarRutas();
             new AgenteControlador(app).aplicarRutas();
             new FormularioControlador(app).aplicarRutas();
+            new RestControlador(app).aplicarRutas();
 
 
         }
