@@ -202,5 +202,35 @@ public class ServicioForm {
         //
         return formularios.findOneAndDelete(filtro) !=null;
     }
+
+    public List<Formulario> listarFormularioPorUsuario(String usernameAgente) {
+        List<Formulario> lista = new ArrayList<>();
+
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+
+        Document filtro = new Document("agente", usernameAgente);
+
+        MongoCursor<Document> iterator = formularios.find(filtro).iterator();
+        while (iterator.hasNext()) {
+
+            // Obteniendo el documento.
+            Document next = iterator.next();
+
+            // Encapsulando la información en un objeto Formulario.
+            Formulario formulario = new Formulario();
+            formulario.setId(next.getObjectId("_id").toHexString());
+            formulario.setSector(next.getString("sector"));
+            formulario.setName(next.getString("nombre"));
+            formulario.setLevel(next.getString("nivelEscolar"));
+            formulario.setLatitud(next.getString("latitud"));
+            formulario.setLongitud(next.getString("longitud"));
+            formulario.setImagenBase64(next.getString("imagenBase64"));
+            formulario.setUsuario(next.getString("agente"));
+
+            lista.add(formulario);
+        }
+
+        return lista;
+    }
 }
 

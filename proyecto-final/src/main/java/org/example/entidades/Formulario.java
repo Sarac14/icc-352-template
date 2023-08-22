@@ -35,7 +35,7 @@ public class Formulario {
 
     }
 
-   /* public Formulario(String id, String nombre, String nivelEscolar, String sector, String agente, String longitud, String latitud) {
+    public Formulario(String id, String nombre, String nivelEscolar, String sector, String agente, String longitud, String latitud, String foto) {
         this.id = id;
         this.name = nombre;
         this.level = nivelEscolar;
@@ -43,9 +43,19 @@ public class Formulario {
         this.usuario = agente;
         this.longitud = longitud;
         this.latitud = latitud;
+        this.imagenBase64 = foto;
+
+    }
+
+    public Formulario(String nombre, String nivelEscolar, String sector, String agente, String foto) {
+        this.name = nombre;
+        this.level = nivelEscolar;
+        this.sector = sector;
+        this.usuario = agente;
+        this.imagenBase64 = foto;
+    }
 
 
-    }*/
     public void setImagenBase64(String imagenBase64) {
         this.imagenBase64 = imagenBase64;
     }

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package formulariorn;
+
+message Formulario{
+  string name = 1;
+  string level = 2;
+  string sector = 3;
+  string usuario = 4;
+  string imagenBase64 = 5;
+}
+
+//a
+service ServicioListado{
+  rpc ListarFormularios(ListarFormsRequest) returns (ListarFormsResponse) {}
+}
+
+message ListarFormsRequest{
+  string usernameAgente = 1;
+}
+
+message ListarFormsResponse{
+  string json = 1;
+}
+
+//b
+
+message CrearFormularioRequest{
+  string name = 1;
+  string level = 2;
+  string sector = 3;
+  string usuario = 4;
+  string imagenBase64 = 5;
+  string json = 6;
+
+}
+
+message CrearFormularioResponse{
+  string name = 1;
+  string level = 2;
+  string sector = 3;
+  string usuario = 4;
+}
+
+service ServicioCreacion{
+  rpc CrearFormulario(CrearFormularioRequest) returns (CrearFormularioResponse) {}
+}
