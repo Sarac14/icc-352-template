@@ -126,7 +126,9 @@
     <script>
         document.querySelector('#btnEnviar').addEventListener('click', function(event) {
             event.preventDefault();
+
             registerTable();
+
 
             if (!navigator.geolocation) {
                 alert("La geolocalización no está disponible en tu navegador. Por favor, introduce la latitud y longitud manualmente.");
@@ -151,7 +153,7 @@
             const snapSoundElement = document.getElementById('snapSound');
             const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
 
-            webcam.start()
+           webcam.start()
                 .then(result => {
                     console.log("webcam started");
                 })
@@ -163,12 +165,18 @@
             var imagenPreview = document.createElement("img"); // Create an image element
 
             tomarFotoBtn.addEventListener("click", function() {
+                event.preventDefault();
+
                 var picture = webcam.snap();
-                imagenPreview.src = picture; // Set the source of the image element
-                document.getElementById("webcam-container").appendChild(imagenPreview);
-                document.getElementById("webcam-container").removeChild(webcamElement); // Remove the webcam video element
-                document.getElementById("tomar-foto").disabled = true; // Disable the button after taking a photo
-                document.getElementById("imagen-base64").value = picture;
+
+                compressImage(picture, 800, 600, function(compressedBase64) {
+
+                    imagenPreview.src = picture; // Set the source of the image element
+                    document.getElementById("webcam-container").appendChild(imagenPreview);
+                    document.getElementById("webcam-container").removeChild(webcamElement); // Remove the webcam video element
+                    document.getElementById("tomar-foto").disabled = true; // Disable the button after taking a photo
+                    document.getElementById("imagen-base64").value = compressedBase64;
+                });
             });
         });
     </script>
