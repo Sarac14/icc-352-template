@@ -8,6 +8,8 @@ import org.example.util.BaseControlador;
 import org.example.entidades.Agente;
 
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -36,10 +38,6 @@ public class RestControlador extends BaseControlador {
                        ctx.json(formularios);
                    });
 
-                 /*  post("/formularios", ctx ->{
-                       String username = ctx.formParam("username");
-                       String URLOriginal = ctx.formParam("url");
-                   });*/
 
                    //------------------------------------------------------------------------------------------
                     after(ctx -> {
@@ -54,6 +52,11 @@ public class RestControlador extends BaseControlador {
                     post("/", ctx -> {
                         //parseando la informacion del POJO debe venir en formato json.
                         Formulario tmp = ctx.bodyAsClass(Formulario.class);
+                       /* String imagenBase64 = tmp.getImagenBase64();
+                        byte[] imagenBytes = Base64.getDecoder().decode(imagenBase64);
+                        String encodedString = Base64.getEncoder().encodeToString(imagenBytes);
+
+                        tmp.setImagenBase64(encodedString);*/
                         //creando.
                         ctx.json(servicioForm.crearForm(tmp));
                     });
