@@ -53,8 +53,6 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.39.0'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
 
-
-
 }
 
 //Tareas para la generación del código.

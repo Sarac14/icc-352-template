@@ -43,6 +43,21 @@
     </div>
 </section>
 <script src="js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.querySelector('form');
+        loginForm.addEventListener('submit', function(event) {
+            const username = loginForm.username.value;
+            const accessTime = new Date().toISOString();
+
+            // Guardar el registro de acceso en localStorage
+            const accessLog = localStorage.getItem('accessLog') || '[]';
+            const accessLogArray = JSON.parse(accessLog);
+            accessLogArray.push({ username, accessTime });
+            localStorage.setItem('accessLog', JSON.stringify(accessLogArray));
+        });
+    });
+</script>
 </body>
 
 </html>
