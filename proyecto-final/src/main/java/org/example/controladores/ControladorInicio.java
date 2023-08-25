@@ -40,6 +40,10 @@ public class ControladorInicio extends BaseControlador {
             //modelo.put("pageNumber", pageNumber);
             if(agente == null){
                 modelo.put("accion", "Log In");
+
+                Cookie jwtCookie = new Cookie("jwt", "");
+                jwtCookie.setMaxAge(0);
+                ctx.res().addCookie(jwtCookie);
             }else{
                 modelo.put("accion", "Log Out");
             }
@@ -59,6 +63,11 @@ public class ControladorInicio extends BaseControlador {
                 Cookie rememberMeCookie = new Cookie("rememberMe", "");
                 rememberMeCookie.setMaxAge(0);
                 ctx.res().addCookie(rememberMeCookie);
+
+                Cookie jwtCookie = new Cookie("jwt", "");
+                jwtCookie.setMaxAge(0);
+                ctx.res().addCookie(jwtCookie);
+
                 ctx.sessionAttribute("agente", null);
                 ctx.redirect("/");
             }
@@ -71,8 +80,11 @@ public class ControladorInicio extends BaseControlador {
             boolean rememberMe = ctx.formParam("rememberMe") != null; // Verifica si la opción "recordar usuario" está marcada
 
             if (agenteService.autenticarUsuario(username, password) != null) {
-                String token = servicioJWT.createToken(username);
-                ctx.json(new Token(token));
+                String jwtToken  = servicioJWT.createToken(agente);
+                Cookie cookie = new Cookie("jwt", jwtToken);
+                ctx.res().addCookie(cookie);
+                ctx.status(200).result(jwtToken);
+                ctx.json(new Token(jwtToken));
 
                 ctx.sessionAttribute("agente", agente);
 
@@ -96,7 +108,7 @@ public class ControladorInicio extends BaseControlador {
                     ctx.res().addCookie(rememberMeCookie);
                 }
 
-                ctx.redirect("/");
+               ctx.redirect("/");
             } else {
                 //ctx.html("Credenciales incorrectas. <a href='/login'>Volver a intentar</a>");
                 ctx.contentType("text/html");

@@ -152,6 +152,15 @@
     <script src="js/uiLogic.js"></script>
 
     <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!getCookie("jwt")) {
+                alert("No estas autenticado. Por favor, inicia sesion.");
+                window.location.href = "/login";
+                return;
+            }
+        });
+
         let url = 'http://localhost:7000/api/formulario';
         fetch(url)
             .then( response => response.json() )
@@ -289,6 +298,14 @@
             }
             document.getElementById('dataForms').innerHTML = body;
         }
+
+        function getCookie(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return null;
+        }
+
 
     </script>
 </body>

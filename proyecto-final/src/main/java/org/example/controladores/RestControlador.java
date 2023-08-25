@@ -26,22 +26,9 @@ public class RestControlador extends BaseControlador {
     @Override
     public void aplicarRutas() {
 
-
         app.routes(() -> {
-
-            before("/*", ctx -> {
-                String authHeader = ctx.header("Authorization");
-
-                if (authHeader == null || !authHeader.startsWith("Bearer ") || !servicioJWT.validateToken(authHeader.substring(7))) {
-                    ctx.status(401).result("No autorizado");
-                    return;
-                }
-
-                String username = servicioJWT.getUsernameFromToken(authHeader.substring(7));
-                ctx.attribute("currentUser", username);
-            });
-
             path("/api", () -> {
+
                 path("/formulario", () ->{
                    get("/{username}", ctx -> {
                        String username = ctx.pathParam("username");
