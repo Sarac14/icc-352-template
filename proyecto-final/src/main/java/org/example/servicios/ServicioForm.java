@@ -27,7 +27,7 @@ public class ServicioForm {
     private ServicioForm(){
         //
         mongoDbConexion = MongoDbConexion.getInstance();
-        mongoDbConexion.getBaseDatosForm();
+        mongoDbConexion.getBaseDatos1();
 
     }
 
@@ -44,7 +44,7 @@ public class ServicioForm {
         List<Formulario> lista = new ArrayList<>();
 
         //
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
 
         //Consultando todos los elementos.
         MongoCursor<Document> iterator = formularios.find().iterator();
@@ -78,7 +78,7 @@ public class ServicioForm {
     public Formulario getFormPorId(String id){
         Formulario formulario = null;
         //Conexion a Mongo.
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
 
         //
         Document filtro = new Document("_id", id);
@@ -109,7 +109,7 @@ public class ServicioForm {
     public Formulario getFormPorId1 (String id){
         Formulario formulario = new Formulario();
         //Conexion a Mongo.
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
 
         //
         Document filtro = new Document("_id", new ObjectId(id));
@@ -153,7 +153,7 @@ public class ServicioForm {
                 .append("imagenBase64",formulario.getImagenBase64());
 
         //
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
         //
         InsertOneResult insertOneResult = formularios.insertOne(document);
         //
@@ -171,7 +171,7 @@ public class ServicioForm {
         }
 
         //Actualizando Documento.
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
 
         //
         Document filtro = new Document("_id", new ObjectId(formulario.getId()));
@@ -195,7 +195,7 @@ public class ServicioForm {
         //
         Formulario formPorId = getFormPorId(id);
         //Actualizando Documento.
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
         //
         Document filtro = new Document("_id", new ObjectId(formPorId.getId()));
 
@@ -206,7 +206,7 @@ public class ServicioForm {
     public List<Formulario> listarFormularioPorUsuario(String usernameAgente) {
         List<Formulario> lista = new ArrayList<>();
 
-        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatosForm().getCollection(TablasMongo.formulario1.getValor());
+        MongoCollection<Document> formularios = mongoDbConexion.getBaseDatos1().getCollection(TablasMongo.formulario1.getValor());
 
         Document filtro = new Document("agente", usernameAgente);
 

@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import org.example.entidades.Formulario;
 import org.example.servicios.ServicioAgente;
 import org.example.servicios.ServicioForm;
+import org.example.servicios.ServicioJWT;
 import org.example.util.BaseControlador;
 import org.example.entidades.Agente;
 
@@ -19,10 +20,27 @@ public class RestControlador extends BaseControlador {
 
     ServicioAgente servicioAgente = ServicioAgente.getInstancia();
     ServicioForm servicioForm = ServicioForm.getInstancia();
+
+    ServicioJWT servicioJWT = ServicioJWT.getInstancia();
     public RestControlador (Javalin app){super(app);}
     @Override
     public void aplicarRutas() {
+
+
         app.routes(() -> {
+
+            before("/*", ctx -> {
+                String authHeader = ctx.header("Authorization");
+
+                if (authHeader == null || !authHeader.startsWith("Bearer ") || !servicioJWT.validateToken(authHeader.substring(7))) {
+                    ctx.status(401).result("No autorizado");
+                    return;
+                }
+
+                String username = servicioJWT.getUsernameFromToken(authHeader.substring(7));
+                ctx.attribute("currentUser", username);
+            });
+
             path("/api", () -> {
                 path("/formulario", () ->{
                    get("/{username}", ctx -> {

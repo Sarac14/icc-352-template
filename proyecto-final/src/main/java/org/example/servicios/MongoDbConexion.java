@@ -30,8 +30,8 @@ public class MongoDbConexion {
 
         if(mongoClient==null) {
             ProcessBuilder processBuilder = new ProcessBuilder();
-            String URL_MONGODB = "mongodb+srv://hrsp0001:jlAcrSAcXIEDTbiz@cluster0.d8u7pkk.mongodb.net/";//processBuilder.environment().get("mongodb+srv://smct0001:GM5CLLRlyZ9KAfOy@cluster0.gfgkzyd.mongodb.net/");
-            DB_NOMBRE = "crudAgente";//processBuilder.environment().get("crudAgente");
+            String URL_MONGODB = processBuilder.environment().get("URL_MONGO");
+            DB_NOMBRE = processBuilder.environment().get("DB_NOMBRE");
             mongoClient = MongoClients.create(URL_MONGODB);
         }
 
@@ -44,12 +44,12 @@ public class MongoDbConexion {
         return database;
     }
 
-    public MongoDatabase getBaseDatosForm(){
+    /*public MongoDatabase getBaseDatosForm(){
 
         if(mongoClient==null) {
             ProcessBuilder processBuilder = new ProcessBuilder();
-            String URL_MONGODB = "mongodb+srv://hrsp0001:jlAcrSAcXIEDTbiz@cluster0.d8u7pkk.mongodb.net/";//processBuilder.environment().get("mongodb+srv://smct0001:GM5CLLRlyZ9KAfOy@cluster0.gfgkzyd.mongodb.net/");
-            DB_NOMBRE = "crudForm";//processBuilder.environment().get("crudAgente");
+            String URL_MONGODB = processBuilder.environment().get("mongodb+srv://smct0001:GM5CLLRlyZ9KAfOy@cluster0.gfgkzyd.mongodb.net/");
+            DB_NOMBRE = processBuilder.environment().get("crudAgente");
             mongoClient = MongoClients.create(URL_MONGODB);
         }
 
@@ -60,7 +60,7 @@ public class MongoDbConexion {
 
         //
         return database;
-    }
+    }*/
 
     /**
      *

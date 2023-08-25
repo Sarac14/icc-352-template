@@ -3,7 +3,9 @@ package org.example.controladores;
 import io.javalin.Javalin;
 import jakarta.servlet.http.Cookie;
 import org.example.entidades.Agente;
+import org.example.entidades.Token;
 import org.example.servicios.ServicioAgente;
+import org.example.servicios.ServicioJWT;
 import org.example.util.BaseControlador;
 import org.jasypt.util.text.BasicTextEncryptor;
 
@@ -14,9 +16,9 @@ import java.util.Map;
 
 public class ControladorInicio extends BaseControlador {
     private static ServicioAgente agenteService = ServicioAgente.getInstancia();
-    //private static ServicioArticulo servicio_art = ServicioArticulo.getInstancia();
 
-    //private static int pageNumber = 1;
+
+    private static ServicioJWT servicioJWT = ServicioJWT.getInstancia();
 
 
     public ControladorInicio(Javalin app){super (app);}
@@ -69,6 +71,9 @@ public class ControladorInicio extends BaseControlador {
             boolean rememberMe = ctx.formParam("rememberMe") != null; // Verifica si la opción "recordar usuario" está marcada
 
             if (agenteService.autenticarUsuario(username, password) != null) {
+                String token = servicioJWT.createToken(username);
+                ctx.json(new Token(token));
+
                 ctx.sessionAttribute("agente", agente);
 
                 // Verifica si se debe crear la cookie de recordar usuario
