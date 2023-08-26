@@ -51,6 +51,17 @@ public class ControladorInicio extends BaseControlador {
 
         });
 
+        app.before("/VerRegistros.html", ctx -> {
+            Agente agente = ctx.sessionAttribute("agente");
+            if (agente != null && agente.getRol().equalsIgnoreCase("Agente")) {
+                // El usuario es un agente y tiene permisos, no se hace ninguna redirección
+            } else {
+                ctx.contentType("text/html");
+                ctx.html("<script>alert('Usted no tiene los permisos necesarios'); window.location.href = '/';</script>");
+                ctx.redirect("/");
+            }
+        });
+
         app.get("/login", ctx -> {
             Agente agente = ctx.sessionAttribute("agente");
             //Agente agente = agenteService.findByUsername(user);

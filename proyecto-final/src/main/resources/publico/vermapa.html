@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Registros</title>
+    <title>Ubicación Geográfica</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         body {
@@ -11,10 +11,16 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
         }
 
         #mapa {
@@ -26,6 +32,7 @@
     </style>
 </head>
 <body>
+<h1>Ubicación Geográfica</h1>
 <div id="mapa"></div>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
@@ -41,7 +48,7 @@
 
     if (!isNaN(latitud) && !isNaN(longitud)) {
         var marcador = L.marker([latitud, longitud]).addTo(mapa);
-        marcador.bindPopup("Ubicación del formulario");
+        marcador.bindPopup("Ubicación del formulario").openPopup();
         mapa.setView([latitud, longitud], 13);
     }
 </script>
