@@ -1,6 +1,9 @@
 CACHE MANIFEST
 
 CACHE:
+/
+/crud-simple/listar
+/crud-simple/crear
 /localStorage.html
 /uiLogic.js
 /visualizar.html
@@ -10,11 +13,14 @@ CACHE:
 /login.html
 /serviceWorkers.js
 /index1.html
+/templates/crud-tradicional/listar.html
+/templates/crud-tradicional/crearEditarVisualizar.html
+
 
 
 NETWORK:
 /
-/app/*
+/*
 
 FALLBACK:
 / /html5/offline.html

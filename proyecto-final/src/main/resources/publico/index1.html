@@ -111,15 +111,48 @@
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('js/serviceworkers.js')
-                .then(function(registration) {
-                    console.log('Service Worker registrado con éxito:', registration);
-                })
-                .catch(function(error) {
-                    console.error('Error al registrar el Service Worker:', error);
-                });
+            navigator.serviceWorker.register('js/serviceworkers.js', { scope: '/js/' }).then(function(registration) {
+                // Notificando el registro del service workwe
+                console.log('Registrando el servicio en el ambiente: ', registration.scope);
+            }, function(err) {
+                console.log('Service Worker falló el registro: ', err);
+            });
         });
     }
+
+    function enviarFormulario(data) {
+        if (navigator.onLine) {
+            enviarAlServidor(data);
+        } else {
+            guardarEnLocalStorage(data);
+        }
+    }
+
+    function guardarEnLocalStorage(data) {
+        let items = JSON.parse(localStorage.getItem('items_pendientes') || "[]");
+        items.push(data);
+        localStorage.setItem('items_pendientes', JSON.stringify(items));
+    }
+
+    window.addEventListener('online', sincronizarConServidor);
+
+    function sincronizarConServidor() {
+        let items = JSON.parse(localStorage.getItem('items_pendientes') || "[]");
+
+        items.forEach(item => {
+            enviarAlServidor(item);
+        });
+
+        localStorage.removeItem('items_pendientes');
+    }
+
+    function enviarAlServidor(data) {
+        // Convertir 'data' a formato JSON y enviarlo al servidor a través del WebSocket
+        sendDataToServer(JSON.stringify(data));
+    }
+
+
+
 </script>
 
 </body>
