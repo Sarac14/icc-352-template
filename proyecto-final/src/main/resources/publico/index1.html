@@ -108,6 +108,19 @@
         </div>
     </footer>
 <div th:replace="/templates/crud-tradicional/plantilla.html::javascript"></div>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('js/serviceworkers.js')
+                .then(function(registration) {
+                    console.log('Service Worker registrado con éxito:', registration);
+                })
+                .catch(function(error) {
+                    console.error('Error al registrar el Service Worker:', error);
+                });
+        });
+    }
+</script>
 
 </body>
 

@@ -19,6 +19,7 @@ public class Main {
                     staticFileConfig.aliasCheck=null;
                 });
 
+
                 //Habilitando el CORS. Ver: https://javalin.io/plugins/cors#getting-started para más opciones.
                 config.plugins.enableCors(corsContainer -> {
                     corsContainer.add(corsPluginConfig -> {
@@ -33,6 +34,10 @@ public class Main {
 
             //Iniciando la aplicación
             app.start(getPuertoDimanico());
+            app.after("/appcache.appcache", ctx -> {
+                System.out.println("Llamando el cache....");
+                ctx.contentType("text/cache-manifest");
+            });
 
             //incluyendo los controladores.
         new ControladorInicio(app).aplicarRutas();
@@ -55,6 +60,7 @@ public class Main {
             }
             return 7000; //Retorna el puerto por defecto en caso de no estar en Heroku.
         }
+
 
 
 }

@@ -1,0 +1,20 @@
+CACHE MANIFEST
+
+CACHE:
+/localStorage.html
+/uiLogic.js
+/visualizar.html
+/webWorkers.js
+/VerFoto.html
+/vermapa.html
+/login.html
+/serviceWorkers.js
+/index1.html
+
+
+NETWORK:
+/
+/app/*
+
+FALLBACK:
+/ /html5/offline.html
