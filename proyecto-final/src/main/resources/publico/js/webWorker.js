@@ -1,4 +1,4 @@
-let socket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/sync");
+let socket = new WebSocket("ws://proyecto.sarablog.me:7000/sync");
 
 
 socket.onopen = function(e) {

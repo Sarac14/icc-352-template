@@ -30,7 +30,7 @@ public class MongoDbConexion {
 
         if(mongoClient==null) {
             ProcessBuilder processBuilder = new ProcessBuilder();
-            String URL_MONGODB = "mongodb+srv://hrsp0001:NkpsDmMq1G8aFqXM@cluster0.d8u7pkk.mongodb.net/";
+            String URL_MONGODB = "mongodb+srv://smct0001:1234554321@cluster0.2bpfror.mongodb.net/";
             DB_NOMBRE = "ProyectoFinal";
             mongoClient = MongoClients.create(URL_MONGODB);
         }
