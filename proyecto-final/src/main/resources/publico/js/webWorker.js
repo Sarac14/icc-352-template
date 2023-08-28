@@ -1,4 +1,4 @@
-let socket = new WebSocket("wss://proyecto.sarablog.me:7000/sync");
+let socket = new WebSocket("wss://proyecto.sarablog.me/sync");
 
 
 socket.onopen = function(e) {
